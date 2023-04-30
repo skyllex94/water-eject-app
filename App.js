@@ -1,20 +1,97 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { useState } from "react";
+
+import {
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  ScrollView,
+  FlatList,
+} from "react-native";
 
 export default function App() {
+  const [enteredGoal, setEnteredGoal] = useState("");
+  const [goals, setGoals] = useState([]);
+
+  function handleGoalInput(enteredText) {
+    setEnteredGoal(enteredText);
+  }
+
+  function addGoalHandler() {
+    setGoals((currGoalList) => [
+      ...currGoalList,
+      { text: enteredGoal, key: Math.random().toString() },
+    ]);
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View styles={styles.main}>
+      <View style={styles.goalInput}>
+        <TextInput
+          style={styles.goalText}
+          onChangeText={handleGoalInput}
+          placeholder="Your Goal"
+        />
+        <Button
+          style={styles.goalButton}
+          onPress={addGoalHandler}
+          title="Add Goal"
+        />
+      </View>
+      <View style={styles.goalList}>
+        <FlatList
+          data={goals}
+          renderItem={(goalData) => (
+            <Text style={styles.goalItem}>{goalData.item.text}</Text>
+          )}
+        />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  main: {
+    backgroundColor: "#fff",
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  },
+  text: {
+    borderColor: "red",
+    borderWidth: 2,
+    padding: 10,
+    borderRadius: 10,
+    width: 150,
+  },
+  goalInput: {
+    marginTop: 125,
+    marginHorizontal: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingBottom: 25,
+    borderBottomWidth: 1,
+    borderBottomColor: "#cccccc",
+  },
+  goalButton: {
+    marginRight: 8,
+  },
+  goalText: {
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 8,
+    borderColor: "#cccccc",
+    width: "80%",
+  },
+  goalList: {
+    marginTop: 25,
+    marginHorizontal: 20,
+  },
+  goalItem: {
+    margin: 3,
+    padding: 5,
+    borderWidth: 1,
+    borderRadius: 3,
+    backgroundColor: "#cccccc",
   },
 });
