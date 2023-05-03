@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 
 import {
@@ -7,7 +6,6 @@ import {
   Text,
   TextInput,
   View,
-  ScrollView,
   FlatList,
 } from "react-native";
 
@@ -24,6 +22,11 @@ export default function App() {
       ...currGoalList,
       { text: enteredGoal, key: Math.random().toString() },
     ]);
+  }
+
+  function handleDeleteGoal(idx) {
+    console.log(idx);
+    setGoals((goals) => goals.filter((_, index) => index !== idx));
   }
 
   return (
@@ -44,7 +47,14 @@ export default function App() {
         <FlatList
           data={goals}
           renderItem={(goalData) => (
-            <Text style={styles.goalItem}>{goalData.item.text}</Text>
+            <View style={styles.goalItem}>
+              <Text>{goalData.item.text} </Text>
+              <Button
+                title="X"
+                onPress={() => handleDeleteGoal(goalData.index)}
+                style={styles.deleteGoal}
+              />
+            </View>
           )}
         />
       </View>
@@ -88,10 +98,17 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   goalItem: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignContent: "center",
     margin: 3,
     padding: 5,
     borderWidth: 1,
     borderRadius: 3,
     backgroundColor: "#cccccc",
+  },
+  deleteGoal: {
+    padding: 5,
   },
 });
