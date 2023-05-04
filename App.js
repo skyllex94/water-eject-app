@@ -7,11 +7,15 @@ import {
   TextInput,
   View,
   FlatList,
+  Dimensions,
 } from "react-native";
+import Frequencies from "./components/Frequencies";
+import FreqStartStop from "./components/FreqStartStop";
 
 export default function App() {
   const [enteredGoal, setEnteredGoal] = useState("");
   const [goals, setGoals] = useState([]);
+  let ScreenHeight = Dimensions.get("window").height;
 
   function handleGoalInput(enteredText) {
     setEnteredGoal(enteredText);
@@ -30,42 +34,17 @@ export default function App() {
   }
 
   return (
-    <View styles={styles.main}>
-      <View style={styles.goalInput}>
-        <TextInput
-          style={styles.goalText}
-          onChangeText={handleGoalInput}
-          placeholder="Your Goal"
-        />
-        <Button
-          style={styles.goalButton}
-          onPress={addGoalHandler}
-          title="Add Goal"
-        />
-      </View>
-      <View style={styles.goalList}>
-        <FlatList
-          data={goals}
-          renderItem={(goalData) => (
-            <View style={styles.goalItem}>
-              <Text>{goalData.item.text} </Text>
-              <Button
-                title="X"
-                onPress={() => handleDeleteGoal(goalData.index)}
-                style={styles.deleteGoal}
-              />
-            </View>
-          )}
-        />
-      </View>
+    <View style={styles.main}>
+      <Frequencies />
+      <FreqStartStop />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   main: {
-    backgroundColor: "#fff",
     flex: 1,
+    backgroundColor: "#063970",
   },
   text: {
     borderColor: "red",
