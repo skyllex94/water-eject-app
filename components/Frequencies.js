@@ -1,28 +1,18 @@
 import React from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
-import { freq160 } from "../assets/freq_sounds/160_Hz.mp3";
-import Sound from "react-native-sound";
+import Video from "react-native-video";
 
 function Frequencies() {
-  const freq160hz = new Sound(freq160);
-
-  function play160hz() {
-    freq160hz.play(() => freq160hz.release());
-  }
-
   return (
     <View style={styles.main}>
       <View style={styles.freqOptions}>
-        <Button
-          title="160 Hz"
-          onPress={play160hz}
-          style={styles.freqBtn}
-          color="white"
-        />
+        <Button title="160 Hz" style={styles.freqBtn} color="white" />
         <Text style={styles.divider} />
         <Button title="300 Hz" style={styles.freqBtn} color="white" />
         <Text style={styles.divider} />
         <Button title="400 Hz" style={styles.freqBtn} color="white" />
+
+        <Video source={require("../assets/freq_sounds/160.mp4")} />
       </View>
     </View>
   );
