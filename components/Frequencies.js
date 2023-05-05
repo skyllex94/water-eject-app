@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
-import Video from "react-native-video";
+// import Video from "react-native-video";
 
 function Frequencies() {
   return (
@@ -11,8 +11,6 @@ function Frequencies() {
         <Button title="300 Hz" style={styles.freqBtn} color="white" />
         <Text style={styles.divider} />
         <Button title="400 Hz" style={styles.freqBtn} color="white" />
-
-        <Video source={require("../assets/freq_sounds/160.mp4")} />
       </View>
     </View>
   );
