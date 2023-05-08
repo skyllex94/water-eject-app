@@ -59,7 +59,6 @@ const Tab = createBottomTabNavigator();
 function HomeScreen() {
   return (
     <View style={styles.container}>
-      <Text>Here wedsgf are</Text>
       <Frequencies />
     </View>
   );
