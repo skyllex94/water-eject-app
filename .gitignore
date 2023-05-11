@@ -9,6 +9,7 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+/assets/frequencies
 
 # macOS
 .DS_Store

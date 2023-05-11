@@ -3,7 +3,9 @@ import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
 import { Audio } from "expo-av";
 
 function Frequencies() {
-  const [start, setStart] = useState(true);
+  const [start120, setStart120] = useState(true);
+  const [start160, setStart160] = useState(true);
+
   const [sound, setSound] = useState();
 
   function start80hz() {
@@ -11,12 +13,31 @@ function Frequencies() {
   }
 
   async function start160hz() {
-    setStart((prev) => !prev);
+    if (start120) setStart120(false);
+    setStart160((prev) => !prev);
 
-    if (start) {
-      console.log("Loading Sound");
+    if (start160) {
       const { sound } = await Audio.Sound.createAsync(
-        require("../assets/frequencies/low160freq.mp3"),
+        require("../assets/frequencies/160hz.mp3"),
+        { isLooping: true }
+      );
+      setSound(sound);
+
+      console.log("Playing Sound");
+      await sound.playAsync();
+    } else {
+      console.log("Unloading Sound");
+      sound.unloadAsync() || undefined;
+    }
+  }
+
+  async function start120hz() {
+    if (start160) setStart160(false);
+    setStart120((prev) => !prev);
+
+    if (start120) {
+      const { sound } = await Audio.Sound.createAsync(
+        require("../assets/frequencies/120hz.mp3"),
         { isLooping: true }
       );
       setSound(sound);
@@ -32,11 +53,11 @@ function Frequencies() {
   return (
     <View style={styles.main}>
       <View style={styles.lowFreqOptions}>
-        <TouchableOpacity onPress={start80hz} style={styles.freqBtn}>
-          <Text style={styles.freqText}>80 Hz</Text>
+        <TouchableOpacity onPress={start120hz} style={styles.freqBtn}>
+          <Text style={styles.freqText}>{start120 ? "120Hz" : "Stop"}</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={start160hz} style={styles.freqBtn}>
-          <Text style={styles.freqText}>{start ? "160 Hz" : "Stop"}</Text>
+          <Text style={styles.freqText}>{start160 ? "160Hz" : "Stop"}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.highFreqOptions}>
