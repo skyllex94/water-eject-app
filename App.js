@@ -1,8 +1,10 @@
-import { Button, View, Text, StyleSheet, StatusBar } from "react-native";
+import { View, Text, StyleSheet, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Frequencies from "./components/Frequencies";
+import Waveform from "./components/Waveform";
+import Programs from "./components/Programs";
 
 function App() {
   return (
@@ -59,7 +61,9 @@ const Tab = createBottomTabNavigator();
 function HomeScreen() {
   return (
     <View style={styles.container}>
+      <Waveform />
       <Frequencies />
+      <Programs />
     </View>
   );
 }

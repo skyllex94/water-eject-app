@@ -1,114 +1,228 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  TouchableOpacity,
+  Switch,
+} from "react-native";
 import { Audio } from "expo-av";
 
+import Icon from "react-native-vector-icons/FontAwesome";
+
 function Frequencies() {
-  const [start120, setStart120] = useState(true);
-  const [start160, setStart160] = useState(true);
+  const [isEnabled120, setIsEnabled120] = useState(false);
+  const [isEnabled160, setIsEnabled160] = useState(false);
+  const [isEnabled300, setIsEnabled300] = useState(false);
+  const [isEnabled500, setIsEnabled500] = useState(false);
 
-  const [sound, setSound] = useState();
+  const [currFreq, setCurrFreq] = useState();
 
-  function start80hz() {
-    console.log("80Hz");
+  async function isEnabled120hz() {
+    if (isEnabled160) setIsEnabled160(false);
+    if (isEnabled300) setIsEnabled300(false);
+    if (isEnabled500) setIsEnabled500(false);
+    setIsEnabled120((prev) => !prev);
+
+    await startFrequency120(!isEnabled120);
   }
 
-  async function start160hz() {
-    if (start120) setStart120(false);
-    setStart160((prev) => !prev);
-
-    if (start160) {
+  async function startFrequency120(isEnabled) {
+    if (isEnabled) {
+      if (currFreq) currFreq.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
-        require("../assets/frequencies/160hz.mp3"),
+        require(`../assets/frequencies/120hz.mp3`),
         { isLooping: true }
       );
-      setSound(sound);
+      setCurrFreq(sound);
 
       console.log("Playing Sound");
       await sound.playAsync();
     } else {
       console.log("Unloading Sound");
-      sound.unloadAsync() || undefined;
+      currFreq.unloadAsync() || undefined;
     }
   }
 
-  async function start120hz() {
-    if (start160) setStart160(false);
-    setStart120((prev) => !prev);
+  async function isEnabled160hz() {
+    if (isEnabled120) setIsEnabled120(false);
+    if (isEnabled300) setIsEnabled300(false);
+    if (isEnabled500) setIsEnabled500(false);
+    setIsEnabled160((prev) => !prev);
 
-    if (start120) {
+    await startFrequency160(!isEnabled160);
+  }
+
+  async function startFrequency160(isEnabled) {
+    if (isEnabled) {
+      if (currFreq) currFreq.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
-        require("../assets/frequencies/120hz.mp3"),
+        require(`../assets/frequencies/160hz.mp3`),
         { isLooping: true }
       );
-      setSound(sound);
+      setCurrFreq(sound);
 
       console.log("Playing Sound");
       await sound.playAsync();
     } else {
       console.log("Unloading Sound");
-      sound.unloadAsync() || undefined;
+      currFreq.unloadAsync() || undefined;
+    }
+  }
+
+  async function isEnabled300hz() {
+    if (isEnabled120) setIsEnabled120(false);
+    if (isEnabled160) setIsEnabled160(false);
+    if (isEnabled500) setIsEnabled500(false);
+    setIsEnabled300((prev) => !prev);
+
+    await startFrequency300(!isEnabled300);
+  }
+
+  async function startFrequency300(isEnabled) {
+    if (isEnabled) {
+      if (currFreq) currFreq.unloadAsync() || undefined;
+      const { sound } = await Audio.Sound.createAsync(
+        require(`../assets/frequencies/300hz.mp3`),
+        { isLooping: true }
+      );
+      setCurrFreq(sound);
+
+      console.log("Playing Sound");
+      await sound.playAsync();
+    } else {
+      console.log("Unloading Sound");
+      currFreq.unloadAsync() || undefined;
+    }
+  }
+
+  async function isEnabled500hz() {
+    if (isEnabled120 === true) setIsEnabled120(false);
+    if (isEnabled160 === true) setIsEnabled160(false);
+    if (isEnabled300 === true) setIsEnabled300(false);
+    setIsEnabled500((prev) => !prev);
+
+    await startFrequency500(!isEnabled500);
+  }
+
+  async function startFrequency500(isEnabled) {
+    if (isEnabled) {
+      if (currFreq) currFreq.unloadAsync() || undefined;
+      const { sound } = await Audio.Sound.createAsync(
+        require(`../assets/frequencies/500hz.mp3`),
+        { isLooping: true }
+      );
+      setCurrFreq(sound);
+
+      console.log("Playing Sound");
+      await sound.playAsync();
+    } else {
+      console.log("Unloading Sound");
+      currFreq.unloadAsync() || undefined;
     }
   }
 
   return (
     <View style={styles.main}>
       <View style={styles.lowFreqOptions}>
-        <TouchableOpacity onPress={start120hz} style={styles.freqBtn}>
-          <Text style={styles.freqText}>{start120 ? "120Hz" : "Stop"}</Text>
+        <TouchableOpacity
+          onPress={isEnabled120hz}
+          style={isEnabled120 ? styles.freqBtnActive : styles.freqBtn}
+        >
+          <View style={styles.iconWrapper}>
+            <Icon name="rocket" size={30} color="white" />
+          </View>
+
+          <View style={styles.freqControlText}>
+            <Text style={styles.freqText}>{isEnabled120 ? "Off" : "On"}</Text>
+            <Switch
+              trackColor={{ true: switchActiveColor }}
+              value={isEnabled120}
+            />
+          </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={start160hz} style={styles.freqBtn}>
-          <Text style={styles.freqText}>{start160 ? "160Hz" : "Stop"}</Text>
+        <TouchableOpacity
+          onPress={isEnabled160hz}
+          style={isEnabled160 ? styles.freqBtnActive : styles.freqBtn}
+        >
+          <Text style={styles.freqText}>{isEnabled160 ? "Stop" : "160Hz"}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.highFreqOptions}>
-        <TouchableOpacity style={styles.freqBtn}>
-          <Text style={styles.freqText}>300 Hz</Text>
+        <TouchableOpacity
+          onPress={isEnabled300hz}
+          style={isEnabled300 ? styles.freqBtnActive : styles.freqBtn}
+        >
+          <Text style={styles.freqText}>{isEnabled300 ? "Stop" : "300Hz"}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.freqBtn}>
-          <Text style={styles.freqText}>400 Hz</Text>
+        <TouchableOpacity
+          onPress={isEnabled500hz}
+          style={isEnabled500 ? styles.freqBtnActive : styles.freqBtn}
+        >
+          <Text style={styles.freqText}>{isEnabled500 ? "Stop" : "500Hz"}</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 }
 
+const bgColor = "#05103A";
+const activeColor = "#4AD0EE";
+const switchActiveColor = "#41bdd9";
+
 const styles = StyleSheet.create({
   main: {
-    flex: 3,
+    flex: 4,
     flexDirection: "column",
-    justifyContent: "center",
-    marginTop: 150,
+    paddingTop: 10,
   },
   lowFreqOptions: {
     flexDirection: "row",
     justifyContent: "center",
-    alignContent: "center",
   },
   highFreqOptions: {
     flexDirection: "row",
     marginTop: 14,
     justifyContent: "center",
-    alignContent: "center",
   },
   freqBtn: {
     width: "45%",
     marginHorizontal: 7,
-    height: 100,
+    height: 120,
     justifyContent: "center",
-    alignItems: "center",
     padding: 10,
     borderRadius: 15,
     backgroundColor: "#101C43",
   },
-  freqText: {
-    flexDirection: "row",
+  freqBtnActive: {
+    width: "45%",
+    marginHorizontal: 7,
+    height: 120,
+    padding: 10,
+    borderRadius: 15,
     justifyContent: "center",
+    backgroundColor: "#4AD0EE",
+  },
+  freqText: {
+    marginLeft: 5,
+    flexDirection: "row",
     alignContent: "center",
+    fontWeight: 700,
     color: "white",
   },
-  divider: {
-    marginHorizontal: 10,
-    backgroundColor: "#cccccc",
+  freqControlText: {
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  iconWrapper: {
+    width: 50,
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: bgColor,
+    marginBottom: 10,
   },
 });
 
