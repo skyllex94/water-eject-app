@@ -1,4 +1,4 @@
-import { Button, View, Text, StyleSheet, StatusBar } from "react-native";
+import { View, Text, StyleSheet, StatusBar } from "react-native";
 
 function Home() {
   return (
@@ -8,10 +8,12 @@ function Home() {
   );
 }
 
+const bgColor = "#05103A";
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#05103A",
+    backgroundColor: bgColor,
   },
 });
 

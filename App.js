@@ -25,11 +25,7 @@ function App() {
               backgroundColor: "#101C43",
             },
             tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons
-                name="home"
-                color={"#4AD0EE"}
-                size={size}
-              />
+              <MaterialCommunityIcons name="home" color={"white"} size={size} />
             ),
           }}
         />
@@ -43,11 +39,7 @@ function App() {
               backgroundColor: "#101C43",
             },
             tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons
-                name="cogs"
-                color={"#4AD0EE"}
-                size={size}
-              />
+              <MaterialCommunityIcons name="cogs" color={"gray"} size={size} />
             ),
           }}
         />

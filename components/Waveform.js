@@ -1,11 +1,12 @@
-import { Button } from "@rneui/base";
-import React, { useEffect } from "react";
+import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import Wavey from "./Wavey";
 
 export default function Waveform() {
   return (
     <View style={styles.container}>
-      <Text style={styles.waveform}>On You</Text>
+      <Text style={styles.waveform}>Waveform to go here</Text>
+      <Wavey />
     </View>
   );
 }
@@ -13,7 +14,6 @@ export default function Waveform() {
 const styles = StyleSheet.create({
   container: {
     flex: 2,
-    // backgroundColor: "green",
     marginTop: 150,
   },
   waveform: {
