@@ -10,11 +10,11 @@ import {
 } from "react-native";
 import { Audio } from "expo-av";
 
-import Icon from "react-native-vector-icons/FontAwesome";
 import lowFreq from "../assets/icons/lowfreqIcon.png";
 import medFreq from "../assets/icons/medfreqIcon.png";
 import highFreq from "../assets/icons/highfreqIcon.png";
 import xtHighFreq from "../assets/icons/xthighfreqIcon.png";
+import { buttonsColor } from "../styles/ColorsUI";
 
 function Frequencies() {
   const [isEnabled120, setIsEnabled120] = useState(false);
@@ -183,7 +183,7 @@ function Frequencies() {
             <View
               style={isEnabled300 ? styles.iconWrapperOn : styles.iconWrapper}
             >
-              <Image style={styles.icon} source={highFreq}></Image>
+              <Image style={styles.icon} source={highFreq} />
             </View>
             <Text style={styles.freqText}>300 Hz</Text>
           </View>
@@ -228,9 +228,9 @@ const iconActiveColor = "#87e5fa";
 
 const styles = StyleSheet.create({
   main: {
-    flex: 4,
+    flex: 3,
     flexDirection: "column",
-    paddingTop: 10,
+    justifyContent: "center",
   },
   lowFreqOptions: {
     flexDirection: "row",
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 10,
     borderRadius: 15,
-    backgroundColor: "#101C43",
+    backgroundColor: buttonsColor,
   },
   freqBtnActive: {
     width: "45%",
