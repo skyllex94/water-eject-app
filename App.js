@@ -5,6 +5,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import Frequencies from "./components/Frequencies";
 import Waveform from "./components/Waveform";
 import Programs from "./components/Programs";
+import { bgColor } from "./styles/ColorsUI";
 
 function App() {
   return (
@@ -39,7 +40,11 @@ function App() {
               backgroundColor: "#101C43",
             },
             tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="cogs" color={"gray"} size={size} />
+              <MaterialCommunityIcons
+                name="cogs"
+                color={"lightgray"}
+                size={size}
+              />
             ),
           }}
         />
@@ -71,7 +76,7 @@ function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#05103A",
+    backgroundColor: bgColor,
   },
 });
 

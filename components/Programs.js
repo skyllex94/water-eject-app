@@ -9,13 +9,21 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 export default function Programs() {
   const [isEnabledPrep, setIsEnabledPrep] = useState(false);
+  const [isEnabledMain, setIsEnabledMain] = useState(false);
 
   const [currProgram, setCurrProgram] = useState();
 
   async function enablePrepFreq() {
+    setIsEnabledMain(false);
     setIsEnabledPrep((prev) => !prev);
-
     await playPrep(!isEnabledPrep);
+  }
+
+  async function enableMainFreq() {
+    setIsEnabledPrep(false);
+    setIsEnabledMain((prev) => !prev);
+
+    await playMain(!isEnabledMain);
   }
 
   async function playPrep(isEnabled) {
@@ -23,6 +31,23 @@ export default function Programs() {
       if (currProgram) currProgram.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
         require(`../assets/programs/prep.mp3`),
+        { isLooping: false }
+      );
+      setCurrProgram(sound);
+
+      console.log("Playing Program");
+      await sound.playAsync();
+    } else {
+      console.log("Unloading Program");
+      currProgram.unloadAsync() || undefined;
+    }
+  }
+
+  async function playMain(isEnabled) {
+    if (isEnabled) {
+      if (currProgram) currProgram.unloadAsync() || undefined;
+      const { sound } = await Audio.Sound.createAsync(
+        require(`../assets/programs/main.mp3`),
         { isLooping: false }
       );
       setCurrProgram(sound);
@@ -46,12 +71,13 @@ export default function Programs() {
             <Image style={styles.prepWaveform} source={prepWaveform} />
           </View>
 
-          <Icon
-            style={styles.prepPlay}
-            name={isEnabledPrep ? "pause" : "play"}
-            size={30}
-            color="white"
-          />
+          <View style={styles.prepPlay}>
+            <Icon
+              name={isEnabledPrep ? "pause" : "play"}
+              size={30}
+              color="white"
+            />
+          </View>
         </View>
 
         <View style={styles.prepTextContainer}>
@@ -60,7 +86,7 @@ export default function Programs() {
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={enablePrepFreq} style={styles.freqBtn}>
+      <TouchableOpacity onPress={enableMainFreq} style={styles.freqBtn}>
         <View style={styles.prepWaveformContainer}>
           <View style={styles.waveformAll}>
             <Image style={styles.prepWaveform} source={prepWaveform} />
@@ -69,17 +95,18 @@ export default function Programs() {
             <Image style={styles.prepWaveform} source={prepWaveform} />
           </View>
 
-          <Icon
-            style={styles.prepPlay}
-            name={isEnabledPrep ? "pause" : "play"}
-            size={30}
-            color="white"
-          />
+          <View style={styles.prepPlay}>
+            <Icon
+              name={isEnabledMain ? "pause" : "play"}
+              size={30}
+              color="white"
+            />
+          </View>
         </View>
 
         <View style={styles.prepTextContainer}>
           <Text style={styles.freqText}>Water Ejection Dedicated Program</Text>
-          <Text style={styles.prepTime}>3:43 / 23:00</Text>
+          <Text style={styles.prepTime}>3:43 / 16:27</Text>
         </View>
       </TouchableOpacity>
     </View>
@@ -119,10 +146,10 @@ const styles = StyleSheet.create({
   },
   prepPlay: {
     backgroundColor: buttonsColor,
-    borderRadius: 10,
-    borderWidth: 1,
-    color: "white",
+    width: 50,
     padding: 10,
+    alignItems: "center",
+    borderRadius: 10,
   },
 
   prepTextContainer: {

@@ -204,7 +204,7 @@ function Frequencies() {
             <View
               style={isEnabled500 ? styles.iconWrapperOn : styles.iconWrapper}
             >
-              <Image style={styles.icon} source={xtHighFreq}></Image>
+              <Image style={styles.icon} source={xtHighFreq} />
             </View>
             <Text style={styles.freqText}>500 Hz</Text>
           </View>
