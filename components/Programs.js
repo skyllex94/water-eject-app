@@ -7,19 +7,35 @@ import { activeColor, bgColor, buttonsColor } from "../styles/ColorsUI";
 
 import Icon from "react-native-vector-icons/FontAwesome";
 
-export default function Programs() {
-  const [isEnabledPrep, setIsEnabledPrep] = useState(false);
-  const [isEnabledMain, setIsEnabledMain] = useState(false);
+export default function Programs({ props }) {
+  const {
+    setIsEnabled120,
+    setIsEnabled160,
+    setIsEnabled300,
+    setIsEnabled500,
+    isEnabledPrep,
+    setIsEnabledPrep,
+    isEnabledMain,
+    setIsEnabledMain,
+  } = props;
 
   const [currProgram, setCurrProgram] = useState();
 
   async function enablePrepFreq() {
+    setIsEnabled120(false);
+    setIsEnabled160(false);
+    setIsEnabled300(false);
+    setIsEnabled500(false);
     setIsEnabledMain(false);
     setIsEnabledPrep((prev) => !prev);
     await playPrep(!isEnabledPrep);
   }
 
   async function enableMainFreq() {
+    setIsEnabled120(false);
+    setIsEnabled160(false);
+    setIsEnabled300(false);
+    setIsEnabled500(false);
     setIsEnabledPrep(false);
     setIsEnabledMain((prev) => !prev);
 
@@ -65,10 +81,8 @@ export default function Programs() {
       <TouchableOpacity onPress={enablePrepFreq} style={styles.freqBtn}>
         <View style={styles.prepWaveformContainer}>
           <View style={styles.waveformAll}>
-            <Image style={styles.prepWaveform} source={prepWaveform} />
-            <Image style={styles.prepWaveform} source={prepWaveform} />
-            <Image style={styles.prepWaveform} source={prepWaveform} />
-            <Image style={styles.prepWaveform} source={prepWaveform} />
+            <View style={styles.toneUI}></View>
+            <View style={styles.toneUI}></View>
           </View>
 
           <View style={styles.prepPlay}>
@@ -127,6 +141,12 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: "#101C43",
     marginTop: 14,
+  },
+  toneUI: {
+    height: 30,
+    width: 2,
+    marginLeft: 1,
+    backgroundColor: "white",
   },
 
   prepWaveformContainer: {

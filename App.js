@@ -6,6 +6,7 @@ import Frequencies from "./components/Frequencies";
 import Waveform from "./components/Waveform";
 import Programs from "./components/Programs";
 import { bgColor } from "./styles/ColorsUI";
+import { useState } from "react";
 
 function App() {
   return (
@@ -56,11 +57,34 @@ function App() {
 const Tab = createBottomTabNavigator();
 
 function HomeScreen() {
+  const [isEnabled120, setIsEnabled120] = useState(false);
+  const [isEnabled160, setIsEnabled160] = useState(false);
+  const [isEnabled300, setIsEnabled300] = useState(false);
+  const [isEnabled500, setIsEnabled500] = useState(false);
+
+  const [isEnabledPrep, setIsEnabledPrep] = useState(false);
+  const [isEnabledMain, setIsEnabledMain] = useState(false);
+
+  const props = {
+    isEnabled120: isEnabled120,
+    setIsEnabled120: setIsEnabled120,
+    isEnabled160: isEnabled160,
+    setIsEnabled160: setIsEnabled160,
+    isEnabled300: isEnabled300,
+    setIsEnabled300: setIsEnabled300,
+    isEnabled500: isEnabled500,
+    setIsEnabled500: setIsEnabled500,
+    isEnabledPrep: isEnabledPrep,
+    setIsEnabledPrep: setIsEnabledPrep,
+    isEnabledMain: isEnabledMain,
+    setIsEnabledMain: setIsEnabledMain,
+  };
+
   return (
     <View style={styles.container}>
       <Waveform />
-      <Frequencies />
-      <Programs />
+      <Frequencies props={props} />
+      <Programs props={props} />
     </View>
   );
 }

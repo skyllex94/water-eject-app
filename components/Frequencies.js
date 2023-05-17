@@ -16,11 +16,21 @@ import highFreq from "../assets/icons/highfreqIcon.png";
 import xtHighFreq from "../assets/icons/xthighfreqIcon.png";
 import { buttonsColor } from "../styles/ColorsUI";
 
-function Frequencies() {
-  const [isEnabled120, setIsEnabled120] = useState(false);
-  const [isEnabled160, setIsEnabled160] = useState(false);
-  const [isEnabled300, setIsEnabled300] = useState(false);
-  const [isEnabled500, setIsEnabled500] = useState(false);
+function Frequencies({ props }) {
+  const {
+    isEnabled120,
+    setIsEnabled120,
+    isEnabled160,
+    setIsEnabled160,
+    isEnabled300,
+    setIsEnabled300,
+    isEnabled500,
+    setIsEnabled500,
+    isEnabledPrep,
+    setIsEnabledPrep,
+    isEnabledMain,
+    setIsEnabledMain,
+  } = props;
 
   const [currFreq, setCurrFreq] = useState();
 
@@ -28,6 +38,8 @@ function Frequencies() {
     if (isEnabled160) setIsEnabled160(false);
     if (isEnabled300) setIsEnabled300(false);
     if (isEnabled500) setIsEnabled500(false);
+    if (isEnabledPrep) setIsEnabledPrep(false);
+    if (isEnabledMain) setIsEnabledMain(false);
     setIsEnabled120((prev) => !prev);
 
     await startFrequency120(!isEnabled120);
@@ -54,6 +66,8 @@ function Frequencies() {
     if (isEnabled120) setIsEnabled120(false);
     if (isEnabled300) setIsEnabled300(false);
     if (isEnabled500) setIsEnabled500(false);
+    if (isEnabledPrep) setIsEnabledPrep(false);
+    if (isEnabledMain) setIsEnabledMain(false);
     setIsEnabled160((prev) => !prev);
 
     await startFrequency160(!isEnabled160);
@@ -80,6 +94,8 @@ function Frequencies() {
     if (isEnabled120) setIsEnabled120(false);
     if (isEnabled160) setIsEnabled160(false);
     if (isEnabled500) setIsEnabled500(false);
+    if (isEnabledPrep) setIsEnabledPrep(false);
+    if (isEnabledMain) setIsEnabledMain(false);
     setIsEnabled300((prev) => !prev);
 
     await startFrequency300(!isEnabled300);
