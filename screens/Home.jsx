@@ -1,4 +1,7 @@
-import { View, Text, StyleSheet, StatusBar } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
+import { bgColor } from "../styles/ColorsUI";
+
+// Try-out
 
 function Home() {
   return (
@@ -7,8 +10,6 @@ function Home() {
     </View>
   );
 }
-
-const bgColor = "#05103A";
 
 const styles = StyleSheet.create({
   container: {

@@ -8,83 +8,98 @@ import Programs from "./components/Programs";
 import { bgColor } from "./styles/ColorsUI";
 import { useState } from "react";
 
+import { Context } from "./components/Context";
+
 function App() {
-  return (
-    <NavigationContainer>
-      <StatusBar
-        animated={true}
-        backgroundColor="#61dafb"
-        barStyle="light-content"
-      />
-      <Tab.Navigator>
-        <Tab.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            tabBarLabel: "Home",
-            headerShown: false,
-            tabBarStyle: {
-              backgroundColor: "#101C43",
-            },
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="home" color={"white"} size={size} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Settings"
-          component={SettingsScreen}
-          options={{
-            tabBarLabel: "Settings",
-            headerShown: false,
-            tabBarStyle: {
-              backgroundColor: "#101C43",
-            },
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons
-                name="cogs"
-                color={"lightgray"}
-                size={size}
-              />
-            ),
-          }}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
-  );
-}
-
-const Tab = createBottomTabNavigator();
-
-function HomeScreen() {
   const [isEnabled120, setIsEnabled120] = useState(false);
   const [isEnabled160, setIsEnabled160] = useState(false);
   const [isEnabled300, setIsEnabled300] = useState(false);
   const [isEnabled500, setIsEnabled500] = useState(false);
 
   const [isEnabledPrep, setIsEnabledPrep] = useState(false);
+  const [prepAudioTime, setPrepAudioTime] = useState(0);
   const [isEnabledMain, setIsEnabledMain] = useState(false);
 
-  const props = {
-    isEnabled120: isEnabled120,
-    setIsEnabled120: setIsEnabled120,
-    isEnabled160: isEnabled160,
-    setIsEnabled160: setIsEnabled160,
-    isEnabled300: isEnabled300,
-    setIsEnabled300: setIsEnabled300,
-    isEnabled500: isEnabled500,
-    setIsEnabled500: setIsEnabled500,
-    isEnabledPrep: isEnabledPrep,
-    setIsEnabledPrep: setIsEnabledPrep,
-    isEnabledMain: isEnabledMain,
-    setIsEnabledMain: setIsEnabledMain,
-  };
+  const [currSound, setCurrSound] = useState();
 
+  return (
+    <Context.Provider
+      value={{
+        isEnabled120,
+        setIsEnabled120,
+        isEnabled160,
+        setIsEnabled160,
+        isEnabled300,
+        setIsEnabled300,
+        isEnabled500,
+        setIsEnabled500,
+        isEnabledPrep,
+        setIsEnabledPrep,
+        isEnabledMain,
+        setIsEnabledMain,
+        currSound,
+        setCurrSound,
+        prepAudioTime,
+        setPrepAudioTime,
+      }}
+    >
+      <NavigationContainer>
+        <StatusBar
+          animated={true}
+          backgroundColor="#61dafb"
+          barStyle="light-content"
+        />
+        <Tab.Navigator>
+          <Tab.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{
+              tabBarLabel: "Home",
+              headerShown: false,
+              tabBarStyle: {
+                backgroundColor: "#101C43",
+              },
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons
+                  name="home"
+                  color={"white"}
+                  size={size}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Settings"
+            component={SettingsScreen}
+            options={{
+              tabBarLabel: "Settings",
+              headerShown: false,
+              tabBarStyle: {
+                backgroundColor: "#101C43",
+              },
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons
+                  name="cogs"
+                  color={"lightgray"}
+                  size={size}
+                />
+              ),
+            }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Context.Provider>
+  );
+}
+
+const Tab = createBottomTabNavigator();
+
+function HomeScreen() {
   return (
     <View style={styles.container}>
       <Waveform />
-      <Frequencies props={props} />
-      <Programs props={props} />
+      <Frequencies />
+      <Programs />
     </View>
   );
 }

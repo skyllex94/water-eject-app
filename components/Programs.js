@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Audio } from "expo-av";
 
 import prepWaveform from "../assets/waveforms/waveform.png";
-import { activeColor, bgColor, buttonsColor } from "../styles/ColorsUI";
+import { bgColor, buttonsColor, iconActiveColor } from "../styles/ColorsUI";
 
 import Icon from "react-native-vector-icons/FontAwesome";
+import { useContext } from "react";
+import { Context } from "./Context";
 
-export default function Programs({ props }) {
+export default function Programs() {
   const {
     setIsEnabled120,
     setIsEnabled160,
@@ -17,9 +19,11 @@ export default function Programs({ props }) {
     setIsEnabledPrep,
     isEnabledMain,
     setIsEnabledMain,
-  } = props;
-
-  const [currProgram, setCurrProgram] = useState();
+    currSound,
+    setCurrSound,
+    prepAudioTime,
+    setPrepAudioTime,
+  } = useContext(Context);
 
   async function enablePrepFreq() {
     setIsEnabled120(false);
@@ -44,48 +48,81 @@ export default function Programs({ props }) {
 
   async function playPrep(isEnabled) {
     if (isEnabled) {
-      if (currProgram) currProgram.unloadAsync() || undefined;
+      if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
         require(`../assets/programs/prep.mp3`),
         { isLooping: false }
       );
-      setCurrProgram(sound);
+
+      setCurrSound(sound);
 
       console.log("Playing Program");
       await sound.playAsync();
     } else {
       console.log("Unloading Program");
-      currProgram.unloadAsync() || undefined;
+      currSound.unloadAsync() || undefined;
     }
   }
 
   async function playMain(isEnabled) {
     if (isEnabled) {
-      if (currProgram) currProgram.unloadAsync() || undefined;
+      if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
         require(`../assets/programs/main.mp3`),
         { isLooping: false }
       );
-      setCurrProgram(sound);
+      setCurrSound(sound);
 
       console.log("Playing Program");
       await sound.playAsync();
     } else {
       console.log("Unloading Program");
-      currProgram.unloadAsync() || undefined;
+      currSound.unloadAsync() || undefined;
     }
   }
 
+  const prepWaveParams = [
+    18, 23, 24, 27, 20, 28, 28, 29, 25, 29, 29, 28, 26, 25, 23, 27, 27, 28, 29,
+    27, 26, 23, 27, 28, 28, 26, 23, 22, 27, 28, 27, 26, 24, 22, 26, 28, 29, 24,
+    27, 25, 23, 27, 27, 27, 28, 23, 23, 27, 28, 27, 26, 29, 28, 26, 25, 23, 27,
+    27, 28, 29, 20, 21, 26, 23, 28, 27, 28, 26, 27, 26, 24, 23, 19,
+  ];
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={enablePrepFreq} style={styles.freqBtn}>
-        <View style={styles.prepWaveformContainer}>
+      <TouchableOpacity
+        style={isEnabledPrep ? styles.freqBtnActive : styles.freqBtn}
+        onPress={enablePrepFreq}
+      >
+        <View
+          style={
+            isEnabledPrep
+              ? styles.prepWaveformContainerActive
+              : styles.prepWaveformContainer
+          }
+        >
           <View style={styles.waveformAll}>
-            <View style={styles.toneUI}></View>
-            <View style={styles.toneUI}></View>
+            {prepWaveParams.map((wave, idx) => {
+              return (
+                <View
+                  style={{
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <View
+                    style={{
+                      height: wave,
+                      width: 3,
+                      backgroundColor: "white",
+                      marginLeft: 1,
+                    }}
+                  />
+                </View>
+              );
+            })}
           </View>
 
-          <View style={styles.prepPlay}>
+          <View style={isEnabledPrep ? styles.playActive : styles.prepPlay}>
             <Icon
               name={isEnabledPrep ? "pause" : "play"}
               size={30}
@@ -96,12 +133,21 @@ export default function Programs({ props }) {
 
         <View style={styles.prepTextContainer}>
           <Text style={styles.freqText}>Speaker Preparation Frequency</Text>
-          <Text style={styles.prepTime}>3:43 / 8:01</Text>
+          <Text style={styles.prepTime}>{prepAudioTime} / 8:01</Text>
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={enableMainFreq} style={styles.freqBtn}>
-        <View style={styles.prepWaveformContainer}>
+      <TouchableOpacity
+        onPress={enableMainFreq}
+        style={isEnabledMain ? styles.freqBtnActive : styles.freqBtn}
+      >
+        <View
+          style={
+            isEnabledMain
+              ? styles.prepWaveformContainerActive
+              : styles.prepWaveformContainer
+          }
+        >
           <View style={styles.waveformAll}>
             <Image style={styles.prepWaveform} source={prepWaveform} />
             <Image style={styles.prepWaveform} source={prepWaveform} />
@@ -109,7 +155,7 @@ export default function Programs({ props }) {
             <Image style={styles.prepWaveform} source={prepWaveform} />
           </View>
 
-          <View style={styles.prepPlay}>
+          <View style={isEnabledMain ? styles.playActive : styles.prepPlay}>
             <Icon
               name={isEnabledMain ? "pause" : "play"}
               size={30}
@@ -131,7 +177,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 3,
     justifyContent: "flex-start",
-    // backgroundColor: "green",
   },
   freqBtn: {
     width: "95%",
@@ -142,11 +187,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#101C43",
     marginTop: 14,
   },
-  toneUI: {
-    height: 30,
-    width: 2,
-    marginLeft: 1,
-    backgroundColor: "white",
+  freqBtnActive: {
+    width: "95%",
+    marginHorizontal: 10,
+    height: 120,
+    padding: 10,
+    borderRadius: 15,
+    marginTop: 14,
+    backgroundColor: "#4AD0EE",
   },
 
   prepWaveformContainer: {
@@ -157,6 +205,15 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
   },
+  prepWaveformContainerActive: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: iconActiveColor,
+    padding: 10,
+    borderRadius: 10,
+  },
+
   waveformAll: {
     flexDirection: "row",
   },
@@ -166,6 +223,13 @@ const styles = StyleSheet.create({
   },
   prepPlay: {
     backgroundColor: buttonsColor,
+    width: 50,
+    padding: 10,
+    alignItems: "center",
+    borderRadius: 10,
+  },
+  playActive: {
+    backgroundColor: iconActiveColor,
     width: 50,
     padding: 10,
     alignItems: "center",
@@ -189,7 +253,6 @@ const styles = StyleSheet.create({
     marginRight: 5,
     fontWeight: 700,
     color: "white",
-    backgroundColor: bgColor,
   },
 
   prepOnOffContainer: {

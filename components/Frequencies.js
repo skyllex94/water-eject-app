@@ -15,8 +15,10 @@ import medFreq from "../assets/icons/medfreqIcon.png";
 import highFreq from "../assets/icons/highfreqIcon.png";
 import xtHighFreq from "../assets/icons/xthighfreqIcon.png";
 import { buttonsColor } from "../styles/ColorsUI";
+import { Context } from "./Context";
+import { useContext } from "react";
 
-function Frequencies({ props }) {
+function Frequencies() {
   const {
     isEnabled120,
     setIsEnabled120,
@@ -26,20 +28,18 @@ function Frequencies({ props }) {
     setIsEnabled300,
     isEnabled500,
     setIsEnabled500,
-    isEnabledPrep,
     setIsEnabledPrep,
-    isEnabledMain,
     setIsEnabledMain,
-  } = props;
-
-  const [currFreq, setCurrFreq] = useState();
+    currSound,
+    setCurrSound,
+  } = useContext(Context);
 
   async function isEnabled120hz() {
-    if (isEnabled160) setIsEnabled160(false);
-    if (isEnabled300) setIsEnabled300(false);
-    if (isEnabled500) setIsEnabled500(false);
-    if (isEnabledPrep) setIsEnabledPrep(false);
-    if (isEnabledMain) setIsEnabledMain(false);
+    setIsEnabled160(false);
+    setIsEnabled300(false);
+    setIsEnabled500(false);
+    setIsEnabledPrep(false);
+    setIsEnabledMain(false);
     setIsEnabled120((prev) => !prev);
 
     await startFrequency120(!isEnabled120);
@@ -47,27 +47,27 @@ function Frequencies({ props }) {
 
   async function startFrequency120(isEnabled) {
     if (isEnabled) {
-      if (currFreq) currFreq.unloadAsync() || undefined;
+      if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
         require(`../assets/frequencies/120hz.mp3`),
         { isLooping: true }
       );
-      setCurrFreq(sound);
+      setCurrSound(sound);
 
       console.log("Playing Sound");
       await sound.playAsync();
     } else {
       console.log("Unloading Sound");
-      currFreq.unloadAsync() || undefined;
+      currSound.unloadAsync() || undefined;
     }
   }
 
   async function isEnabled160hz() {
-    if (isEnabled120) setIsEnabled120(false);
-    if (isEnabled300) setIsEnabled300(false);
-    if (isEnabled500) setIsEnabled500(false);
-    if (isEnabledPrep) setIsEnabledPrep(false);
-    if (isEnabledMain) setIsEnabledMain(false);
+    setIsEnabled120(false);
+    setIsEnabled300(false);
+    setIsEnabled500(false);
+    setIsEnabledPrep(false);
+    setIsEnabledMain(false);
     setIsEnabled160((prev) => !prev);
 
     await startFrequency160(!isEnabled160);
@@ -75,27 +75,27 @@ function Frequencies({ props }) {
 
   async function startFrequency160(isEnabled) {
     if (isEnabled) {
-      if (currFreq) currFreq.unloadAsync() || undefined;
+      if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
         require(`../assets/frequencies/160hz.mp3`),
         { isLooping: true }
       );
-      setCurrFreq(sound);
+      setCurrSound(sound);
 
       console.log("Playing Sound");
       await sound.playAsync();
     } else {
       console.log("Unloading Sound");
-      currFreq.unloadAsync() || undefined;
+      currSound.unloadAsync() || undefined;
     }
   }
 
   async function isEnabled300hz() {
-    if (isEnabled120) setIsEnabled120(false);
-    if (isEnabled160) setIsEnabled160(false);
-    if (isEnabled500) setIsEnabled500(false);
-    if (isEnabledPrep) setIsEnabledPrep(false);
-    if (isEnabledMain) setIsEnabledMain(false);
+    setIsEnabled120(false);
+    setIsEnabled160(false);
+    setIsEnabled500(false);
+    setIsEnabledPrep(false);
+    setIsEnabledMain(false);
     setIsEnabled300((prev) => !prev);
 
     await startFrequency300(!isEnabled300);
@@ -103,25 +103,27 @@ function Frequencies({ props }) {
 
   async function startFrequency300(isEnabled) {
     if (isEnabled) {
-      if (currFreq) currFreq.unloadAsync() || undefined;
+      if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
         require(`../assets/frequencies/300hz.mp3`),
         { isLooping: true }
       );
-      setCurrFreq(sound);
+      setCurrSound(sound);
 
       console.log("Playing Sound");
       await sound.playAsync();
     } else {
       console.log("Unloading Sound");
-      currFreq.unloadAsync() || undefined;
+      currSound.unloadAsync() || undefined;
     }
   }
 
   async function isEnabled500hz() {
-    if (isEnabled120 === true) setIsEnabled120(false);
-    if (isEnabled160 === true) setIsEnabled160(false);
-    if (isEnabled300 === true) setIsEnabled300(false);
+    setIsEnabled120(false);
+    setIsEnabled160(false);
+    setIsEnabled300(false);
+    setIsEnabledPrep(false);
+    setIsEnabledMain(false);
     setIsEnabled500((prev) => !prev);
 
     await startFrequency500(!isEnabled500);
@@ -129,18 +131,18 @@ function Frequencies({ props }) {
 
   async function startFrequency500(isEnabled) {
     if (isEnabled) {
-      if (currFreq) currFreq.unloadAsync() || undefined;
+      if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
         require(`../assets/frequencies/500hz.mp3`),
         { isLooping: true }
       );
-      setCurrFreq(sound);
+      setCurrSound(sound);
 
       console.log("Playing Sound");
       await sound.playAsync();
     } else {
       console.log("Unloading Sound");
-      currFreq.unloadAsync() || undefined;
+      currSound.unloadAsync() || undefined;
     }
   }
 
