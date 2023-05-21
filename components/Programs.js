@@ -1,13 +1,14 @@
-import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Audio } from "expo-av";
 
-import prepWaveform from "../assets/waveforms/waveform.png";
 import { bgColor, buttonsColor, iconActiveColor } from "../styles/ColorsUI";
 
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useContext } from "react";
 import { Context } from "./Context";
+import { useEffect } from "react";
+import { Button } from "@rneui/base";
 
 export default function Programs() {
   const {
@@ -21,8 +22,6 @@ export default function Programs() {
     setIsEnabledMain,
     currSound,
     setCurrSound,
-    prepAudioTime,
-    setPrepAudioTime,
   } = useContext(Context);
 
   async function enablePrepFreq() {
@@ -88,6 +87,19 @@ export default function Programs() {
     27, 28, 29, 20, 21, 26, 23, 28, 27, 28, 26, 27, 26, 24, 23, 19,
   ];
 
+  const mainWaveParams = [
+    15, 20, 24, 28, 30, 28, 28, 29, 25, 29, 29, 28, 26, 25, 23, 17, 10, 0, 0, 3,
+    13, 23, 27, 28, 28, 26, 23, 22, 27, 28, 27, 26, 24, 22, 15, 9, 0, 0, 6, 15,
+    23, 27, 27, 27, 28, 23, 23, 27, 28, 27, 26, 23, 23, 14, 6, 0, 0, 5, 18, 24,
+    20, 21, 27, 24, 28, 24, 27, 28, 27, 28, 24, 23, 19,
+  ];
+
+  const [secondsPrep, setSecondsPrep] = useState(0);
+
+  function startTimer() {
+    setTimeout(() => setSecondsPrep((prev) => prev + 1), 1000);
+  }
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -104,11 +116,7 @@ export default function Programs() {
           <View style={styles.waveformAll}>
             {prepWaveParams.map((wave, idx) => {
               return (
-                <View
-                  style={{
-                    justifyContent: "flex-end",
-                  }}
-                >
+                <View key={idx} style={{ justifyContent: "flex-end" }}>
                   <View
                     style={{
                       height: wave,
@@ -122,9 +130,11 @@ export default function Programs() {
             })}
           </View>
 
+          <Button onPress={startTimer}>Start</Button>
+
           <View style={isEnabledPrep ? styles.playActive : styles.prepPlay}>
             <Icon
-              name={isEnabledPrep ? "pause" : "play"}
+              name={isEnabledPrep ? "stop" : "play"}
               size={30}
               color="white"
             />
@@ -133,7 +143,7 @@ export default function Programs() {
 
         <View style={styles.prepTextContainer}>
           <Text style={styles.freqText}>Speaker Preparation Frequency</Text>
-          <Text style={styles.prepTime}>{prepAudioTime} / 8:01</Text>
+          <Text style={styles.prepTime}>{secondsPrep}</Text>
         </View>
       </TouchableOpacity>
 
@@ -149,15 +159,25 @@ export default function Programs() {
           }
         >
           <View style={styles.waveformAll}>
-            <Image style={styles.prepWaveform} source={prepWaveform} />
-            <Image style={styles.prepWaveform} source={prepWaveform} />
-            <Image style={styles.prepWaveform} source={prepWaveform} />
-            <Image style={styles.prepWaveform} source={prepWaveform} />
+            {mainWaveParams.map((wave, idx) => {
+              return (
+                <View key={idx} style={{ justifyContent: "flex-end" }}>
+                  <View
+                    style={{
+                      height: wave,
+                      width: 3,
+                      backgroundColor: "white",
+                      marginLeft: 1,
+                    }}
+                  />
+                </View>
+              );
+            })}
           </View>
 
           <View style={isEnabledMain ? styles.playActive : styles.prepPlay}>
             <Icon
-              name={isEnabledMain ? "pause" : "play"}
+              name={isEnabledMain ? "stop" : "play"}
               size={30}
               color="white"
             />
@@ -166,7 +186,9 @@ export default function Programs() {
 
         <View style={styles.prepTextContainer}>
           <Text style={styles.freqText}>Water Ejection Dedicated Program</Text>
-          <Text style={styles.prepTime}>3:43 / 16:27</Text>
+          <Text style={styles.prepTime}>
+            {isEnabledMain ? null : "0:00"} / 16:12
+          </Text>
         </View>
       </TouchableOpacity>
     </View>
