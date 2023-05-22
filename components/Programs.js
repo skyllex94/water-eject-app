@@ -8,7 +8,6 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { useContext } from "react";
 import { Context } from "./Context";
 import { useEffect } from "react";
-import { Button } from "@rneui/base";
 
 export default function Programs() {
   const {
@@ -97,8 +96,18 @@ export default function Programs() {
   const [secondsPrep, setSecondsPrep] = useState(0);
 
   function startTimer() {
-    setTimeout(() => setSecondsPrep((prev) => prev + 1), 1000);
+    if (secondsPrep == 3) {
+      setSecondsPrep(0);
+      return;
+    }
+    setSecondsPrep((prev) => prev + 1);
   }
+
+  useEffect(() => {
+    setInterval(() => {
+      startTimer();
+    }, 1000);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -129,8 +138,6 @@ export default function Programs() {
               );
             })}
           </View>
-
-          <Button onPress={startTimer}>Start</Button>
 
           <View style={isEnabledPrep ? styles.playActive : styles.prepPlay}>
             <Icon
