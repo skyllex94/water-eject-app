@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Audio } from "expo-av";
 
@@ -56,9 +56,13 @@ export default function Programs() {
 
       console.log("Playing Program");
       await sound.playAsync();
+
+      // Start the audio timer state
+      startTimer();
     } else {
       console.log("Unloading Program");
       currSound.unloadAsync() || undefined;
+      stopTimer();
     }
   }
 
@@ -94,20 +98,35 @@ export default function Programs() {
   ];
 
   const [secondsPrep, setSecondsPrep] = useState(0);
+  const [minutesPrep, setMinutesPrep] = useState(0);
+  const prepRefCounter = useRef();
 
   function startTimer() {
-    if (secondsPrep == 3) {
-      setSecondsPrep(0);
-      return;
-    }
-    setSecondsPrep((prev) => prev + 1);
+    prepRefCounter.current = setInterval(() => intervalAdding(), 1000);
   }
 
-  useEffect(() => {
-    setInterval(() => {
-      startTimer();
-    }, 1000);
-  }, []);
+  function stopTimer() {
+    clearInterval(prepRefCounter.current);
+    setSecondsPrep(0);
+  }
+
+  function intervalAdding() {
+    setSecondsPrep((prev) => prev + 1);
+    secondsAddup();
+  }
+
+  function secondsAddup() {
+    console.log(secondsPrep);
+    if (secondsPrep > 12) {
+      setMinutesPrep((prev) => prev + 1);
+      setSecondsPrep(0);
+    }
+  }
+
+  function incrementMinutes() {
+    setMinutesPrep((prev) => prev + 1);
+    return minutesPrep();
+  }
 
   return (
     <View style={styles.container}>
@@ -150,7 +169,11 @@ export default function Programs() {
 
         <View style={styles.prepTextContainer}>
           <Text style={styles.freqText}>Speaker Preparation Frequency</Text>
-          <Text style={styles.prepTime}>{secondsPrep}</Text>
+          <Text style={styles.prepTime}>
+            {secondsPrep > 3 ? minutesPrep + 1 : minutesPrep}:
+            {secondsPrep < 10 && "0"}
+            {secondsPrep}
+          </Text>
         </View>
       </TouchableOpacity>
 
