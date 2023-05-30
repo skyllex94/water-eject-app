@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 100,
     marginHorizontal: 15,
-    // backgroundColor: "blue",
   },
   waveform: {
     color: "white",
