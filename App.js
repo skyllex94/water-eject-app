@@ -9,6 +9,7 @@ import { bgColor } from "./styles/ColorsUI";
 import { useState } from "react";
 
 import { Context } from "./components/Context";
+import HomeScreen from "./screens/Home";
 
 function App() {
   const [isEnabled120, setIsEnabled120] = useState(false);
@@ -93,16 +94,6 @@ function App() {
 }
 
 const Tab = createBottomTabNavigator();
-
-function HomeScreen() {
-  return (
-    <View style={styles.container}>
-      <Waveform />
-      <Frequencies />
-      <Programs />
-    </View>
-  );
-}
 
 function SettingsScreen() {
   return (

@@ -1,15 +1,18 @@
-import { View, Text, StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
+import Waveform from "../components/Waveform";
+import Frequencies from "../components/Frequencies";
+import Programs from "../components/Programs";
 import { bgColor } from "../styles/ColorsUI";
 
-// Try-out
-
-function Home() {
+const HomeScreen = () => {
   return (
     <View style={styles.container}>
-      <Text>Here wedsgf are</Text>
+      <Waveform />
+      <Frequencies />
+      <Programs />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -18,4 +21,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home();
+export default HomeScreen;
