@@ -8,8 +8,11 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { useContext } from "react";
 import { Context } from "./Context";
 import { startTimer, stopTimer } from "./util/Funcs";
+import useRevenueCat from "../hooks/useRevenueCat";
 
 export default function PrepProgram() {
+  const { isProMember } = useRevenueCat();
+
   const {
     setIsEnabled120,
     setIsEnabled160,
@@ -77,51 +80,59 @@ export default function PrepProgram() {
     }
   }
 
+  function openPurchaseModal() {
+    console.log("Open Purchase Modal");
+  }
+
+  console.log(isProMember);
+
   return (
-    <TouchableOpacity
-      style={isEnabledPrep ? styles.freqBtnActive : styles.freqBtn}
-      onPress={enablePrepFreq}
-    >
-      <View
-        style={
-          isEnabledPrep
-            ? styles.prepWaveformContainerActive
-            : styles.prepWaveformContainer
-        }
+    <TouchableOpacity style={isProMember ? null : { backgroundColor: "red" }}>
+      <TouchableOpacity
+        style={isEnabledPrep ? styles.freqBtnActive : styles.freqBtn}
+        onPress={isProMember ? enablePrepFreq : openPurchaseModal}
       >
-        <View style={styles.waveformAll}>
-          {prepWaveParams.map((wave, idx) => {
-            return (
-              <View key={idx} style={{ justifyContent: "flex-end" }}>
-                <View
-                  style={{
-                    height: wave,
-                    width: 3,
-                    backgroundColor: "white",
-                    marginLeft: 1,
-                  }}
-                />
-              </View>
-            );
-          })}
+        <View
+          style={
+            isEnabledPrep
+              ? styles.prepWaveformContainerActive
+              : styles.prepWaveformContainer
+          }
+        >
+          <View style={styles.waveformAll}>
+            {prepWaveParams.map((wave, idx) => {
+              return (
+                <View key={idx} style={{ justifyContent: "flex-end" }}>
+                  <View
+                    style={{
+                      height: wave,
+                      width: 3,
+                      backgroundColor: "white",
+                      marginLeft: 1,
+                    }}
+                  />
+                </View>
+              );
+            })}
+          </View>
+
+          <View style={isEnabledPrep ? styles.playActive : styles.prepPlay}>
+            <Icon
+              name={isEnabledPrep ? "stop" : "play"}
+              size={30}
+              color="white"
+            />
+          </View>
         </View>
 
-        <View style={isEnabledPrep ? styles.playActive : styles.prepPlay}>
-          <Icon
-            name={isEnabledPrep ? "stop" : "play"}
-            size={30}
-            color="white"
-          />
+        <View style={styles.prepTextContainer}>
+          <Text style={styles.freqText}>Speaker Preparation Frequency</Text>
+          <Text style={styles.prepTime}>
+            {minutesPrep}:{secondsPrep < 10 && "0"}
+            {secondsPrep} / 8:01
+          </Text>
         </View>
-      </View>
-
-      <View style={styles.prepTextContainer}>
-        <Text style={styles.freqText}>Speaker Preparation Frequency</Text>
-        <Text style={styles.prepTime}>
-          {minutesPrep}:{secondsPrep < 10 && "0"}
-          {secondsPrep} / 8:01
-        </Text>
-      </View>
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 }
@@ -131,6 +142,10 @@ const styles = StyleSheet.create({
     flex: 3,
     justifyContent: "flex-start",
   },
+  lockedOption: {
+    backgroundColor: "red",
+  },
+
   freqBtn: {
     width: "95%",
     marginHorizontal: 10,

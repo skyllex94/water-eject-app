@@ -20,19 +20,15 @@ function useRevenueCat() {
   const [customerInfo, setCustomerInfo] = useState(null);
 
   const isProMember =
-    customerInfo?.activeSubcsriptions.includes(typesOfMembership.weekly) ||
-    customerInfo?.activeSubcsriptions.includes(typesOfMembership.monthly);
+    customerInfo?.activeSubcsriptions?.includes(typesOfMembership.weekly) ||
+    customerInfo?.activeSubcsriptions?.includes(typesOfMembership.monthly);
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("DEBUG", APIKeys.apple);
-      Purchases.logLevel(true);
-
       if (Platform.OS === "ios") {
-        console.log("DEBUG", APIKeys.apple);
-        await Purchases.configure({ apiKey: typesOfMembership.apple });
+        await Purchases.configure({ apiKey: APIKeys.apple });
       } else if (Platform.OS === "android") {
-        await Purchases.configure({ apiKey: typesOfMembership.google });
+        await Purchases.configure({ apiKey: APIKeys.google });
       }
 
       const offerings = await Purchases.getOfferings();

@@ -2,14 +2,12 @@ import { View, Text, StyleSheet, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Frequencies from "./components/Frequencies";
-import Waveform from "./components/Waveform";
-import Programs from "./components/Programs";
+
 import { bgColor } from "./styles/ColorsUI";
 import { useState } from "react";
 
 import { Context } from "./components/Context";
-import HomeScreen from "./screens/Home";
+import HomeStackScreen from "./screens/Home";
 
 function App() {
   const [isEnabled120, setIsEnabled120] = useState(false);
@@ -53,7 +51,7 @@ function App() {
         <Tab.Navigator>
           <Tab.Screen
             name="Home"
-            component={HomeScreen}
+            component={HomeStackScreen}
             options={{
               tabBarLabel: "Home",
               headerShown: false,

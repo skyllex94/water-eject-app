@@ -17,7 +17,7 @@ export default function Waveform() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 100,
+    marginTop: 50,
     marginHorizontal: 15,
   },
   waveform: {
