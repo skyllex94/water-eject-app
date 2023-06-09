@@ -4,7 +4,13 @@ import Frequencies from "../components/Frequencies";
 import Programs from "../components/Programs";
 import { bgColor } from "../styles/ColorsUI";
 
+import useRevenueCat from "../hooks/useRevenueCat";
+
 const HomeScreen = () => {
+  const { currentOffering, customerInfo, isProMember } = useRevenueCat();
+
+  console.log("DEBUG", currentOffering);
+
   return (
     <View style={styles.container}>
       <Waveform />
