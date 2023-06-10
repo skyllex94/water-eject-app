@@ -10,7 +10,7 @@ import { Context } from "./Context";
 import { startTimer, stopTimer } from "./util/Funcs";
 import useRevenueCat from "../hooks/useRevenueCat";
 
-export default function PrepProgram() {
+export default function PrepProgram({ navigation }) {
   const { isProMember } = useRevenueCat();
 
   const {
@@ -81,13 +81,11 @@ export default function PrepProgram() {
   }
 
   function openPurchaseModal() {
-    console.log("Open Purchase Modal");
+    navigation.navigate("Paywall");
   }
 
-  console.log(isProMember);
-
   return (
-    <TouchableOpacity style={isProMember ? null : { backgroundColor: "red" }}>
+    <TouchableOpacity>
       <TouchableOpacity
         style={isEnabledPrep ? styles.freqBtnActive : styles.freqBtn}
         onPress={isProMember ? enablePrepFreq : openPurchaseModal}

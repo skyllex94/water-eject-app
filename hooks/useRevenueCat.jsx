@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { Platform } from "react-native";
-import Purchases, {
-  CustomerInfo,
-  PurchasesOffering,
-} from "react-native-purchases";
+import Purchases from "react-native-purchases";
 
 const APIKeys = {
   apple: "appl_WgUeZxmxNnBTlKDYpucGQIyrNAC",
@@ -19,9 +16,7 @@ function useRevenueCat() {
   const [currentOffering, setCurrentOffering] = useState(null);
   const [customerInfo, setCustomerInfo] = useState(null);
 
-  const isProMember =
-    customerInfo?.activeSubcsriptions?.includes(typesOfMembership.weekly) ||
-    customerInfo?.activeSubcsriptions?.includes(typesOfMembership.monthly);
+  const isProMember = customerInfo?.entitlements.active.pro;
 
   useEffect(() => {
     const fetchData = async () => {

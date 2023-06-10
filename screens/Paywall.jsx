@@ -1,44 +1,77 @@
-import {
-  View,
-  Text,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
-import React from "react";
+import { View, Text, ScrollView, TouchableOpacity, Alert } from "react-native";
+import React, { useState } from "react";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
 import useRevenueCat from "../hooks/useRevenueCat";
 import Purchases from "react-native-purchases";
+import Spinner from "react-native-loading-spinner-overlay/lib";
 
-// NavigationProp = NativeStackNavigationProp("Paywall");
-// TODO: Make the close button close the modal and return back to the main stack
-
-export default function Paywall() {
-  const navigation = useNavigation;
+export default function Paywall({ navigation }) {
   const { currentOffering } = useRevenueCat();
+  const [purchaseSpinner, setPurchaseSpinner] = useState(false);
 
   async function handleWeeklyPurchase() {
-    if (!currentOffering?.weekly) return;
-
-    const purchaserInfo = await Purchases.purchasePackage(
-      currentOffering.weekly
-    );
-
-    console.log(
-      "Weekly Package Purchased",
-      purchaserInfo.customerInfo.entitlements.active
-    );
-
-    if (purchaserInfo.customerInfo.entitlements.active.pro) {
-      // Not working yet
-      navigation.goBack();
+    setPurchaseSpinner(true);
+    if (!currentOffering?.weekly) {
+      setPurchaseSpinner(false);
+      return;
     }
+
+    try {
+      const purchaserInfo = await Purchases.purchasePackage(
+        currentOffering.weekly
+      );
+      if (purchaserInfo.customerInfo.entitlements.active.pro) {
+        console.log(
+          "Weekly Package Purchased.",
+          purchaserInfo.customerInfo.entitlements.active
+        );
+        navigation.goBack;
+      }
+    } catch (e) {
+      if (!e.userCancelled) setPurchaseSpinner(false);
+    }
+    setPurchaseSpinner(false);
+  }
+
+  async function handleMonthlyPurchase() {
+    setPurchaseSpinner(true);
+    if (!currentOffering?.monthly) {
+      setPurchaseSpinner(false);
+      return;
+    }
+
+    try {
+      const purchaserInfo = await Purchases.purchasePackage(
+        currentOffering.monthly
+      );
+      if (purchaserInfo.customerInfo.entitlements.active.pro) {
+        console.log(
+          "Monthly Package Purchased.",
+          purchaserInfo.customerInfo.entitlements.active
+        );
+        navigation.goBack;
+      }
+    } catch (e) {
+      if (!e.userCancelled) setPurchaseSpinner(false);
+    }
+    setPurchaseSpinner(false);
+  }
+
+  async function handleRestorePurchase() {
+    setPurchaseSpinner(true);
+    const purchaserInfo = await Purchases.restorePurchases();
+
+    if (purchaserInfo?.activeSubscriptions.length > 0)
+      Alert.alert("Success", "Your purchase has been restored");
+    else Alert.alert("Failure", "There are no purchases to restore");
+    setPurchaseSpinner(false);
   }
 
   return (
-    <ScrollView className="bg-[#1A2F44] flex-1">
+    <ScrollView className="bg-[#142251] flex-1">
+      <Spinner visible={purchaseSpinner} />
+
       <View className="m-5 space-y-0  ">
         <Text className="text-2xl text-center uppercase text-white font-bold mb-5">
           Upgrade
@@ -58,13 +91,13 @@ export default function Paywall() {
         <View className="items-center">
           <MaterialCommunityIcons
             name="trophy-award"
-            size={150}
+            size={120}
             color="#E5962D"
           />
         </View>
 
         <View className="space-y-5 py-3">
-          <View className="flex-row space-x-10 items-center">
+          <View className="flex-row space-x-8 items-center">
             <Ionicons name="md-key" size={32} color="#E5962D" />
             <View className="flex-1">
               <Text className="text-white font-bold text-lg">
@@ -79,11 +112,11 @@ export default function Paywall() {
         </View>
 
         <View className="space-y-5 py-3">
-          <View className="flex-row space-x-10 items-center">
+          <View className="flex-row space-x-8 items-center">
             <Ionicons name="md-person-add-outline" size={32} color="#E5962D" />
             <View className="flex-1">
               <Text className="text-white font-bold text-lg">
-                Expertly made Programs with proven results
+                Expertly made programs with proven results
               </Text>
               <Text className="text-white text-sm font-extralight">
                 Rest assured with out 8 minute preparation alternating sound,
@@ -95,7 +128,7 @@ export default function Paywall() {
         </View>
 
         <View className="space-y-5 py-3">
-          <View className="flex-row space-x-10 items-center">
+          <View className="flex-row space-x-8 items-center">
             <Ionicons name="md-star" size={32} color="#E5962D" />
             <View className="flex-1">
               <Text className="text-white font-bold text-lg">
@@ -122,6 +155,22 @@ export default function Paywall() {
         <Text className="text-white">
           {currentOffering?.weekly?.product.priceString} / weekly after
         </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={handleMonthlyPurchase}
+        className="items-center px-10 py-5 border-2 border-[#E5962D] mx-10 mt-3 rounded-full"
+      >
+        <Text className="text-white text-md text-center font-bold">
+          Or a montly plan
+        </Text>
+        <Text className="text-white">
+          {currentOffering?.monthly?.product.priceString} / per month
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={handleRestorePurchase}>
+        <Text className="text-white  text-center mt-5">Restore Purchase</Text>
       </TouchableOpacity>
     </ScrollView>
   );

@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 import Waveform from "../components/Waveform";
 import Frequencies from "../components/Frequencies";
 import Programs from "../components/Programs";
@@ -7,7 +7,6 @@ import { bgColor } from "../styles/ColorsUI";
 import useRevenueCat from "../hooks/useRevenueCat";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Paywall from "./Paywall";
-import { Button } from "@rneui/base";
 
 const HomeStackScreen = () => {
   // React Native Navigator - Stack Navigator initializer
@@ -15,10 +14,8 @@ const HomeStackScreen = () => {
 
   const { currentOffering, customerInfo, isProMember } = useRevenueCat();
 
-  console.log("DEBUG HomeScreen", currentOffering);
-
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="HomeRoute">
       <Stack.Screen
         name="HomeStack"
         component={HomeScreen}
@@ -47,12 +44,12 @@ function HomeScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <Waveform />
-      <Button
+      {/*<Button
         title="Go to Paywall"
         onPress={() => navigation.navigate("Paywall")}
-      />
+      />*/}
       <Frequencies />
-      <Programs />
+      <Programs navigation={navigation} />
     </SafeAreaView>
   );
 }

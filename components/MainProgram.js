@@ -6,8 +6,9 @@ import { Audio } from "expo-av";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { bgColor, buttonsColor, iconActiveColor } from "../styles/ColorsUI";
 import { startTimer, stopTimer } from "./util/Funcs";
+import useRevenueCat from "../hooks/useRevenueCat";
 
-export default function MainProgram() {
+export default function MainProgram({ navigation }) {
   const {
     setIsEnabled120,
     setIsEnabled160,
@@ -19,6 +20,8 @@ export default function MainProgram() {
     currSound,
     setCurrSound,
   } = useContext(Context);
+
+  const { isProMember } = useRevenueCat();
 
   const [secondsMain, setSecondsMain] = useState(0);
   const [minutesMain, setMinutesMain] = useState(0);
@@ -73,9 +76,13 @@ export default function MainProgram() {
     }
   }
 
+  function openPurchaseModal() {
+    navigation.navigate("Paywall");
+  }
+
   return (
     <TouchableOpacity
-      onPress={enableMainFreq}
+      onPress={isProMember ? enableMainFreq : openPurchaseModal}
       style={isEnabledMain ? styles.freqBtnActive : styles.freqBtn}
     >
       <View
