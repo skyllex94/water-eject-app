@@ -11,7 +11,7 @@ npm-debug.*
 web-build/
 /assets/frequencies
 /assets/programs
-/VSCodeCounter
+/.VSCodeCounter
 
 # macOS
 .DS_Store

@@ -20,6 +20,7 @@ function App() {
   const [isEnabledMain, setIsEnabledMain] = useState(false);
 
   const [currSound, setCurrSound] = useState();
+  const [navigationPaywall, setNavigationPaywall] = useState();
 
   return (
     <Context.Provider
@@ -40,6 +41,8 @@ function App() {
         setCurrSound,
         prepAudioTime,
         setPrepAudioTime,
+        navigationPaywall,
+        setNavigationPaywall,
       }}
     >
       <NavigationContainer>

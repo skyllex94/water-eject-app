@@ -8,7 +8,7 @@ import { bgColor, buttonsColor, iconActiveColor } from "../styles/ColorsUI";
 import { startTimer, stopTimer } from "./util/Funcs";
 import useRevenueCat from "../hooks/useRevenueCat";
 
-export default function MainProgram({ navigation }) {
+export default function MainProgram() {
   const {
     setIsEnabled120,
     setIsEnabled160,
@@ -19,6 +19,7 @@ export default function MainProgram({ navigation }) {
     setIsEnabledMain,
     currSound,
     setCurrSound,
+    navigationPaywall,
   } = useContext(Context);
 
   const { isProMember } = useRevenueCat();
@@ -77,7 +78,7 @@ export default function MainProgram({ navigation }) {
   }
 
   function openPurchaseModal() {
-    navigation.navigate("Paywall");
+    navigationPaywall.navigate("Paywall");
   }
 
   return (

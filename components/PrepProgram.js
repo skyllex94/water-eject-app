@@ -1,16 +1,15 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Audio } from "expo-av";
 
 import { bgColor, buttonsColor, iconActiveColor } from "../styles/ColorsUI";
 
 import Icon from "react-native-vector-icons/FontAwesome";
-import { useContext } from "react";
 import { Context } from "./Context";
 import { startTimer, stopTimer } from "./util/Funcs";
 import useRevenueCat from "../hooks/useRevenueCat";
 
-export default function PrepProgram({ navigation }) {
+export default function PrepProgram() {
   const { isProMember } = useRevenueCat();
 
   const {
@@ -23,6 +22,7 @@ export default function PrepProgram({ navigation }) {
     setIsEnabledMain,
     currSound,
     setCurrSound,
+    navigationPaywall,
   } = useContext(Context);
 
   const [secondsPrep, setSecondsPrep] = useState(0);
@@ -81,7 +81,7 @@ export default function PrepProgram({ navigation }) {
   }
 
   function openPurchaseModal() {
-    navigation.navigate("Paywall");
+    navigationPaywall.navigate("Paywall");
   }
 
   return (

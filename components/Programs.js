@@ -3,11 +3,11 @@ import { StyleSheet, View } from "react-native";
 import MainProgram from "./MainProgram";
 import PrepProgram from "./PrepProgram";
 
-export default function Programs({ navigation }) {
+export default function Programs() {
   return (
     <View style={styles.container}>
-      <PrepProgram navigation={navigation} />
-      <MainProgram navigation={navigation} />
+      <PrepProgram />
+      <MainProgram />
     </View>
   );
 }

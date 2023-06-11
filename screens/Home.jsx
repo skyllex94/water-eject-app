@@ -7,12 +7,12 @@ import { bgColor } from "../styles/ColorsUI";
 import useRevenueCat from "../hooks/useRevenueCat";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Paywall from "./Paywall";
+import { Context } from "../components/Context";
+import { useContext } from "react";
 
 const HomeStackScreen = () => {
   // React Native Navigator - Stack Navigator initializer
   const Stack = createNativeStackNavigator();
-
-  const { currentOffering, customerInfo, isProMember } = useRevenueCat();
 
   return (
     <Stack.Navigator initialRouteName="HomeRoute">
@@ -41,15 +41,14 @@ const HomeStackScreen = () => {
 };
 
 function HomeScreen({ navigation }) {
+  const { setNavigationPaywall } = useContext(Context);
+  setNavigationPaywall(navigation);
+
   return (
     <SafeAreaView style={styles.container}>
       <Waveform />
-      {/*<Button
-        title="Go to Paywall"
-        onPress={() => navigation.navigate("Paywall")}
-      />*/}
       <Frequencies />
-      <Programs navigation={navigation} />
+      <Programs />
     </SafeAreaView>
   );
 }
