@@ -4,11 +4,8 @@ import Frequencies from "../components/Frequencies";
 import Programs from "../components/Programs";
 import { bgColor } from "../styles/ColorsUI";
 
-import useRevenueCat from "../hooks/useRevenueCat";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Paywall from "./Paywall";
-import { Context } from "../components/Context";
-import { useContext } from "react";
 
 const HomeStackScreen = () => {
   // React Native Navigator - Stack Navigator initializer
@@ -41,14 +38,11 @@ const HomeStackScreen = () => {
 };
 
 function HomeScreen({ navigation }) {
-  const { setNavigationPaywall } = useContext(Context);
-  setNavigationPaywall(navigation);
-
   return (
     <SafeAreaView style={styles.container}>
       <Waveform />
       <Frequencies />
-      <Programs />
+      <Programs navigation={navigation} />
     </SafeAreaView>
   );
 }

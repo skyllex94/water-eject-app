@@ -7,3 +7,8 @@ export function stopTimer(counterRef, setSeconds, setMinutes) {
   setSeconds(0);
   setMinutes(0);
 }
+
+export function stopWaveformTimer(counterRef, setWaveformTimer) {
+  clearInterval(counterRef.current);
+  setWaveformTimer(0);
+}

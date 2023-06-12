@@ -5,10 +5,11 @@ import { Context } from "./Context";
 import { Audio } from "expo-av";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { bgColor, buttonsColor, iconActiveColor } from "../styles/ColorsUI";
-import { startTimer, stopTimer } from "./util/Funcs";
+import { startTimer, stopTimer, stopWaveformTimer } from "./util/Funcs";
 import useRevenueCat from "../hooks/useRevenueCat";
+import SoundCloudWave from "./SoundCloudWave";
 
-export default function MainProgram() {
+export default function MainProgram({ navigation }) {
   const {
     setIsEnabled120,
     setIsEnabled160,
@@ -19,22 +20,17 @@ export default function MainProgram() {
     setIsEnabledMain,
     currSound,
     setCurrSound,
-    navigationPaywall,
   } = useContext(Context);
 
   const { isProMember } = useRevenueCat();
 
   const [secondsMain, setSecondsMain] = useState(0);
   const [minutesMain, setMinutesMain] = useState(0);
+  const [waveformTime, setWaveformTime] = useState(0);
+  const totalWaveformTime = 16 * 60 + 27;
 
   const mainRefCounter = useRef();
-
-  const mainWaveParams = [
-    15, 20, 24, 28, 30, 28, 28, 29, 25, 29, 29, 28, 26, 25, 23, 17, 10, 0, 0, 3,
-    13, 23, 27, 28, 28, 26, 23, 22, 27, 28, 27, 26, 24, 22, 15, 9, 0, 0, 6, 15,
-    23, 27, 27, 27, 28, 23, 23, 27, 28, 27, 26, 23, 23, 14, 6, 0, 0, 5, 18, 24,
-    20, 21, 27, 24, 28, 24, 27, 28, 27, 28, 24, 23, 19,
-  ];
+  const mainWaveformRefCounter = useRef();
 
   // Incrementing minutes for audio timers
   useEffect(() => {
@@ -46,9 +42,11 @@ export default function MainProgram() {
     if (!isEnabledMain || (minutesMain === 16 && secondsMain === 27)) {
       setMinutesMain(0);
       setSecondsMain(0);
+      setWaveformTime(0);
       stopTimer(mainRefCounter, setSecondsMain, setMinutesMain);
+      stopWaveformTimer(mainWaveformRefCounter, setWaveformTime);
     }
-  }, [secondsMain, isEnabledMain]);
+  }, [secondsMain, waveformTime, isEnabledMain]);
 
   async function enableMainFreq() {
     setIsEnabled120(false);
@@ -71,14 +69,16 @@ export default function MainProgram() {
       setCurrSound(sound);
       await sound.playAsync();
       startTimer(mainRefCounter, setSecondsMain);
+      startTimer(mainWaveformRefCounter, setWaveformTime);
     } else {
       currSound.unloadAsync() || undefined;
       stopTimer(mainRefCounter, setSecondsMain, setMinutesMain);
+      stopWaveformTimer(mainWaveformRefCounter, setWaveformTime);
     }
   }
 
   function openPurchaseModal() {
-    navigationPaywall.navigate("Paywall");
+    navigation.navigate("Paywall");
   }
 
   return (
@@ -93,28 +93,18 @@ export default function MainProgram() {
             : styles.prepWaveformContainer
         }
       >
-        <View style={styles.waveformAll}>
-          {mainWaveParams.map((wave, idx) => {
-            return (
-              <View key={idx} style={{ justifyContent: "flex-end" }}>
-                <View
-                  style={{
-                    height: wave,
-                    width: 3,
-                    backgroundColor: "white",
-                    marginLeft: 1,
-                  }}
-                />
-              </View>
-            );
-          })}
-        </View>
-
         <View style={isEnabledMain ? styles.playActive : styles.prepPlay}>
           <Icon
             name={isEnabledMain ? "stop" : "play"}
             size={30}
             color="white"
+          />
+        </View>
+
+        <View style={styles.waveformAll}>
+          <SoundCloudWave
+            currentTime={waveformTime}
+            totalTime={totalWaveformTime}
           />
         </View>
       </View>

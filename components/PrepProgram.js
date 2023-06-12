@@ -6,10 +6,11 @@ import { bgColor, buttonsColor, iconActiveColor } from "../styles/ColorsUI";
 
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Context } from "./Context";
-import { startTimer, stopTimer } from "./util/Funcs";
+import { startTimer, stopTimer, stopWaveformTimer } from "./util/Funcs";
 import useRevenueCat from "../hooks/useRevenueCat";
+import SoundCloudWave from "./SoundCloudWave";
 
-export default function PrepProgram() {
+export default function PrepProgram({ navigation }) {
   const { isProMember } = useRevenueCat();
 
   const {
@@ -22,20 +23,15 @@ export default function PrepProgram() {
     setIsEnabledMain,
     currSound,
     setCurrSound,
-    navigationPaywall,
   } = useContext(Context);
 
   const [secondsPrep, setSecondsPrep] = useState(0);
   const [minutesPrep, setMinutesPrep] = useState(0);
+  const [waveformTime, setWaveformTime] = useState(0);
+  const totalTime = 481;
 
   const prepRefCounter = useRef();
-
-  const prepWaveParams = [
-    18, 23, 24, 27, 20, 28, 28, 29, 25, 29, 29, 28, 26, 25, 23, 27, 27, 28, 29,
-    27, 26, 23, 27, 28, 28, 26, 23, 22, 27, 28, 27, 26, 24, 22, 26, 28, 29, 24,
-    27, 25, 23, 27, 27, 27, 28, 23, 23, 27, 28, 27, 26, 29, 28, 26, 25, 23, 27,
-    27, 28, 29, 20, 21, 26, 23, 28, 27, 28, 26, 27, 26, 24, 23, 19,
-  ];
+  const prepRefWaveformCounter = useRef();
 
   // Incrementing minutes for audio timers
   useEffect(() => {
@@ -43,13 +39,14 @@ export default function PrepProgram() {
       setMinutesPrep((prev) => prev + 1);
       setSecondsPrep(0);
     }
-
     if (!isEnabledPrep || (minutesPrep === 8 && secondsPrep === 1)) {
       setMinutesPrep(0);
       setSecondsPrep(0);
+      setWaveformTime(0);
       stopTimer(prepRefCounter, setSecondsPrep, setMinutesPrep);
+      stopWaveformTimer(prepRefWaveformCounter, setWaveformTime);
     }
-  }, [secondsPrep, isEnabledPrep]);
+  }, [secondsPrep, waveformTime, isEnabledPrep]);
 
   async function enablePrepFreq() {
     setIsEnabled120(false);
@@ -74,14 +71,16 @@ export default function PrepProgram() {
 
       // Start the audio timer state
       startTimer(prepRefCounter, setSecondsPrep);
+      startTimer(prepRefWaveformCounter, setWaveformTime);
     } else {
       currSound.unloadAsync() || undefined;
       stopTimer(prepRefCounter, setSecondsPrep, setMinutesPrep);
+      stopWaveformTimer(prepRefWaveformCounter, setWaveformTime);
     }
   }
 
   function openPurchaseModal() {
-    navigationPaywall.navigate("Paywall");
+    navigation.navigate("Paywall");
   }
 
   return (
@@ -97,8 +96,15 @@ export default function PrepProgram() {
               : styles.prepWaveformContainer
           }
         >
+          <View style={isEnabledPrep ? styles.playActive : styles.prepPlay}>
+            <Icon
+              name={isEnabledPrep ? "stop" : "play"}
+              size={30}
+              color="white"
+            />
+          </View>
           <View style={styles.waveformAll}>
-            {prepWaveParams.map((wave, idx) => {
+            {/*prepWaveParams.map((wave, idx) => {
               return (
                 <View key={idx} style={{ justifyContent: "flex-end" }}>
                   <View
@@ -111,15 +117,8 @@ export default function PrepProgram() {
                   />
                 </View>
               );
-            })}
-          </View>
-
-          <View style={isEnabledPrep ? styles.playActive : styles.prepPlay}>
-            <Icon
-              name={isEnabledPrep ? "stop" : "play"}
-              size={30}
-              color="white"
-            />
+            })*/}
+            <SoundCloudWave currentTime={waveformTime} totalTime={totalTime} />
           </View>
         </View>
 
