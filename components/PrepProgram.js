@@ -118,7 +118,11 @@ export default function PrepProgram({ navigation }) {
                 </View>
               );
             })*/}
-            <SoundCloudWave currentTime={waveformTime} totalTime={totalTime} />
+            <SoundCloudWave
+              currentTime={waveformTime}
+              totalTime={totalTime}
+              waveform={"https://w1.sndcdn.com/PP3Eb34ToNki_m.png"}
+            />
           </View>
         </View>
 

@@ -8,6 +8,7 @@ import { useState } from "react";
 
 import { Context } from "./components/Context";
 import HomeStackScreen from "./screens/Home";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 function App() {
   const [isEnabled120, setIsEnabled120] = useState(false);
@@ -98,9 +99,9 @@ const Tab = createBottomTabNavigator();
 
 function SettingsScreen() {
   return (
-    <View>
-      <Text>Here we are</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <Text className="text-white text-center">Settings Tab</Text>
+    </SafeAreaView>
   );
 }
 

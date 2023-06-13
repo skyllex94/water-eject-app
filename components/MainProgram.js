@@ -105,6 +105,7 @@ export default function MainProgram({ navigation }) {
           <SoundCloudWave
             currentTime={waveformTime}
             totalTime={totalWaveformTime}
+            waveform={"https://w1.sndcdn.com/XwA2iPEIVF8z_m.png"}
           />
         </View>
       </View>
