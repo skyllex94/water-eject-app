@@ -6,6 +6,7 @@ import { bgColor } from "../styles/ColorsUI";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Paywall from "./Paywall";
+import { useState } from "react";
 
 const HomeStackScreen = () => {
   // React Native Navigator - Stack Navigator initializer
@@ -38,10 +39,12 @@ const HomeStackScreen = () => {
 };
 
 function HomeScreen({ navigation }) {
+  const [speed, setSpeed] = useState(1000);
+
   return (
     <SafeAreaView style={styles.container}>
-      <Waveform />
-      <Frequencies />
+      <Waveform speed={speed} />
+      <Frequencies setSpeed={setSpeed} />
       <Programs navigation={navigation} />
     </SafeAreaView>
   );

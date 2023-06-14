@@ -23,6 +23,8 @@ function App() {
   const [currSound, setCurrSound] = useState();
   const [navigationPaywall, setNavigationPaywall] = useState();
 
+  // Sound Visualizer States
+
   return (
     <Context.Provider
       value={{

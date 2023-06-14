@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Dimensions,
   SafeAreaView,
@@ -11,28 +11,26 @@ import {
   Skia,
   Canvas,
   Path,
-  Vertices,
   vec,
   useComputedValue,
   useClockValue,
   useValue,
   useTouchHandler,
   LinearGradient,
-  useFont,
 } from "@shopify/react-native-skia";
 
 import { line, curveBasis } from "d3";
+import { Context } from "./Context";
 
 const dimens = Dimensions.get("screen");
 const width = 412; // width of the animation
-const frequency = 7;
-const initialAmplitude = 2;
+const initialAmplitude = 12;
 const verticalShiftConst = 50;
 const height = 100; // can stay as such
 const horizontalShift = (dimens.width - width) / 2;
 const indicatorArray = Array.from({ length: 16 }, (_, i) => i);
 
-export const SoundVisualizer = () => {
+export const SoundVisualizer = ({ speed = 1000, frequency = 2 }) => {
   const verticalShift = useValue(verticalShiftConst);
   const amplitude = useValue(initialAmplitude);
   const clock = useClockValue();
@@ -70,7 +68,7 @@ export const SoundVisualizer = () => {
   };
 
   const animatedPath = useComputedValue(() => {
-    const current = (clock.current / 225) % 225;
+    const current = (clock.current / speed) % 225; // speed variable
     const start = Skia.Path.MakeFromSVGString(createWavePath(current));
     const end = Skia.Path.MakeFromSVGString(createWavePath(Math.PI * current));
     return start.interpolate(end, 0.5);

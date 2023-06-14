@@ -18,7 +18,7 @@ import { buttonsColor } from "../styles/ColorsUI";
 import { Context } from "./Context";
 import { useContext } from "react";
 
-function Frequencies() {
+function Frequencies({ setSpeed }) {
   const {
     isEnabled120,
     setIsEnabled120,
@@ -47,6 +47,8 @@ function Frequencies() {
 
   async function startFrequency120(isEnabled) {
     if (isEnabled) {
+      // Sound Visualizer paramethers change
+      setSpeed(50);
       if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
         require(`../assets/frequencies/120hz.mp3`),
