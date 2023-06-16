@@ -1,11 +1,4 @@
-import React, { useContext } from "react";
-import {
-  Dimensions,
-  SafeAreaView,
-  View,
-  StyleSheet,
-  Text as RNText,
-} from "react-native";
+import { Dimensions, SafeAreaView, StyleSheet, View } from "react-native";
 
 import {
   Skia,
@@ -20,26 +13,28 @@ import {
 } from "@shopify/react-native-skia";
 
 import { line, curveBasis } from "d3";
+import { useContext } from "react";
 import { Context } from "./Context";
 
 const dimens = Dimensions.get("screen");
-const width = 412; // width of the animation
-const initialAmplitude = 12;
-const verticalShiftConst = 50;
+const width = dimens.width; // width of the animation
+const verticalShiftConst = 40; // height of the wave
 const height = 100; // can stay as such
 const horizontalShift = (dimens.width - width) / 2;
-const indicatorArray = Array.from({ length: 16 }, (_, i) => i);
 
-export const SoundVisualizer = ({ speed = 1000, frequency = 2 }) => {
+export const SoundVisualizer = () => {
+  const { visualizerParams } = useContext(Context);
+  const { speed, frequency, amplitude } = visualizerParams;
+
   const verticalShift = useValue(verticalShiftConst);
-  const amplitude = useValue(initialAmplitude);
   const clock = useClockValue();
+  const amplitudeRef = useValue(amplitude);
 
   const touchHandler = useTouchHandler({
     onActive: ({ y }) => {
       if (y > verticalShiftConst) {
         verticalShift.current = Math.min(height, y);
-        amplitude.current = Math.max(
+        amplitudeRef.current = Math.max(
           0,
           (height - verticalShift.current) * 0.025
         );
@@ -53,7 +48,7 @@ export const SoundVisualizer = ({ speed = 1000, frequency = 2 }) => {
         ((index - horizontalShift) / width) * (Math.PI * frequency) + phase;
       return [
         index,
-        amplitude.current * Math.sin(angle) + verticalShift.current,
+        amplitudeRef.current * Math.sin(angle) + verticalShift.current,
       ];
     });
 
@@ -72,7 +67,7 @@ export const SoundVisualizer = ({ speed = 1000, frequency = 2 }) => {
     const start = Skia.Path.MakeFromSVGString(createWavePath(current));
     const end = Skia.Path.MakeFromSVGString(createWavePath(Math.PI * current));
     return start.interpolate(end, 0.5);
-  }, [clock, verticalShift]);
+  }, [clock, verticalShift, speed, frequency, amplitude]);
 
   const gradientStart = useComputedValue(() => {
     return vec(0, verticalShift.current);
@@ -93,10 +88,11 @@ export const SoundVisualizer = ({ speed = 1000, frequency = 2 }) => {
           <LinearGradient
             start={gradientStart}
             end={gradientEnd}
-            colors={["rgba(255, 255, 255, 0.9)", "white"]}
+            colors={["#F5F5F5", "white"]}
           />
         </Path>
       </Canvas>
+      <View style={styles.bottomBorder} />
     </SafeAreaView>
   );
 };
@@ -106,10 +102,16 @@ export default SoundVisualizer;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderRadius: 10,
+    marginHorizontal: 15,
+    marginVertical: 20,
   },
   canvas: {
     flex: 1,
-    borderRadius: 10,
+  },
+  bottomBorder: {
+    backgroundColor: "#F5F5F5",
+    height: 20,
+    borderBottomEndRadius: 10,
+    borderBottomLeftRadius: 10,
   },
 });

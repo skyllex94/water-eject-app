@@ -20,9 +20,12 @@ export default function MainProgram({ navigation }) {
     setIsEnabledMain,
     currSound,
     setCurrSound,
+    setVisualizerParams,
   } = useContext(Context);
 
   const { isProMember } = useRevenueCat();
+
+  const defaultVisualizerParams = { speed: 500, frequency: 2, amplitude: 15 };
 
   const [secondsMain, setSecondsMain] = useState(0);
   const [minutesMain, setMinutesMain] = useState(0);
@@ -61,6 +64,8 @@ export default function MainProgram({ navigation }) {
 
   async function playMain(isEnabled) {
     if (isEnabled) {
+      setVisualizerParams({ speed: 75, frequency: 22, amplitude: 200 });
+
       if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
         require(`../assets/programs/main.mp3`),
@@ -72,6 +77,7 @@ export default function MainProgram({ navigation }) {
       startTimer(mainWaveformRefCounter, setWaveformTime);
     } else {
       currSound.unloadAsync() || undefined;
+      setVisualizerParams(defaultVisualizerParams);
       stopTimer(mainRefCounter, setSecondsMain, setMinutesMain);
       stopWaveformTimer(mainWaveformRefCounter, setWaveformTime);
     }

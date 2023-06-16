@@ -1,12 +1,11 @@
 import { SafeAreaView, StyleSheet } from "react-native";
-import Waveform from "../components/Waveform";
 import Frequencies from "../components/Frequencies";
 import Programs from "../components/Programs";
 import { bgColor } from "../styles/ColorsUI";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Paywall from "./Paywall";
-import { useState } from "react";
+import SoundVisualizer from "../components/SoundVisualizer";
 
 const HomeStackScreen = () => {
   // React Native Navigator - Stack Navigator initializer
@@ -39,12 +38,10 @@ const HomeStackScreen = () => {
 };
 
 function HomeScreen({ navigation }) {
-  const [speed, setSpeed] = useState(1000);
-
   return (
     <SafeAreaView style={styles.container}>
-      <Waveform speed={speed} />
-      <Frequencies setSpeed={setSpeed} />
+      <SoundVisualizer />
+      <Frequencies />
       <Programs navigation={navigation} />
     </SafeAreaView>
   );

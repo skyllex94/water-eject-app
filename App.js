@@ -11,19 +11,25 @@ import HomeStackScreen from "./screens/Home";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 function App() {
+  // States for enabling any sound to play or stop playing
   const [isEnabled120, setIsEnabled120] = useState(false);
   const [isEnabled160, setIsEnabled160] = useState(false);
   const [isEnabled300, setIsEnabled300] = useState(false);
   const [isEnabled500, setIsEnabled500] = useState(false);
 
   const [isEnabledPrep, setIsEnabledPrep] = useState(false);
-  const [prepAudioTime, setPrepAudioTime] = useState(0);
   const [isEnabledMain, setIsEnabledMain] = useState(false);
 
+  // Currently playing frequency or program sound
   const [currSound, setCurrSound] = useState();
   const [navigationPaywall, setNavigationPaywall] = useState();
 
-  // Sound Visualizer States
+  // Sound Visualizer State
+  const [visualizerParams, setVisualizerParams] = useState({
+    speed: 600,
+    frequency: 3,
+    amplitude: 5,
+  });
 
   return (
     <Context.Provider
@@ -42,10 +48,10 @@ function App() {
         setIsEnabledMain,
         currSound,
         setCurrSound,
-        prepAudioTime,
-        setPrepAudioTime,
         navigationPaywall,
         setNavigationPaywall,
+        visualizerParams,
+        setVisualizerParams,
       }}
     >
       <NavigationContainer>

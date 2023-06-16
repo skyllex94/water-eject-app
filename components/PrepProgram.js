@@ -12,6 +12,7 @@ import SoundCloudWave from "./SoundCloudWave";
 
 export default function PrepProgram({ navigation }) {
   const { isProMember } = useRevenueCat();
+  const { setVisualizerParams } = useContext(Context);
 
   const {
     setIsEnabled120,
@@ -25,10 +26,12 @@ export default function PrepProgram({ navigation }) {
     setCurrSound,
   } = useContext(Context);
 
+  const defaultVisualizerParams = { speed: 500, frequency: 2, amplitude: 15 };
+
   const [secondsPrep, setSecondsPrep] = useState(0);
   const [minutesPrep, setMinutesPrep] = useState(0);
   const [waveformTime, setWaveformTime] = useState(0);
-  const totalTime = 481;
+  const totalTime = 481; // in seconds
 
   const prepRefCounter = useRef();
   const prepRefWaveformCounter = useRef();
@@ -60,6 +63,8 @@ export default function PrepProgram({ navigation }) {
 
   async function playPrep(isEnabled) {
     if (isEnabled) {
+      setVisualizerParams({ speed: 75, frequency: 18, amplitude: 200 });
+
       if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
         require(`../assets/programs/prep.mp3`),
@@ -74,6 +79,7 @@ export default function PrepProgram({ navigation }) {
       startTimer(prepRefWaveformCounter, setWaveformTime);
     } else {
       currSound.unloadAsync() || undefined;
+      setVisualizerParams(defaultVisualizerParams);
       stopTimer(prepRefCounter, setSecondsPrep, setMinutesPrep);
       stopWaveformTimer(prepRefWaveformCounter, setWaveformTime);
     }
