@@ -26,7 +26,7 @@ function App() {
 
   // Sound Visualizer State
   const [visualizerParams, setVisualizerParams] = useState({
-    speed: 600,
+    speed: 700,
     frequency: 3,
     amplitude: 5,
   });
@@ -68,12 +68,48 @@ function App() {
               tabBarLabel: "Home",
               headerShown: false,
               tabBarStyle: {
-                backgroundColor: "#101C43",
+                backgroundColor: "#101C40",
               },
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons
-                  name="home"
+                  name="water-outline"
                   color={"white"}
+                  size={size}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Meter"
+            component={SettingsScreen}
+            options={{
+              tabBarLabel: "Meter",
+              headerShown: false,
+              tabBarStyle: {
+                backgroundColor: "#101C40",
+              },
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons
+                  name="speedometer-slow"
+                  color={"lightgray"}
+                  size={size}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Profile"
+            component={SettingsScreen}
+            options={{
+              tabBarLabel: "Profile",
+              headerShown: false,
+              tabBarStyle: {
+                backgroundColor: "#101C40",
+              },
+              tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons
+                  name="account"
+                  color={"lightgray"}
                   size={size}
                 />
               ),
@@ -86,7 +122,7 @@ function App() {
               tabBarLabel: "Settings",
               headerShown: false,
               tabBarStyle: {
-                backgroundColor: "#101C43",
+                backgroundColor: "#101C40",
               },
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons

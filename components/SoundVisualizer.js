@@ -36,7 +36,7 @@ export const SoundVisualizer = () => {
         verticalShift.current = Math.min(height, y);
         amplitudeRef.current = Math.max(
           0,
-          (height - verticalShift.current) * 0.025
+          (height - verticalShift.current) * 0.4
         );
       }
     },
