@@ -9,6 +9,7 @@ import { useState } from "react";
 import { Context } from "./components/Context";
 import HomeStackScreen from "./screens/Home";
 import { SafeAreaView } from "react-native-safe-area-context";
+import MeterScreen from "./screens/Meter";
 
 function App() {
   // States for enabling any sound to play or stop playing
@@ -81,7 +82,7 @@ function App() {
           />
           <Tab.Screen
             name="Meter"
-            component={SettingsScreen}
+            component={MeterScreen}
             options={{
               tabBarLabel: "Meter",
               headerShown: false,
