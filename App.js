@@ -1,15 +1,14 @@
-import { View, Text, StyleSheet, StatusBar } from "react-native";
+import { StatusBar } from "react-native";
+import { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { bgColor } from "./styles/ColorsUI";
-import { useState } from "react";
-
 import { Context } from "./components/Context";
 import HomeStackScreen from "./screens/Home";
-import { SafeAreaView } from "react-native-safe-area-context";
 import MeterScreen from "./screens/Meter";
+import Profile from "./screens/Profile";
+import Settings from "./screens/Settings";
 
 function App() {
   // States for enabling any sound to play or stop playing
@@ -31,6 +30,8 @@ function App() {
     frequency: 3,
     amplitude: 5,
   });
+
+  const Tab = createBottomTabNavigator();
 
   return (
     <Context.Provider
@@ -100,7 +101,7 @@ function App() {
           />
           <Tab.Screen
             name="Profile"
-            component={SettingsScreen}
+            component={Profile}
             options={{
               tabBarLabel: "Profile",
               headerShown: false,
@@ -118,7 +119,7 @@ function App() {
           />
           <Tab.Screen
             name="Settings"
-            component={SettingsScreen}
+            component={Settings}
             options={{
               tabBarLabel: "Settings",
               headerShown: false,
@@ -139,22 +140,5 @@ function App() {
     </Context.Provider>
   );
 }
-
-const Tab = createBottomTabNavigator();
-
-function SettingsScreen() {
-  return (
-    <SafeAreaView style={styles.container}>
-      <Text className="text-white text-center">Settings Tab</Text>
-    </SafeAreaView>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: bgColor,
-  },
-});
 
 export default App;
