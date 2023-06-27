@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { SafeAreaView, StyleSheet, Text } from "react-native";
+import { AudioRecorder } from "react-native-audio";
 
 import { spline } from "@georgedoescode/spline";
 
@@ -131,11 +132,13 @@ const MorphingCircle = () => {
     return vec(256, newValue);
   }, [clock]);
 
+  const decibels = (AudioRecorder.onProgress = (data) => {
+    console.log(data.currentMetering, data.currentPeakMetering);
+  });
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text className="text-white absolute right-30 z-20">
-        Current Decibels
-      </Text>
+      <Text className="text-white absolute right-30 z-20">{decibels}</Text>
       <Canvas style={styles.canvas}>
         <Path path={path}>
           <LinearGradient

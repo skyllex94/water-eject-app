@@ -4,7 +4,7 @@ const MONITOR_INTERVAL = 250; // in ms
 
 const requestPermission = async () => {
   // request permission to access microphone
-  // ...
+
   if (success) {
     // start monitoring
     RNSoundLevel.start();

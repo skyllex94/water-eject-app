@@ -2,6 +2,10 @@
   "name": "water-eject-app",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
+  "reactNativePermissionsIOS": [
+    "Microphone",
+    "Reminders"
+  ],
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -26,6 +30,7 @@
     "pod-install": "^0.1.38",
     "react": "18.2.0",
     "react-native": "^0.71.7",
+    "react-native-audio": "^4.3.0",
     "react-native-loading-spinner-overlay": "^3.0.1",
     "react-native-permissions": "^3.8.0",
     "react-native-purchases": "^5.16.0",
