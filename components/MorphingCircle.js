@@ -4,8 +4,6 @@ import { AudioRecorder } from "react-native-audio";
 
 import { spline } from "@georgedoescode/spline";
 
-import RNSoundLevel from "react-native-sound-level";
-
 import {
   Canvas,
   LinearGradient,
@@ -55,38 +53,6 @@ function map(n, start1, end1, start2, end2) {
 }
 
 const MorphingCircle = () => {
-  const MONITOR_INTERVAL = 250; // in ms
-
-  const requestPermission = async () => {
-    // request permission to access microphone
-    // ...
-    if (success) {
-      // start monitoring
-      RNSoundLevel.start();
-
-      // you may also specify a monitor interval (default is 250ms)
-      RNSoundLevel.start(MONITOR_INTERVAL);
-
-      // or add even more options
-      RNSoundLevel.start({
-        monitorInterval: MONITOR_INTERVAL,
-        samplingRate: 16000, // default is 22050
-      });
-    }
-  };
-
-  useEffect(() => {
-    RNSoundLevel.onNewFrame = (data) => {
-      // see "Returned data" section below
-      console.log("Sound level info", data);
-    };
-
-    return () => {
-      // don't forget to stop it
-      RNSoundLevel.stop();
-    };
-  }, []);
-
   const clock = useClockValue();
   const points = useValue(createPoints());
   const hueNoiseOffset = useValue(0);
@@ -131,10 +97,6 @@ const MorphingCircle = () => {
     const newValue = map(hueNoise, -1, 1, 0, 360);
     return vec(256, newValue);
   }, [clock]);
-
-  const decibels = (AudioRecorder.onProgress = (data) => {
-    console.log(data.currentMetering, data.currentPeakMetering);
-  });
 
   return (
     <SafeAreaView style={styles.container}>
