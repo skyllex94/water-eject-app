@@ -11,12 +11,13 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.kkanchev94.waterejectapp"
+      "bundleIdentifier": "com.kkanchev94.waterejectapp",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "This app uses the microphone to determine current decibel amount."
+      }
     },
     "android": {
       "adaptiveIcon": {

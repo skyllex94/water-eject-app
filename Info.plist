@@ -1,16 +1,2 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-
-  <!-- 🚨 Keep only the permissions used in your app 🚨 -->
-
- 
-  <key>NSMicrophoneUsageDescription</key>
-  <string>This app uses the microphone to record your speech and convert it to text.</string>
-  <key>NSRemindersUsageDescription</key>
-  <string>This app uses the reminder API to create and manage reminders.</string>
- 
-
-</dict>
-</plist>
+<key>NSMicrophoneUsageDescription</key>
+<string>This app does not require access to the microphone.</string>

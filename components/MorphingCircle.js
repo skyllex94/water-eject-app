@@ -100,7 +100,7 @@ const MorphingCircle = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text className="text-white absolute right-30 z-20">{decibels}</Text>
+      <Text className="text-white absolute right-30 z-20">DB</Text>
       <Canvas style={styles.canvas}>
         <Path path={path}>
           <LinearGradient
