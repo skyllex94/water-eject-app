@@ -1,16 +1,16 @@
 import { Text, SafeAreaView } from "react-native";
-import React from "react";
-import MorphingCircle from "../components/MorphingCircle";
 import { useEffect } from "react";
 
-import { Permissions } from "../components/AppPermissions";
+// import { Permissions } from "../components/AppPermissions";
+import MorphingCircle from "../components/MorphingCircle";
 
 export default function MeterScreen() {
-  useEffect(() => {
-    Permissions.checkPermission();
+  // useEffect(() => {
+  //   Permissions.checkPermission();
 
-    if (Permissions.checkPermissions === "GRANTED")
-  }, []);
+  //   if (Permissions.checkPermissions === "GRANTED")
+  //     Permissions.checkPermission();
+  // }, []);
 
   return (
     <SafeAreaView className="flex-1 bg-[#05103A]">

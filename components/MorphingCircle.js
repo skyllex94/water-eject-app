@@ -99,7 +99,10 @@ const MorphingCircle = () => {
   }, [clock]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      // className="justify-center align-middle"
+      style={styles.container}
+    >
       <Text className="text-white absolute right-30 z-20">DB</Text>
       <Canvas style={styles.canvas}>
         <Path path={path}>

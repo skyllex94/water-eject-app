@@ -1,10 +1,8 @@
 import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
 
-const requestPermissionType = PERMISSIONS.IOS.MICROPHONE;
-
 class AppPermissions {
   checkPermission = async () => {
-    const permissions = requestPermissionType;
+    const permissions = PERMISSIONS.IOS.MICROPHONE;
     if (!permissions) return true;
 
     try {
