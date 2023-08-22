@@ -1,16 +1,17 @@
 import { Text, SafeAreaView } from "react-native";
+
+import { Audio } from "expo-av";
+import MorphingCircle from "../components/MorphingCircle";
 import { useEffect } from "react";
 
-// import { Permissions } from "../components/AppPermissions";
-import MorphingCircle from "../components/MorphingCircle";
-
 export default function MeterScreen() {
-  // useEffect(() => {
-  //   Permissions.checkPermission();
+  useEffect(() => {
+    askPermissions();
+  }, []);
 
-  //   if (Permissions.checkPermissions === "GRANTED")
-  //     Permissions.checkPermission();
-  // }, []);
+  async function askPermissions() {
+    return await Audio.requestPermissionsAsync();
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-[#05103A]">

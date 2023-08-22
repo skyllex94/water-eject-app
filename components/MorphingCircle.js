@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { SafeAreaView, StyleSheet, Text } from "react-native";
-import { AudioRecorder } from "react-native-audio";
 
 import { spline } from "@georgedoescode/spline";
 
@@ -99,10 +98,7 @@ const MorphingCircle = () => {
   }, [clock]);
 
   return (
-    <SafeAreaView
-      // className="justify-center align-middle"
-      style={styles.container}
-    >
+    <SafeAreaView style={styles.container}>
       <Text className="text-white absolute right-30 z-20">DB</Text>
       <Canvas style={styles.canvas}>
         <Path path={path}>
