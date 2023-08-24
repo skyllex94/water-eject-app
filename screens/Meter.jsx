@@ -4,13 +4,22 @@ import { Audio } from "expo-av";
 import MorphingCircle from "../components/MorphingCircle";
 import { useEffect } from "react";
 
+import RNSoundLevel from "react-native-sound-level";
+
 export default function MeterScreen() {
   useEffect(() => {
     askPermissions();
+
+    RNSoundLevel.onNewFrame = (data) => console.log("Sound level info", data);
+
+    return () => RNSoundLevel.stop();
   }, []);
 
   async function askPermissions() {
-    return await Audio.requestPermissionsAsync();
+    const permissionAnswer = await Audio.requestPermissionsAsync();
+    console.log(permissionAnswer);
+    if (permissionAnswer.granted === true) RNSoundLevel.start();
+    return permissionAnswer;
   }
 
   return (
