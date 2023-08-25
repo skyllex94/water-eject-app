@@ -10,16 +10,16 @@ export default function MeterScreen() {
   useEffect(() => {
     askPermissions();
 
-    RNSoundLevel.onNewFrame = (data) => console.log("Sound level info", data);
+    // RNSoundLevel.onNewFrame = (data) => console.log("Sound level info", data);
 
-    return () => RNSoundLevel.stop();
+    // return () => RNSoundLevel.stop();
   }, []);
 
   async function askPermissions() {
     const permissionAnswer = await Audio.requestPermissionsAsync();
     console.log(permissionAnswer);
-    if (permissionAnswer.granted === true) RNSoundLevel.start();
     return permissionAnswer;
+    if (permissionAnswer.granted === true) RNSoundLevel.start();
   }
 
   return (

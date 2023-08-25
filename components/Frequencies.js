@@ -14,7 +14,7 @@ import highFreq from "../assets/icons/highfreqIcon.png";
 import xtHighFreq from "../assets/icons/xthighfreqIcon.png";
 import { buttonsColor } from "../styles/ColorsUI";
 import { Context } from "./Context";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 function Frequencies() {
   const {
@@ -35,6 +35,12 @@ function Frequencies() {
 
   const defaultVisualizerParams = { speed: 500, frequency: 2, amplitude: 15 };
 
+  useEffect({}, []);
+
+  async function playAudioInSilentMode() {
+    return await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
+  }
+
   async function isEnabled120hz() {
     setIsEnabled160(false);
     setIsEnabled300(false);
@@ -48,14 +54,17 @@ function Frequencies() {
 
   async function startFrequency120(isEnabled) {
     if (isEnabled) {
+      console.log("Here I am");
+
       // Sound Visualizer paramethers change
       setVisualizerParams({ speed: 125, frequency: 5, amplitude: 105 });
 
       if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
         require(`../assets/frequencies/120hz.mp3`),
-        { isLooping: true }
+        { isLooping: true, shouldPlay: true }
       );
+
       // Start or switch to current sound
       setCurrSound(sound);
 
