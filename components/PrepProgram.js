@@ -63,8 +63,6 @@ export default function PrepProgram({ navigation }) {
 
   async function playPrep(isEnabled) {
     if (isEnabled) {
-      setVisualizerParams({ speed: 75, frequency: 18, amplitude: 200 });
-
       if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
         require(`../assets/programs/prep.mp3`),
@@ -73,6 +71,9 @@ export default function PrepProgram({ navigation }) {
 
       setCurrSound(sound);
       await sound.playAsync();
+
+      // Set Visualizer Preset Params
+      setVisualizerParams({ speed: 75, frequency: 18, amplitude: 200 });
 
       // Start the audio timer state
       startTimer(prepRefCounter, setSecondsPrep);
@@ -110,20 +111,6 @@ export default function PrepProgram({ navigation }) {
             />
           </View>
           <View style={styles.waveformAll}>
-            {/*prepWaveParams.map((wave, idx) => {
-              return (
-                <View key={idx} style={{ justifyContent: "flex-end" }}>
-                  <View
-                    style={{
-                      height: wave,
-                      width: 3,
-                      backgroundColor: "white",
-                      marginLeft: 1,
-                    }}
-                  />
-                </View>
-              );
-            })*/}
             <SoundCloudWave
               currentTime={waveformTime}
               totalTime={totalTime}

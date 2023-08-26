@@ -64,8 +64,6 @@ export default function MainProgram({ navigation }) {
 
   async function playMain(isEnabled) {
     if (isEnabled) {
-      setVisualizerParams({ speed: 75, frequency: 22, amplitude: 200 });
-
       if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
         require(`../assets/programs/main.mp3`),
@@ -73,6 +71,8 @@ export default function MainProgram({ navigation }) {
       );
       setCurrSound(sound);
       await sound.playAsync();
+      setVisualizerParams({ speed: 75, frequency: 22, amplitude: 200 });
+
       startTimer(mainRefCounter, setSecondsMain);
       startTimer(mainWaveformRefCounter, setWaveformTime);
     } else {

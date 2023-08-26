@@ -35,7 +35,9 @@ function Frequencies() {
 
   const defaultVisualizerParams = { speed: 500, frequency: 2, amplitude: 15 };
 
-  useEffect({}, []);
+  useEffect(() => {
+    playAudioInSilentMode();
+  }, []);
 
   async function playAudioInSilentMode() {
     return await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
@@ -54,11 +56,6 @@ function Frequencies() {
 
   async function startFrequency120(isEnabled) {
     if (isEnabled) {
-      console.log("Here I am");
-
-      // Sound Visualizer paramethers change
-      setVisualizerParams({ speed: 125, frequency: 5, amplitude: 105 });
-
       if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
         require(`../assets/frequencies/120hz.mp3`),
@@ -69,6 +66,8 @@ function Frequencies() {
       setCurrSound(sound);
 
       await sound.playAsync();
+      // Sound Visualizer paramethers change
+      setVisualizerParams({ speed: 125, frequency: 5, amplitude: 105 });
     } else {
       currSound.unloadAsync() || undefined;
       setVisualizerParams(defaultVisualizerParams);
@@ -88,8 +87,6 @@ function Frequencies() {
 
   async function startFrequency160(isEnabled) {
     if (isEnabled) {
-      setVisualizerParams({ speed: 105, frequency: 8, amplitude: 155 });
-
       if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
         require(`../assets/frequencies/160hz.mp3`),
@@ -98,6 +95,7 @@ function Frequencies() {
       setCurrSound(sound);
 
       await sound.playAsync();
+      setVisualizerParams({ speed: 105, frequency: 8, amplitude: 155 });
     } else {
       currSound.unloadAsync() || undefined;
       setVisualizerParams(defaultVisualizerParams);
@@ -117,8 +115,6 @@ function Frequencies() {
 
   async function startFrequency300(isEnabled) {
     if (isEnabled) {
-      setVisualizerParams({ speed: 85, frequency: 12, amplitude: 175 });
-
       if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
         require(`../assets/frequencies/300hz.mp3`),
@@ -127,6 +123,7 @@ function Frequencies() {
       setCurrSound(sound);
 
       await sound.playAsync();
+      setVisualizerParams({ speed: 85, frequency: 12, amplitude: 175 });
     } else {
       currSound.unloadAsync() || undefined;
       setVisualizerParams(defaultVisualizerParams);
@@ -146,8 +143,6 @@ function Frequencies() {
 
   async function startFrequency500(isEnabled) {
     if (isEnabled) {
-      setVisualizerParams({ speed: 75, frequency: 17, amplitude: 200 });
-
       if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
         require(`../assets/frequencies/500hz.mp3`),
@@ -156,6 +151,7 @@ function Frequencies() {
       setCurrSound(sound);
 
       await sound.playAsync();
+      setVisualizerParams({ speed: 75, frequency: 17, amplitude: 200 });
     } else {
       currSound.unloadAsync() || undefined;
       setVisualizerParams({ speed: 500, frequency: 2, amplitude: 15 });

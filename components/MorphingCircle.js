@@ -21,7 +21,7 @@ function createPoints() {
   // used to equally space each point around the circle
   const angleStep = (Math.PI * 2) / numPoints;
   // the radius of the circle
-  const rad = 110;
+  const rad = 115;
 
   for (let i = 1; i <= numPoints; i++) {
     // x & y coordinates of the current point
