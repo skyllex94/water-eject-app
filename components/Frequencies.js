@@ -58,7 +58,7 @@ function Frequencies() {
     if (isEnabled) {
       if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
-        require(`../assets/frequencies/120hz.mp3`),
+        require(`../assets/frequencies/120hz_cut.mp3`),
         { isLooping: true, shouldPlay: true }
       );
 
@@ -89,7 +89,7 @@ function Frequencies() {
     if (isEnabled) {
       if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
-        require(`../assets/frequencies/160hz.mp3`),
+        require(`../assets/frequencies/160hz_cut.mp3`),
         { isLooping: true }
       );
       setCurrSound(sound);
@@ -117,7 +117,7 @@ function Frequencies() {
     if (isEnabled) {
       if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
-        require(`../assets/frequencies/300hz.mp3`),
+        require(`../assets/frequencies/300hz_cut.mp3`),
         { isLooping: true }
       );
       setCurrSound(sound);
@@ -145,7 +145,7 @@ function Frequencies() {
     if (isEnabled) {
       if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
-        require(`../assets/frequencies/500hz.mp3`),
+        require(`../assets/frequencies/500hz_cut.mp3`),
         { isLooping: true }
       );
       setCurrSound(sound);
