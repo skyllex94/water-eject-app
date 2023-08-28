@@ -3,6 +3,10 @@ import { SafeAreaView, StyleSheet, Text } from "react-native";
 
 import { spline } from "@georgedoescode/spline";
 
+// Decibel Level imports
+import { AudioRecorder, AudioUtils } from "react-native-audio";
+let audioPath = AudioUtils.DocumentDirectoryPath + "/test.aac";
+
 import {
   Canvas,
   LinearGradient,
@@ -13,6 +17,9 @@ import {
   vec,
 } from "@shopify/react-native-skia";
 import { createNoise2D } from "simplex-noise";
+import { useEffect } from "react";
+import { Button } from "react-native";
+import { useState } from "react";
 
 function createPoints() {
   const points = [];
@@ -52,6 +59,9 @@ function map(n, start1, end1, start2, end2) {
 }
 
 const MorphingCircle = () => {
+  // Decibel State UI
+  const [currDecibels, setCurrDecibels] = useState(0);
+
   const clock = useClockValue();
   const points = useValue(createPoints());
   const hueNoiseOffset = useValue(0);
@@ -97,9 +107,39 @@ const MorphingCircle = () => {
     return vec(256, newValue);
   }, [clock]);
 
+  useEffect(() => {
+    AudioRecorder.prepareRecordingAtPath(audioPath, {
+      SampleRate: 22050,
+      Channels: 1,
+      AudioQuality: "Low",
+      AudioEncoding: "aac",
+      MeteringEnabled: true,
+      MeasurementMode: true,
+    });
+  }, []);
+
+  async function startDecibelMetering() {
+    await AudioRecorder.startRecording();
+    await AudioRecorder.resumeRecording();
+
+    AudioRecorder.onProgress = (data) => {
+      setCurrDecibels(Math.trunc(data.currentMetering + 100));
+    };
+  }
+
+  async function stopDecibelMetering() {
+    await AudioRecorder.stopRecording();
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text className="text-white absolute right-30 z-20">DB</Text>
+      <Button onPress={() => startDecibelMetering()} title="Start Metering" />
+
+      <Button onPress={() => stopDecibelMetering()} title="Stop" />
+
+      <Text className="text-white absolute right-30 z-20">
+        {currDecibels} DB
+      </Text>
       <Canvas style={styles.canvas}>
         <Path path={path}>
           <LinearGradient
