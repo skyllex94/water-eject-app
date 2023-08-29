@@ -1,7 +1,6 @@
-import { SafeAreaView, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native";
 import Frequencies from "../components/Frequencies";
 import Programs from "../components/Programs";
-import { bgColor } from "../styles/ColorsUI";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Paywall from "./Paywall";
@@ -39,19 +38,12 @@ const HomeStackScreen = () => {
 
 function HomeScreen({ navigation }) {
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView className="flex-1 bg-[#05103A]">
       <SoundVisualizer />
       <Frequencies />
       <Programs navigation={navigation} />
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: bgColor,
-  },
-});
 
 export default HomeStackScreen;

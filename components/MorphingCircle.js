@@ -3,10 +3,6 @@ import { SafeAreaView, StyleSheet, Text } from "react-native";
 
 import { spline } from "@georgedoescode/spline";
 
-// Decibel Level imports
-import { AudioRecorder, AudioUtils } from "react-native-audio";
-let audioPath = AudioUtils.DocumentDirectoryPath + "/test.aac";
-
 import {
   Canvas,
   LinearGradient,
@@ -17,25 +13,23 @@ import {
   vec,
 } from "@shopify/react-native-skia";
 import { createNoise2D } from "simplex-noise";
-import { useEffect } from "react";
-import { Button } from "react-native";
-import { useState } from "react";
+import { activeColor } from "../styles/ColorsUI";
 
 function createPoints() {
   const points = [];
   // how many points do we need
-  const numPoints = 6;
+  const numPoints = 8;
   // used to equally space each point around the circle
   const angleStep = (Math.PI * 2) / numPoints;
   // the radius of the circle
-  const rad = 110;
+  const rad = 160;
 
   for (let i = 1; i <= numPoints; i++) {
     // x & y coordinates of the current point
     const theta = i * angleStep;
 
-    const x = 130 + Math.cos(theta) * rad;
-    const y = 130 + Math.sin(theta) * rad;
+    const x = 190 + Math.cos(theta) * rad;
+    const y = 190 + Math.sin(theta) * rad;
 
     // store the point
     points.push({
@@ -58,10 +52,7 @@ function map(n, start1, end1, start2, end2) {
   return ((n - start1) / (end1 - start1)) * (end2 - start2) + start2;
 }
 
-const MorphingCircle = () => {
-  // Decibel State UI
-  const [currDecibels, setCurrDecibels] = useState(0);
-
+const MorphingCircle = ({ currDecibels }) => {
   const clock = useClockValue();
   const points = useValue(createPoints());
   const hueNoiseOffset = useValue(0);
@@ -107,45 +98,18 @@ const MorphingCircle = () => {
     return vec(256, newValue);
   }, [clock]);
 
-  useEffect(() => {
-    AudioRecorder.prepareRecordingAtPath(audioPath, {
-      SampleRate: 22050,
-      Channels: 1,
-      AudioQuality: "Low",
-      AudioEncoding: "aac",
-      MeteringEnabled: true,
-      MeasurementMode: true,
-    });
-  }, []);
-
-  async function startDecibelMetering() {
-    await AudioRecorder.startRecording();
-    await AudioRecorder.resumeRecording();
-
-    AudioRecorder.onProgress = (data) => {
-      setCurrDecibels(Math.trunc(data.currentMetering + 100));
-    };
-  }
-
-  async function stopDecibelMetering() {
-    await AudioRecorder.stopRecording();
-  }
-
   return (
-    <SafeAreaView style={styles.container}>
-      <Button onPress={() => startDecibelMetering()} title="Start Metering" />
-
-      <Button onPress={() => stopDecibelMetering()} title="Stop" />
-
-      <Text className="text-white absolute right-30 z-20">
-        {currDecibels} DB
+    <SafeAreaView className="flex-1 justify-center items-center">
+      <Text className="text-white text-xl font-extrabold absolute right-30 z-20">
+        {currDecibels} dB
       </Text>
       <Canvas style={styles.canvas}>
         <Path path={path}>
           <LinearGradient
             start={vec(0, 0)}
             end={colorNoise}
-            colors={["#409fad", "#05103A"]}
+            colors={["#101C43"]}
+            // colors={["#3F1068", "#4C137E", `${activeColor}`]}
           />
         </Path>
       </Canvas>
@@ -156,13 +120,8 @@ const MorphingCircle = () => {
 export default MorphingCircle;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   canvas: {
-    height: 275,
-    width: 275,
+    height: 375,
+    width: 375,
   },
 });
