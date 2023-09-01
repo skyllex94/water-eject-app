@@ -1,11 +1,4 @@
-import { Switch } from "@rneui/base";
-import {
-  SafeAreaView,
-  View,
-  TouchableOpacity,
-  Button,
-  Text,
-} from "react-native";
+import { SafeAreaView, View, TouchableOpacity, Text } from "react-native";
 
 const DecibelControls = ({ startDecibelMetering, stopDecibelMetering }) => {
   return (

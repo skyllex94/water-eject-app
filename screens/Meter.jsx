@@ -1,13 +1,13 @@
 import { Text, SafeAreaView } from "react-native";
 import { Audio } from "expo-av";
 import MorphingCircle from "../components/MorphingCircle";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import DecibelControls from "../components/MeterTab/DecibelControls";
 
 // Decibel Level imports
 import { AudioRecorder, AudioUtils } from "react-native-audio";
-import { useState } from "react";
-let audioPath = AudioUtils.DocumentDirectoryPath + "/test.aac";
+import { Alert } from "react-native";
+let audioPath = AudioUtils.CachesDirectoryPath + "/test.aac";
 
 export default function MeterScreen() {
   // Decibel State UI
@@ -15,15 +15,6 @@ export default function MeterScreen() {
 
   useEffect(() => {
     askForMicPermission();
-
-    AudioRecorder.prepareRecordingAtPath(audioPath, {
-      SampleRate: 22050,
-      Channels: 1,
-      AudioQuality: "Low",
-      AudioEncoding: "aac",
-      MeteringEnabled: true,
-      MeasurementMode: true,
-    });
   }, []);
 
   async function askForMicPermission() {
@@ -32,15 +23,30 @@ export default function MeterScreen() {
   }
 
   async function startDecibelMetering() {
-    await AudioRecorder.startRecording();
+    const auth = await AudioRecorder.checkAuthorizationStatus();
+    if (auth === "granted") {
+      AudioRecorder.prepareRecordingAtPath(audioPath, {
+        SampleRate: 22050,
+        Channels: 1,
+        AudioQuality: "Low",
+        AudioEncoding: "aac",
+        MeteringEnabled: true,
+        MeasurementMode: true,
+      });
 
-    AudioRecorder.onProgress = (data) => {
-      setCurrDecibels(Math.trunc(data.currentMetering + 100));
-    };
+      await AudioRecorder.startRecording();
+
+      AudioRecorder.onProgress = (data) => {
+        setCurrDecibels(Math.round(data.currentMetering) + 100);
+      };
+    } else {
+      Alert.alert(`Permissions were not granted to use the Decibel Meter.`);
+      await Audio.requestPermissionsAsync();
+    }
   }
 
   async function stopDecibelMetering() {
-    await AudioRecorder.pauseRecording();
+    await AudioRecorder.stopRecording();
   }
 
   return (
@@ -50,6 +56,7 @@ export default function MeterScreen() {
       <DecibelControls
         startDecibelMetering={startDecibelMetering}
         stopDecibelMetering={stopDecibelMetering}
+        setCurrDecibels={setCurrDecibels}
       />
     </SafeAreaView>
   );

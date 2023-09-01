@@ -108,7 +108,7 @@ const MorphingCircle = ({ currDecibels }) => {
           <LinearGradient
             start={vec(0, 0)}
             end={colorNoise}
-            colors={["#101C43"]}
+            colors={["#101C43", "#4C137E"]}
             // colors={["#3F1068", "#4C137E", `${activeColor}`]}
           />
         </Path>
