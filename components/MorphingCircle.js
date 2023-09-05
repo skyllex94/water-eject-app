@@ -13,7 +13,6 @@ import {
   vec,
 } from "@shopify/react-native-skia";
 import { createNoise2D } from "simplex-noise";
-import { activeColor } from "../styles/ColorsUI";
 
 function createPoints() {
   const points = [];
@@ -103,12 +102,13 @@ const MorphingCircle = ({ currDecibels }) => {
       <Text className="text-white text-xl font-extrabold absolute right-30 z-20">
         {currDecibels} dB
       </Text>
+
       <Canvas style={styles.canvas}>
         <Path path={path}>
           <LinearGradient
             start={vec(0, 0)}
             end={colorNoise}
-            colors={["#101C43", "#4C137E"]}
+            colors={["#4C137E", "#101C43"]}
             // colors={["#3F1068", "#4C137E", `${activeColor}`]}
           />
         </Path>

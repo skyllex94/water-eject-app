@@ -12,6 +12,7 @@ let audioPath = AudioUtils.CachesDirectoryPath + "/test.aac";
 export default function MeterScreen() {
   // Decibel State UI
   const [currDecibels, setCurrDecibels] = useState(0);
+  const [isOnMetering, setIsOnMetering] = useState(false);
 
   useEffect(() => {
     askForMicPermission();
@@ -47,6 +48,7 @@ export default function MeterScreen() {
 
   async function stopDecibelMetering() {
     await AudioRecorder.stopRecording();
+    if (setCurrDecibels < 0) setCurrDecibels(0);
   }
 
   return (
@@ -57,6 +59,8 @@ export default function MeterScreen() {
         startDecibelMetering={startDecibelMetering}
         stopDecibelMetering={stopDecibelMetering}
         setCurrDecibels={setCurrDecibels}
+        isOnMetering={isOnMetering}
+        setIsOnMetering={setIsOnMetering}
       />
     </SafeAreaView>
   );
