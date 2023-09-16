@@ -10,6 +10,9 @@ import MeterScreen from "./screens/Meter";
 import Profile from "./screens/Profile";
 import Settings from "./screens/Settings";
 
+// Decibel Metering Imports to be stopped when switching tabs
+import { AudioRecorder } from "react-native-audio";
+
 function App() {
   // States for enabling any sound to play or stop playing
   const [isEnabled120, setIsEnabled120] = useState(false);
@@ -30,6 +33,10 @@ function App() {
     frequency: 3,
     amplitude: 5,
   });
+
+  // Decibel State UI
+  const [currDecibels, setCurrDecibels] = useState(0);
+  const [isOnMetering, setIsOnMetering] = useState(false);
 
   const Tab = createBottomTabNavigator();
 
@@ -54,6 +61,10 @@ function App() {
         setNavigationPaywall,
         visualizerParams,
         setVisualizerParams,
+        currDecibels,
+        setCurrDecibels,
+        isOnMetering,
+        setIsOnMetering,
       }}
     >
       <NavigationContainer>
@@ -79,6 +90,12 @@ function App() {
                   size={size}
                 />
               ),
+            }}
+            listeners={{
+              tabPress: async () => {
+                await AudioRecorder.stopRecording();
+                setIsOnMetering(false);
+              },
             }}
           />
           <Tab.Screen

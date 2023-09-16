@@ -5,10 +5,6 @@ import Programs from "../components/Programs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Paywall from "./Paywall";
 import SoundVisualizer from "../components/SoundVisualizer";
-import { useEffect } from "react";
-
-import { AudioRecorder, AudioUtils } from "react-native-audio";
-let audioPath = AudioUtils.DocumentDirectoryPath + "/test.aac";
 
 const HomeStackScreen = () => {
   // React Native Navigator - Stack Navigator initializer
