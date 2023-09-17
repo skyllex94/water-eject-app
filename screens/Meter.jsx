@@ -1,18 +1,20 @@
 import { Text, SafeAreaView } from "react-native";
 import { Audio } from "expo-av";
 import MorphingCircle from "../components/MorphingCircle";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import DecibelControls from "../components/MeterTab/DecibelControls";
+
+import { Alert } from "react-native";
 
 // Decibel Level imports
 import { AudioRecorder, AudioUtils } from "react-native-audio";
-import { Alert } from "react-native";
-import { Context } from "../components/Context";
+import DecibelInfo from "../components/MeterTab/DecibelInfo";
 let audioPath = AudioUtils.CachesDirectoryPath + "/test.aac";
 
 export default function MeterScreen() {
-  const { currDecibels, setCurrDecibels, isOnMetering, setIsOnMetering } =
-    useContext(Context);
+  // Decibel State UI
+  const [currDecibels, setCurrDecibels] = useState(0);
+  const [isOnMetering, setIsOnMetering] = useState(false);
 
   useEffect(() => {
     askForMicPermission();
@@ -54,11 +56,12 @@ export default function MeterScreen() {
   return (
     <SafeAreaView className="flex-1 bg-[#05103A]">
       <Text className="text-white text-center text-xl">Decibel Meter</Text>
+
       <MorphingCircle currDecibels={currDecibels} />
+      <DecibelInfo />
       <DecibelControls
         startDecibelMetering={startDecibelMetering}
         stopDecibelMetering={stopDecibelMetering}
-        setCurrDecibels={setCurrDecibels}
         isOnMetering={isOnMetering}
         setIsOnMetering={setIsOnMetering}
       />

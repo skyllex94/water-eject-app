@@ -34,10 +34,6 @@ function App() {
     amplitude: 5,
   });
 
-  // Decibel State UI
-  const [currDecibels, setCurrDecibels] = useState(0);
-  const [isOnMetering, setIsOnMetering] = useState(false);
-
   const Tab = createBottomTabNavigator();
 
   return (
@@ -61,10 +57,6 @@ function App() {
         setNavigationPaywall,
         visualizerParams,
         setVisualizerParams,
-        currDecibels,
-        setCurrDecibels,
-        isOnMetering,
-        setIsOnMetering,
       }}
     >
       <NavigationContainer>
@@ -94,7 +86,6 @@ function App() {
             listeners={{
               tabPress: async () => {
                 await AudioRecorder.stopRecording();
-                setIsOnMetering(false);
               },
             }}
           />

@@ -20,10 +20,8 @@ const DecibelControls = ({
     <SafeAreaView>
       <View className="flex-row items-center justify-center my-8">
         <TouchableOpacity
-          className={`${
-            isOnMetering ? "bg-[#4AD0EE]" : "bg-[#101C43]"
-          }  justify-center h-20 rounded-xl`}
-          onPress={() => startStopMetering()}
+          className={`bg-[#101C43] justify-center h-20 rounded-xl`}
+          onPress={() => startDecibelMetering()}
         >
           <View className="flex-1 justify-center my-4">
             <View className="flex-row items-center mx-4">
