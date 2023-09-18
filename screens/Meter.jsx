@@ -1,20 +1,23 @@
-import { Text, SafeAreaView } from "react-native";
+import { Text, SafeAreaView, Alert } from "react-native";
 import { Audio } from "expo-av";
 import MorphingCircle from "../components/MorphingCircle";
 import { useEffect, useState } from "react";
 import DecibelControls from "../components/MeterTab/DecibelControls";
-
-import { Alert } from "react-native";
+import DecibelInfo from "../components/MeterTab/DecibelInfo";
 
 // Decibel Level imports
 import { AudioRecorder, AudioUtils } from "react-native-audio";
-import DecibelInfo from "../components/MeterTab/DecibelInfo";
 let audioPath = AudioUtils.CachesDirectoryPath + "/test.aac";
 
 export default function MeterScreen() {
   // Decibel State UI
   const [currDecibels, setCurrDecibels] = useState(0);
   const [isOnMetering, setIsOnMetering] = useState(false);
+
+  // Metering Options
+  const [sampleRate, setSampleRate] = useState(22050);
+  const [audioQuality, setAudioQuality] = useState("Low");
+  const [audioEncoding, setAudioEncoding] = useState("aac");
 
   useEffect(() => {
     askForMicPermission();
@@ -29,10 +32,10 @@ export default function MeterScreen() {
     const auth = await AudioRecorder.checkAuthorizationStatus();
     if (auth === "granted") {
       AudioRecorder.prepareRecordingAtPath(audioPath, {
-        SampleRate: 22050,
+        SampleRate: sampleRate,
         Channels: 1,
-        AudioQuality: "Low",
-        AudioEncoding: "aac",
+        AudioQuality: audioQuality,
+        AudioEncoding: audioEncoding,
         MeteringEnabled: true,
         MeasurementMode: true,
       });
@@ -49,7 +52,7 @@ export default function MeterScreen() {
   }
 
   async function stopDecibelMetering() {
-    await AudioRecorder.stopRecording();
+    await AudioRecorder.pauseRecording();
     if (currDecibels < 0) setCurrDecibels(0);
   }
 
@@ -58,7 +61,14 @@ export default function MeterScreen() {
       <Text className="text-white text-center text-xl">Decibel Meter</Text>
 
       <MorphingCircle currDecibels={currDecibels} />
-      <DecibelInfo />
+      <DecibelInfo
+        sampleRate={sampleRate}
+        setSampleRate={setSampleRate}
+        audioQuality={audioQuality}
+        setAudioQuality={setAudioQuality}
+        audioEncoding={audioEncoding}
+        setAudioEncoding={setAudioEncoding}
+      />
       <DecibelControls
         startDecibelMetering={startDecibelMetering}
         stopDecibelMetering={stopDecibelMetering}
