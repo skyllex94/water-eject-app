@@ -1,4 +1,4 @@
-import { Text, SafeAreaView, Alert } from "react-native";
+import { Text, SafeAreaView, Alert, View } from "react-native";
 import { Audio } from "expo-av";
 import MorphingCircle from "../components/MorphingCircle";
 import { useEffect, useState } from "react";
@@ -61,20 +61,22 @@ export default function MeterScreen() {
       <Text className="text-white text-center text-xl">Decibel Meter</Text>
 
       <MorphingCircle currDecibels={currDecibels} />
-      <DecibelInfo
-        sampleRate={sampleRate}
-        setSampleRate={setSampleRate}
-        audioQuality={audioQuality}
-        setAudioQuality={setAudioQuality}
-        audioEncoding={audioEncoding}
-        setAudioEncoding={setAudioEncoding}
-      />
-      <DecibelControls
-        startDecibelMetering={startDecibelMetering}
-        stopDecibelMetering={stopDecibelMetering}
-        isOnMetering={isOnMetering}
-        setIsOnMetering={setIsOnMetering}
-      />
+      <View>
+        <DecibelInfo
+          sampleRate={sampleRate}
+          setSampleRate={setSampleRate}
+          audioQuality={audioQuality}
+          setAudioQuality={setAudioQuality}
+          audioEncoding={audioEncoding}
+          setAudioEncoding={setAudioEncoding}
+        />
+        <DecibelControls
+          startDecibelMetering={startDecibelMetering}
+          stopDecibelMetering={stopDecibelMetering}
+          isOnMetering={isOnMetering}
+          setIsOnMetering={setIsOnMetering}
+        />
+      </View>
     </SafeAreaView>
   );
 }

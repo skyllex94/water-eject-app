@@ -13,6 +13,7 @@ import {
   vec,
 } from "@shopify/react-native-skia";
 import { createNoise2D } from "simplex-noise";
+import { useState } from "react";
 
 function createPoints() {
   const points = [];
@@ -21,14 +22,14 @@ function createPoints() {
   // used to equally space each point around the circle
   const angleStep = (Math.PI * 2) / numPoints;
   // the radius of the circle
-  const rad = 160;
+  const rad = 190;
 
   for (let i = 1; i <= numPoints; i++) {
     // x & y coordinates of the current point
     const theta = i * angleStep;
 
-    const x = 190 + Math.cos(theta) * rad;
-    const y = 190 + Math.sin(theta) * rad;
+    const x = 210 + Math.cos(theta) * rad;
+    const y = 210 + Math.sin(theta) * rad;
 
     // store the point
     points.push({
@@ -52,11 +53,15 @@ function map(n, start1, end1, start2, end2) {
 }
 
 const MorphingCircle = ({ currDecibels }) => {
-  const clock = useClockValue();
+  const clock = useClockValue(3000);
   const points = useValue(createPoints());
   const hueNoiseOffset = useValue(0);
   const noise = createNoise2D();
-  const noiseStep = 0.005;
+  const noiseStep = currDecibels < 40 ? 0.005 : currDecibels; // 0.005 default
+  console.log(noiseStep);
+
+  const [minDecibels, setMinDecibels] = useState(currDecibels);
+  const [maxDecibels, setMaxDecibels] = useState(0);
 
   const animate = () => {
     const newPoints = [];
@@ -102,14 +107,23 @@ const MorphingCircle = ({ currDecibels }) => {
       <Text className="text-white text-xl font-extrabold absolute right-30 z-20">
         {currDecibels} dB
       </Text>
-
+      <Text className="text-[#D9DDDC] text-sm absolute left-30 bottom-48 z-20">
+        Min:{" "}
+        {currDecibels < minDecibels
+          ? setMinDecibels(currDecibels)
+          : minDecibels}{" "}
+        dB | Max:{" "}
+        {currDecibels > maxDecibels
+          ? setMaxDecibels(currDecibels)
+          : maxDecibels}{" "}
+        dB
+      </Text>
       <Canvas style={styles.canvas}>
         <Path path={path}>
           <LinearGradient
             start={vec(0, 0)}
             end={colorNoise}
             colors={["#4C137E", "#101C43"]}
-            // colors={["#3F1068", "#4C137E", `${activeColor}`]}
           />
         </Path>
       </Canvas>
@@ -121,7 +135,7 @@ export default MorphingCircle;
 
 const styles = StyleSheet.create({
   canvas: {
-    height: 375,
-    width: 375,
+    height: 425,
+    width: 425,
   },
 });

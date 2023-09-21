@@ -64,8 +64,8 @@ const DecibelInfo = ({
         onPress: () => setAudioEncoding("aac"),
       },
       {
-        text: ".lpcm",
-        onPress: () => setAudioEncoding("lpcm"),
+        text: ".amr",
+        onPress: () => setAudioEncoding("amr"),
       },
       {
         text: ".ima4",
@@ -75,14 +75,13 @@ const DecibelInfo = ({
         text: ".mp2",
         onPress: () => setAudioEncoding("mp2"),
       },
-
       { text: "Cancel", type: "cancel" },
     ];
     Alert.alert(title, message, buttons);
   }
 
   return (
-    <View className="bg-[#101C43] mx-12 rounded-xl py-3">
+    <View className="bg-[#101C43] mx-3 rounded-xl py-3">
       <View className="flex-row items-center justify-between mx-4">
         <View className="flex-row">
           <Text className="text-white mx-2">Sample Rate:</Text>
