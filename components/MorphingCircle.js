@@ -53,15 +53,15 @@ function map(n, start1, end1, start2, end2) {
 }
 
 const MorphingCircle = ({ currDecibels }) => {
-  const clock = useClockValue(3000);
+  const clock = useClockValue();
   const points = useValue(createPoints());
   const hueNoiseOffset = useValue(0);
   const noise = createNoise2D();
   const noiseStep = currDecibels < 40 ? 0.005 : currDecibels; // 0.005 default
   console.log(noiseStep);
 
-  const [minDecibels, setMinDecibels] = useState(currDecibels);
-  const [maxDecibels, setMaxDecibels] = useState(0);
+  const [minDecibels, setMinDecibels] = useState(30);
+  const [maxDecibels, setMaxDecibels] = useState(30);
 
   const animate = () => {
     const newPoints = [];
@@ -99,15 +99,16 @@ const MorphingCircle = ({ currDecibels }) => {
     hueNoiseOffset.current += noiseStep / 2;
     const hueNoise = noise(hueNoiseOffset.current, hueNoiseOffset.current);
     const newValue = map(hueNoise, -1, 1, 0, 360);
+
     return vec(256, newValue);
   }, [clock]);
 
   return (
-    <SafeAreaView className="flex-1 justify-center items-center">
+    <SafeAreaView className="flex justify-center items-center">
       <Text className="text-white text-xl font-extrabold absolute right-30 z-20">
         {currDecibels} dB
       </Text>
-      <Text className="text-[#D9DDDC] text-sm absolute left-30 bottom-48 z-20">
+      <Text className="text-[#D9DDDC] text-sm absolute left-30 bottom-40 z-20">
         Min:{" "}
         {currDecibels < minDecibels
           ? setMinDecibels(currDecibels)

@@ -18,7 +18,7 @@ const DecibelControls = ({
 
   return (
     <SafeAreaView>
-      <View className="flex-row items-center justify-center mx-5 mt-4 mb-8">
+      <View className="flex-row items-center justify-center mx-5 mt-4 mb-10">
         <TouchableOpacity
           className={`bg-[#101C43] justify-center h-20 w-3/4 rounded-xl`}
           onPress={() => startDecibelMetering()}

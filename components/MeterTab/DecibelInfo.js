@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { View, Text, TouchableOpacity, Button, Alert } from "react-native";
+import { AntDesign } from "@expo/vector-icons";
 
 const DecibelInfo = ({
   sampleRate,
@@ -8,6 +10,8 @@ const DecibelInfo = ({
   audioEncoding,
   setAudioEncoding,
 }) => {
+  const [openOptions, setOpenOptions] = useState(true);
+
   function changeSampleRate() {
     const title = "Change sample rate";
     const message =
@@ -82,37 +86,56 @@ const DecibelInfo = ({
 
   return (
     <View className="bg-[#101C43] mx-3 rounded-xl py-3">
-      <View className="flex-row items-center justify-between mx-4">
+      <View className="flex-row items-center justify-between mx-3">
         <View className="flex-row">
-          <Text className="text-white mx-2">Sample Rate:</Text>
-          <Text className="text-white">{sampleRate}</Text>
+          <Text className="text-white mx-2">Decibel Options</Text>
         </View>
 
-        <TouchableOpacity>
-          <Button title="Change" onPress={changeSampleRate}></Button>
+        <TouchableOpacity
+          onPress={() => setOpenOptions((state) => !state)}
+          className="bg-[#05103A] h-10 w-16 rounded-xl items-center justify-center"
+        >
+          {openOptions ? (
+            <AntDesign name="up" size={20} color="white" />
+          ) : (
+            <AntDesign name="down" size={20} color="white" />
+          )}
         </TouchableOpacity>
       </View>
 
-      <View className="flex-row items-center justify-between mx-4">
-        <View className="flex-row">
-          <Text className="text-white mx-2">Audio Quality:</Text>
-          <Text className="text-white">{audioQuality}</Text>
+      <View className={openOptions ? null : "hidden"}>
+        <View className="flex-row items-center justify-between mx-4">
+          <View className="flex-row">
+            <Text className="text-white mx-2">Sample Rate:</Text>
+            <Text className="text-white">{sampleRate}</Text>
+          </View>
+
+          <TouchableOpacity>
+            <Button title="Change" onPress={changeSampleRate}></Button>
+          </TouchableOpacity>
         </View>
 
-        <TouchableOpacity>
-          <Button title="Change" onPress={changeAudioQuality} />
-        </TouchableOpacity>
-      </View>
+        <View className="flex-row items-center justify-between mx-4">
+          <View className="flex-row">
+            <Text className="text-white mx-2">Audio Quality:</Text>
+            <Text className="text-white">{audioQuality}</Text>
+          </View>
 
-      <View className="flex-row items-center justify-between mx-4">
-        <View className="flex-row">
-          <Text className="text-white mx-2">Audio File Format:</Text>
-          <Text className="text-white">.{audioEncoding}</Text>
+          <TouchableOpacity>
+            <Button title="Change" onPress={changeAudioQuality} />
+          </TouchableOpacity>
         </View>
 
-        <TouchableOpacity>
-          <Button title="Change" onPress={changeFileFormat} />
-        </TouchableOpacity>
+        <View className="flex-row items-center justify-between mx-4">
+          <View className="flex-row">
+            <Text className="text-white mx-2">Audio File Format:</Text>
+            <Text className="text-white">.{audioEncoding}</Text>
+          </View>
+
+          <TouchableOpacity>
+            <Button title="Change" onPress={changeFileFormat} />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
