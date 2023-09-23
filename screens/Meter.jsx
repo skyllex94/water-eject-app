@@ -17,7 +17,7 @@ export default function MeterScreen() {
   // Metering Options
   const [sampleRate, setSampleRate] = useState(22050);
   const [audioQuality, setAudioQuality] = useState("Low");
-  const [audioEncoding, setAudioEncoding] = useState("aac");
+  const [audioEncodingBitRate, setAudioEncodingBitRate] = useState("32");
 
   useEffect(() => {
     askForMicPermission();
@@ -35,14 +35,15 @@ export default function MeterScreen() {
         SampleRate: sampleRate,
         Channels: 1,
         AudioQuality: audioQuality,
-        AudioEncoding: audioEncoding,
+        AudioEncoding: "aac",
         MeteringEnabled: true,
         MeasurementMode: true,
+        AudioEncodingBitRate: audioEncodingBitRate,
       });
 
       await AudioRecorder.startRecording();
 
-      AudioRecorder.onProgress = (data) => {
+      AudioRecorder.onProgress = async (data) => {
         setCurrDecibels(Math.round(data.currentMetering) + 100);
       };
     } else {
@@ -67,8 +68,8 @@ export default function MeterScreen() {
           setSampleRate={setSampleRate}
           audioQuality={audioQuality}
           setAudioQuality={setAudioQuality}
-          audioEncoding={audioEncoding}
-          setAudioEncoding={setAudioEncoding}
+          audioEncodingBitRate={audioEncodingBitRate}
+          setAudioEncodingBitRate={setAudioEncodingBitRate}
         />
         <DecibelControls
           startDecibelMetering={startDecibelMetering}

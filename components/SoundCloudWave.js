@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { TouchableOpacity } from "react-native";
-import { View } from "react-native";
 
 import SoundCloudWaveform from "react-native-soundcloud-waveform";
 

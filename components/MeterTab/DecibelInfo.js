@@ -7,13 +7,13 @@ const DecibelInfo = ({
   setSampleRate,
   audioQuality,
   setAudioQuality,
-  audioEncoding,
-  setAudioEncoding,
+  audioEncodingBitRate,
+  setAudioEncodingBitRate,
 }) => {
   const [openOptions, setOpenOptions] = useState(true);
 
   function changeSampleRate() {
-    const title = "Change sample rate";
+    const title = "Change Sample Rate";
     const message =
       "Sampling rate determines the sound frequency range (corresponding to pitch) which can be represented in the digital waveform. ";
     const buttons = [
@@ -36,7 +36,7 @@ const DecibelInfo = ({
   }
 
   function changeAudioQuality() {
-    const title = "Change audio quality";
+    const title = "Change Audio Quality";
     const message =
       "Sound quality is typically an assessment of the accuracy, fidelity, or intelligibility of audio output from an electronic device.";
     const buttons = [
@@ -58,26 +58,18 @@ const DecibelInfo = ({
     Alert.alert(title, message, buttons);
   }
 
-  function changeFileFormat() {
-    const title = "Change file format";
+  function changeAudioEncodingBitRate() {
+    const title = "Change Audio Encoding Bit Rate";
     const message =
-      "Sound quality is typically an assessment of the accuracy, fidelity, or intelligibility of audio output from an electronic device.";
+      "Bitrate is the term used to describe the amount of data being transferred into audio. A higher bitrate generally means better audio quality.";
     const buttons = [
       {
-        text: ".aac (Default)",
-        onPress: () => setAudioEncoding("aac"),
+        text: "32 bits (Default)",
+        onPress: () => setAudioEncodingBitRate(32),
       },
       {
-        text: ".amr",
-        onPress: () => setAudioEncoding("amr"),
-      },
-      {
-        text: ".ima4",
-        onPress: () => setAudioEncoding("ima4"),
-      },
-      {
-        text: ".mp2",
-        onPress: () => setAudioEncoding("mp2"),
+        text: "64 bits",
+        onPress: () => setAudioEncodingBitRate(64),
       },
       { text: "Cancel", type: "cancel" },
     ];
@@ -88,7 +80,7 @@ const DecibelInfo = ({
     <View className="bg-[#101C43] mx-3 rounded-xl py-3">
       <View className="flex-row items-center justify-between mx-3">
         <View className="flex-row">
-          <Text className="text-white mx-2">Decibel Options</Text>
+          <Text className="text-white mx-2">Sound Options</Text>
         </View>
 
         <TouchableOpacity
@@ -105,9 +97,9 @@ const DecibelInfo = ({
 
       <View className={openOptions ? null : "hidden"}>
         <View className="flex-row items-center justify-between mx-4">
-          <View className="flex-row">
+          <View className="flex-row ">
             <Text className="text-white mx-2">Sample Rate:</Text>
-            <Text className="text-white">{sampleRate}</Text>
+            <Text className="text-white">{sampleRate} Hz</Text>
           </View>
 
           <TouchableOpacity>
@@ -128,12 +120,12 @@ const DecibelInfo = ({
 
         <View className="flex-row items-center justify-between mx-4">
           <View className="flex-row">
-            <Text className="text-white mx-2">Audio File Format:</Text>
-            <Text className="text-white">.{audioEncoding}</Text>
+            <Text className="text-white mx-2">Audio Encoding Bit Rate:</Text>
+            <Text className="text-white">{audioEncodingBitRate} bits</Text>
           </View>
 
           <TouchableOpacity>
-            <Button title="Change" onPress={changeFileFormat} />
+            <Button title="Change" onPress={changeAudioEncodingBitRate} />
           </TouchableOpacity>
         </View>
       </View>

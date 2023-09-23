@@ -3,6 +3,8 @@ import { SafeAreaView, View, TouchableOpacity, Text } from "react-native";
 
 import highFreq from "../../assets/icons/dec_icon.png";
 
+import { CircularProgressbar } from "react-circular-progressbar";
+
 const DecibelControls = ({
   startDecibelMetering,
   stopDecibelMetering,
@@ -18,6 +20,7 @@ const DecibelControls = ({
 
   return (
     <SafeAreaView>
+      <View></View>
       <View className="flex-row items-center justify-center mx-5 mt-4 mb-10">
         <TouchableOpacity
           className={`bg-[#101C43] justify-center h-20 w-3/4 rounded-xl`}
