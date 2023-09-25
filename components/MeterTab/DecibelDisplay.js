@@ -1,6 +1,5 @@
 import React from "react";
 import { SafeAreaView, StyleSheet, Text } from "react-native";
-
 import { spline } from "@georgedoescode/spline";
 
 // Circular Progressbar
@@ -55,13 +54,12 @@ function map(n, start1, end1, start2, end2) {
   return ((n - start1) / (end1 - start1)) * (end2 - start2) + start2;
 }
 
-const MorphingCircle = ({ currDecibels }) => {
+const DecibelDisplay = ({ currDecibels }) => {
   const clock = useClockValue();
   const points = useValue(createPoints());
   const hueNoiseOffset = useValue(0);
   const noise = createNoise2D();
-  const noiseStep = currDecibels < 40 ? 0.005 : currDecibels; // 0.005 default
-  console.log(noiseStep);
+  const noiseStep = 0.005;
 
   const [minDecibels, setMinDecibels] = useState(30);
   const [maxDecibels, setMaxDecibels] = useState(30);
@@ -109,16 +107,15 @@ const MorphingCircle = ({ currDecibels }) => {
   return (
     <SafeAreaView className="flex justify-center items-center">
       <AnimatedCircularProgress
-        className="absolute z-20"
+        className={"absolute z-20"}
         size={260}
         width={18}
         rotation={240}
         fill={currDecibels}
         lineCap="round"
-        arcSweepAngle="240"
+        arcSweepAngle={240}
         backgroundWidth={10}
-        tintColor="#00e0ff"
-        onAnimationComplete={() => console.log("onAnimationComplete")}
+        tintColor="#00E0ff"
         backgroundColor="#4C137E"
       />
 
@@ -149,7 +146,7 @@ const MorphingCircle = ({ currDecibels }) => {
   );
 };
 
-export default MorphingCircle;
+export default DecibelDisplay;
 
 const styles = StyleSheet.create({
   canvas: {

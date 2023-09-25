@@ -33,7 +33,7 @@ function Frequencies() {
     setVisualizerParams,
   } = useContext(Context);
 
-  const defaultVisualizerParams = { speed: 500, frequency: 2, amplitude: 15 };
+  const defaultVisualizerParams = { speed: 500, frequency: 3, amplitude: 10 };
 
   useEffect(() => {
     playAudioInSilentMode();

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { Audio } from "expo-av";
 
 import { Context } from "./components/Context";
 import HomeStackScreen from "./screens/Home";
@@ -29,10 +30,21 @@ function App() {
 
   // Sound Visualizer State
   const [visualizerParams, setVisualizerParams] = useState({
-    speed: 700,
+    speed: 500,
     frequency: 3,
     amplitude: 5,
   });
+
+  function turnOffAllFreq() {
+    if (isEnabled120) setIsEnabled120(false);
+    if (isEnabled160) setIsEnabled160(false);
+    if (isEnabled300) setIsEnabled300(false);
+    if (isEnabled500) setIsEnabled500(false);
+    if (isEnabledPrep) setIsEnabledPrep(false);
+    if (isEnabledMain) setIsEnabledMain(false);
+
+    setVisualizerParams({ speed: 500, frequency: 2, amplitude: 10 });
+  }
 
   const Tab = createBottomTabNavigator();
 
@@ -105,6 +117,13 @@ function App() {
                   size={size}
                 />
               ),
+            }}
+            listeners={{
+              tabPress: async () => {
+                turnOffAllFreq();
+
+                if (currSound) currSound.unloadAsync() || undefined;
+              },
             }}
           />
           <Tab.Screen

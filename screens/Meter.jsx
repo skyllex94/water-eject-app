@@ -1,6 +1,6 @@
 import { Text, SafeAreaView, Alert, View } from "react-native";
 import { Audio } from "expo-av";
-import MorphingCircle from "../components/MorphingCircle";
+import DecibelDisplay from "../components/MeterTab/DecibelDisplay";
 import { useEffect, useState } from "react";
 import DecibelControls from "../components/MeterTab/DecibelControls";
 import DecibelInfo from "../components/MeterTab/DecibelInfo";
@@ -11,7 +11,7 @@ let audioPath = AudioUtils.CachesDirectoryPath + "/test.aac";
 
 export default function MeterScreen() {
   // Decibel State UI
-  const [currDecibels, setCurrDecibels] = useState(0);
+  const [currDecibels, setCurrDecibels] = useState(30);
   const [isOnMetering, setIsOnMetering] = useState(false);
 
   // Metering Options
@@ -61,23 +61,21 @@ export default function MeterScreen() {
     <SafeAreaView className="flex-1 bg-[#05103A]">
       <Text className="text-white text-center text-xl">Decibel Meter</Text>
 
-      <MorphingCircle currDecibels={currDecibels} />
-      <View>
-        <DecibelInfo
-          sampleRate={sampleRate}
-          setSampleRate={setSampleRate}
-          audioQuality={audioQuality}
-          setAudioQuality={setAudioQuality}
-          audioEncodingBitRate={audioEncodingBitRate}
-          setAudioEncodingBitRate={setAudioEncodingBitRate}
-        />
-        <DecibelControls
-          startDecibelMetering={startDecibelMetering}
-          stopDecibelMetering={stopDecibelMetering}
-          isOnMetering={isOnMetering}
-          setIsOnMetering={setIsOnMetering}
-        />
-      </View>
+      <DecibelDisplay currDecibels={currDecibels} />
+      <DecibelInfo
+        sampleRate={sampleRate}
+        setSampleRate={setSampleRate}
+        audioQuality={audioQuality}
+        setAudioQuality={setAudioQuality}
+        audioEncodingBitRate={audioEncodingBitRate}
+        setAudioEncodingBitRate={setAudioEncodingBitRate}
+      />
+      <DecibelControls
+        startDecibelMetering={startDecibelMetering}
+        stopDecibelMetering={stopDecibelMetering}
+        isOnMetering={isOnMetering}
+        setIsOnMetering={setIsOnMetering}
+      />
     </SafeAreaView>
   );
 }

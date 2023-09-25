@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { View, Text, TouchableOpacity, Button, Alert } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
+import { SimpleLineIcons } from "@expo/vector-icons";
 
 const DecibelInfo = ({
   sampleRate,
@@ -78,19 +79,19 @@ const DecibelInfo = ({
 
   return (
     <View className="bg-[#101C43] mx-3 rounded-xl py-3">
-      <View className="flex-row items-center justify-between mx-3">
+      <View className="flex-row items-center justify-between mx-3 mb-1">
         <View className="flex-row">
           <Text className="text-white mx-2">Sound Options</Text>
         </View>
 
         <TouchableOpacity
           onPress={() => setOpenOptions((state) => !state)}
-          className="bg-[#05103A] h-10 w-16 rounded-xl items-center justify-center"
+          className="h-10 w-12 rounded-xl items-center justify-center"
         >
           {openOptions ? (
-            <AntDesign name="up" size={20} color="white" />
+            <Entypo name="chevron-up" size={24} color="white" />
           ) : (
-            <AntDesign name="down" size={20} color="white" />
+            <Entypo name="chevron-down" size={24} color="white" />
           )}
         </TouchableOpacity>
       </View>
@@ -102,8 +103,13 @@ const DecibelInfo = ({
             <Text className="text-white">{sampleRate} Hz</Text>
           </View>
 
-          <TouchableOpacity>
-            <Button title="Change" onPress={changeSampleRate}></Button>
+          <TouchableOpacity className="bg-[#05103A] h-10 w-10 mb-1 items-center justify-center rounded-lg">
+            <SimpleLineIcons
+              name="options"
+              size={24}
+              color="white"
+              onPress={changeSampleRate}
+            />
           </TouchableOpacity>
         </View>
 
@@ -113,8 +119,13 @@ const DecibelInfo = ({
             <Text className="text-white">{audioQuality}</Text>
           </View>
 
-          <TouchableOpacity>
-            <Button title="Change" onPress={changeAudioQuality} />
+          <TouchableOpacity className="bg-[#05103A] h-10 w-10 mb-1 items-center justify-center rounded-lg">
+            <SimpleLineIcons
+              name="options"
+              size={24}
+              color="white"
+              onPress={changeAudioQuality}
+            />
           </TouchableOpacity>
         </View>
 
@@ -124,8 +135,13 @@ const DecibelInfo = ({
             <Text className="text-white">{audioEncodingBitRate} bits</Text>
           </View>
 
-          <TouchableOpacity>
-            <Button title="Change" onPress={changeAudioEncodingBitRate} />
+          <TouchableOpacity className="bg-[#05103A] h-10 w-10 items-center justify-center rounded-lg">
+            <SimpleLineIcons
+              name="options"
+              size={24}
+              color="white"
+              onPress={changeAudioEncodingBitRate}
+            />
           </TouchableOpacity>
         </View>
       </View>
