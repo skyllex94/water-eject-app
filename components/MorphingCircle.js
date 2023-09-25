@@ -3,6 +3,9 @@ import { SafeAreaView, StyleSheet, Text } from "react-native";
 
 import { spline } from "@georgedoescode/spline";
 
+// Circular Progressbar
+import { AnimatedCircularProgress } from "react-native-circular-progress";
+
 import {
   Canvas,
   LinearGradient,
@@ -105,7 +108,21 @@ const MorphingCircle = ({ currDecibels }) => {
 
   return (
     <SafeAreaView className="flex justify-center items-center">
-      <Text className="text-white text-xl font-extrabold absolute right-30 z-20">
+      <AnimatedCircularProgress
+        className="absolute z-20"
+        size={260}
+        width={18}
+        rotation={240}
+        fill={currDecibels}
+        lineCap="round"
+        arcSweepAngle="240"
+        backgroundWidth={10}
+        tintColor="#00e0ff"
+        onAnimationComplete={() => console.log("onAnimationComplete")}
+        backgroundColor="#4C137E"
+      />
+
+      <Text className="text-white text-xl font-extrabold absolute z-20">
         {currDecibels} dB
       </Text>
       <Text className="text-[#D9DDDC] text-sm absolute left-30 bottom-40 z-20">
