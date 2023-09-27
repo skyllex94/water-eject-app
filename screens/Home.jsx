@@ -14,7 +14,7 @@ const HomeStackScreen = () => {
     <Stack.Navigator initialRouteName="HomeRoute">
       <Stack.Screen
         name="HomeStack"
-        component={HomeScreen}
+        component={WaterEjection}
         options={{
           tabBarLabel: "Home",
           headerShown: false,
@@ -36,7 +36,7 @@ const HomeStackScreen = () => {
   );
 };
 
-function HomeScreen({ navigation }) {
+function WaterEjection({ navigation }) {
   return (
     <SafeAreaView className="flex-1 bg-[#05103A]">
       <SoundVisualizer />

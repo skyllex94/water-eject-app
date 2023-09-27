@@ -8,7 +8,7 @@ import { Audio } from "expo-av";
 import { Context } from "./components/Context";
 import HomeStackScreen from "./screens/Home";
 import MeterScreen from "./screens/Meter";
-import Test from "./screens/Test";
+import SoundTest from "./screens/SoundTest";
 import Settings from "./screens/Settings";
 
 // Decibel Metering Imports to be stopped when switching tabs
@@ -128,7 +128,7 @@ function App() {
           />
           <Tab.Screen
             name="Audio Tests"
-            component={Test}
+            component={SoundTest}
             options={{
               tabBarLabel: "Sound Tests",
               headerShown: false,
