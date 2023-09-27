@@ -8,7 +8,7 @@ import { Audio } from "expo-av";
 import { Context } from "./components/Context";
 import HomeStackScreen from "./screens/Home";
 import MeterScreen from "./screens/Meter";
-import Profile from "./screens/Profile";
+import Test from "./screens/Test";
 import Settings from "./screens/Settings";
 
 // Decibel Metering Imports to be stopped when switching tabs
@@ -79,10 +79,10 @@ function App() {
         />
         <Tab.Navigator>
           <Tab.Screen
-            name="Home"
+            name="Water Eject"
             component={HomeStackScreen}
             options={{
-              tabBarLabel: "Home",
+              tabBarLabel: "Water Eject",
               headerShown: false,
               tabBarStyle: {
                 backgroundColor: "#101C40",
@@ -105,7 +105,7 @@ function App() {
             name="Meter"
             component={MeterScreen}
             options={{
-              tabBarLabel: "Meter",
+              tabBarLabel: "dB Meter",
               headerShown: false,
               tabBarStyle: {
                 backgroundColor: "#101C40",
@@ -127,17 +127,17 @@ function App() {
             }}
           />
           <Tab.Screen
-            name="Profile"
-            component={Profile}
+            name="Audio Tests"
+            component={Test}
             options={{
-              tabBarLabel: "Profile",
+              tabBarLabel: "Sound Tests",
               headerShown: false,
               tabBarStyle: {
                 backgroundColor: "#101C40",
               },
               tabBarIcon: ({ color, size }) => (
                 <MaterialCommunityIcons
-                  name="account"
+                  name="atom-variant"
                   color={"lightgray"}
                   size={size}
                 />
