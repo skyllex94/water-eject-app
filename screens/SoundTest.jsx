@@ -1,5 +1,6 @@
 import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
+import { Audio } from "expo-av";
 
 import { Entypo } from "@expo/vector-icons";
 import OverallTest from "../components/SoundTestTab/OverallTest";
@@ -8,11 +9,21 @@ export default function SoundTest() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currSoundTest, setCurrSoundTest] = useState(null);
 
+  async function playPauseController() {
+    if (currSoundTest) setCurrSoundTest(currSoundTest.pauseAsync());
+    else setCurrSoundTest(currSoundTest.playAsync());
+
+    setIsPlaying(!isPlaying);
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-[#05103A]">
       <Text className="text-white text-xl text-center">Sound Test</Text>
 
-      <OverallTest />
+      <OverallTest
+        currSoundTest={currSoundTest}
+        setCurrSoundTest={setCurrSoundTest}
+      />
 
       <View className="flex-row relative items-center justify-center">
         <TouchableOpacity
@@ -26,7 +37,7 @@ export default function SoundTest() {
           className="bg-[#38477f] items-center absolute z-10 
         justify-center top-5 rounded-full border-4 border-white border-solid h-28 w-28"
           activeOpacity={1}
-          onPress={() => setIsPlaying(!isPlaying)}
+          onPress={playPauseController}
         >
           {isPlaying ? (
             <Entypo name="controller-paus" size={60} color="white" />
