@@ -16,7 +16,7 @@ export default function SoundTestWave({
         onPress={enableSound}
         waveformUrl={waveform}
         height={25}
-        width={380} // TODO: find out a way to make it dynamic value
+        width={320} // TODO: find out a way to make it dynamic value
         inactive="#E5E4E2"
         inactiveInverse="white"
         active="#277a8c"

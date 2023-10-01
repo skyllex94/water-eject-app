@@ -6,7 +6,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { startTimer, stopTimer, stopWaveformTimer } from "../util/Funcs";
 import SoundTestWave from "./SoundTestWave";
 
-export default function OverallTest({ currSoundTest, setCurrSoundTest }) {
+export default function BassTest({ currSoundTest, setCurrSoundTest }) {
   const [isEnabledJKSong, setIsEnabledJKSong] = useState(false);
   const [isEnabledGoldLinkSong, setIsEnabledGoldLinkSong] = useState(false);
 
@@ -92,7 +92,7 @@ export default function OverallTest({ currSoundTest, setCurrSoundTest }) {
   }
 
   return (
-    <View className="bg-[#101C43] justify-center rounded-xl mx-3 mt-8">
+    <View className="bg-[#101C43] justify-center rounded-xl mx-3 mt-4">
       <Text className="text-white ml-3 mt-3">Test Overall Sound</Text>
 
       <TouchableOpacity className="overall-sound1 items-center">

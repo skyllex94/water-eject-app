@@ -4,6 +4,8 @@ import { Audio } from "expo-av";
 
 import { Entypo } from "@expo/vector-icons";
 import OverallTest from "../components/SoundTestTab/OverallTest";
+import BassTest from "../components/SoundTestTab/BassTest";
+import SpeakersTest from "../components/SoundTestTab/SpeakersTest";
 
 export default function SoundTest() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -25,7 +27,14 @@ export default function SoundTest() {
         setCurrSoundTest={setCurrSoundTest}
       />
 
-      <View className="flex-row relative items-center justify-center">
+      <BassTest
+        currSoundTest={currSoundTest}
+        setCurrSoundTest={setCurrSoundTest}
+      />
+
+      <SpeakersTest />
+
+      {/* <View className="flex-row relative items-center justify-center">
         <TouchableOpacity
           className="bg-[#1a2b68] items-center justify-center 
         rounded-l-full border-4 border-white h-20 w-36 mt-10 pr-10"
@@ -52,7 +61,7 @@ export default function SoundTest() {
         >
           <Entypo name="controller-next" size={40} color="white" />
         </TouchableOpacity>
-      </View>
+      </View> */}
     </SafeAreaView>
   );
 }
