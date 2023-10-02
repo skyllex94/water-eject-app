@@ -93,14 +93,12 @@ export default function BassTest({ currSoundTest, setCurrSoundTest }) {
 
   return (
     <View className="bg-[#101C43] justify-center rounded-xl mx-3 mt-4">
-      <Text className="text-white ml-3 mt-3">Test Overall Sound</Text>
+      <Text className="text-white ml-3 m-4">Bass Accuracy</Text>
 
       <TouchableOpacity className="overall-sound1 items-center">
         <TouchableOpacity
           className={`${
-            isEnabledJKSong
-              ? "w-[95%] bg-[#4AD0EE] mt-3 rounded-xl"
-              : "w-[95%] mt-3"
+            isEnabledJKSong ? "w-[95%] bg-[#4AD0EE] rounded-xl" : "w-[95%]"
           } `}
           onPress={enableJKSong}
         >

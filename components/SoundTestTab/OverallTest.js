@@ -1,7 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { Audio } from "expo-av";
+
 import Icon from "react-native-vector-icons/FontAwesome";
+import { Tooltip } from "@rneui/themed";
 
 import { startTimer, stopTimer, stopWaveformTimer } from "../util/Funcs";
 import SoundTestWave from "./SoundTestWave";
@@ -92,15 +94,13 @@ export default function OverallTest({ currSoundTest, setCurrSoundTest }) {
   }
 
   return (
-    <View className="bg-[#101C43] justify-center rounded-xl mx-3 mt-8">
-      <Text className="text-white ml-3 mt-3">Test Overall Sound</Text>
+    <View className="bg-[#101C43] justify-center rounded-xl mx-3">
+      <Text className="text-white m-4">Overall Sound</Text>
 
       <TouchableOpacity className="overall-sound1 items-center">
         <TouchableOpacity
           className={`${
-            isEnabledJKSong
-              ? "w-[95%] bg-[#4AD0EE] mt-3 rounded-xl"
-              : "w-[95%] mt-3"
+            isEnabledJKSong ? "w-[95%] bg-[#4AD0EE] rounded-xl" : "w-[95%]"
           } `}
           onPress={enableJKSong}
         >

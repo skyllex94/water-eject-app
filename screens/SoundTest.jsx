@@ -1,8 +1,6 @@
-import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView, Text, ScrollView } from "react-native";
 import React, { useState } from "react";
-import { Audio } from "expo-av";
 
-import { Entypo } from "@expo/vector-icons";
 import OverallTest from "../components/SoundTestTab/OverallTest";
 import BassTest from "../components/SoundTestTab/BassTest";
 import SpeakersTest from "../components/SoundTestTab/SpeakersTest";
@@ -20,19 +18,29 @@ export default function SoundTest() {
 
   return (
     <SafeAreaView className="flex-1 bg-[#05103A]">
-      <Text className="text-white text-xl text-center">Sound Test</Text>
+      <Text className="text-white text-xl text-center mb-4">Sound Tests</Text>
 
-      <OverallTest
-        currSoundTest={currSoundTest}
-        setCurrSoundTest={setCurrSoundTest}
-      />
+      <ScrollView>
+        <OverallTest
+          currSoundTest={currSoundTest}
+          setCurrSoundTest={setCurrSoundTest}
+        />
 
-      <BassTest
-        currSoundTest={currSoundTest}
-        setCurrSoundTest={setCurrSoundTest}
-      />
+        <BassTest
+          currSoundTest={currSoundTest}
+          setCurrSoundTest={setCurrSoundTest}
+        />
 
-      <SpeakersTest />
+        <SpeakersTest
+          currSoundTest={currSoundTest}
+          setCurrSoundTest={setCurrSoundTest}
+        />
+
+        <SpeakersTest
+          currSoundTest={currSoundTest}
+          setCurrSoundTest={setCurrSoundTest}
+        />
+      </ScrollView>
 
       {/* <View className="flex-row relative items-center justify-center">
         <TouchableOpacity
