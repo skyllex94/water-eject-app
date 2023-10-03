@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import OverallTest from "../components/SoundTestTab/OverallTest";
 import BassTest from "../components/SoundTestTab/BassTest";
 import SpeakersTest from "../components/SoundTestTab/SpeakersTest";
+import PolarityTest from "../components/SoundTestTab/PolarityTest";
 
 export default function SoundTest() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -36,7 +37,7 @@ export default function SoundTest() {
           setCurrSoundTest={setCurrSoundTest}
         />
 
-        <SpeakersTest
+        <PolarityTest
           currSoundTest={currSoundTest}
           setCurrSoundTest={setCurrSoundTest}
         />

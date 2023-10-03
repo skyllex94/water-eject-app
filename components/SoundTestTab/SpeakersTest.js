@@ -89,7 +89,7 @@ export default function SpeakersTest({ currSoundTest, setCurrSoundTest }) {
         </TouchableOpacity>
       </View>
 
-      <View className="flex-row bg-[#101C43] justify-between mb-3">
+      <View className="flex-row bg-[#101C43] items-center justify-between mb-3">
         <TouchableOpacity onPress={enableRightSpeaker}>
           <View
             className={`${
@@ -112,6 +112,8 @@ export default function SpeakersTest({ currSoundTest, setCurrSoundTest }) {
           </View>
         </TouchableOpacity>
 
+        <View className="h-[75%] w-[1px] bg-[#05103A]" />
+
         <TouchableOpacity onPress={enableBothSpeakers}>
           <View
             className={`${
@@ -133,6 +135,8 @@ export default function SpeakersTest({ currSoundTest, setCurrSoundTest }) {
             <Text className="text-white mt-3">Both Sides</Text>
           </View>
         </TouchableOpacity>
+
+        <View className="h-[75%] w-[1px] bg-[#05103A]" />
 
         <TouchableOpacity onPress={enableLeftSpeaker}>
           <View
