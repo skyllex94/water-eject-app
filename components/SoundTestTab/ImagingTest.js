@@ -5,23 +5,23 @@ import { Audio } from "expo-av";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-export default function SpeakersTest({ currSoundTest, setCurrSoundTest }) {
-  const [isEnabledLeft, setIsEnabledLeft] = useState(false);
-  const [isEnabledRight, setIsEnabledRight] = useState(false);
-  const [isEnabledBoth, setIsEnabledBoth] = useState(false);
+export default function ImagingTest({ currSoundTest, setCurrSoundTest }) {
+  const [isEnabledOver, setIsEnabledOver] = useState(false);
+  const [isEnabledLateral, setIsEnabledLateral] = useState(false);
+  const [isEnabledBehind, setIsEnabledBehind] = useState(false);
 
-  async function enableRightSpeaker() {
-    setIsEnabledLeft(false);
-    setIsEnabledBoth(false);
-    setIsEnabledRight((prev) => !prev);
+  async function enableOverTest() {
+    setIsEnabledBehind(false);
+    setIsEnabledLateral(false);
+    setIsEnabledOver((prev) => !prev);
 
-    await playSpeaker();
+    await playTest();
 
-    async function playSpeaker() {
-      if (!isEnabledRight) {
+    async function playTest() {
+      if (!isEnabledOver) {
         if (currSoundTest) currSoundTest.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/soundtests/right-speaker.mp3"),
+          require("../../assets/soundtests/over.mp3"),
           {
             isLooping: true,
           }
@@ -33,18 +33,18 @@ export default function SpeakersTest({ currSoundTest, setCurrSoundTest }) {
     }
   }
 
-  async function enableLeftSpeaker() {
-    setIsEnabledRight(false);
-    setIsEnabledBoth(false);
-    setIsEnabledLeft((prev) => !prev);
+  async function enableLateral() {
+    setIsEnabledOver(false);
+    setIsEnabledBehind(false);
+    setIsEnabledLateral((prev) => !prev);
 
-    await playSpeaker();
+    await playTest();
 
-    async function playSpeaker() {
-      if (!isEnabledLeft) {
+    async function playTest() {
+      if (!isEnabledLateral) {
         if (currSoundTest) currSoundTest.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/soundtests/left-speaker.mp3"),
+          require("../../assets/soundtests/lateral.mp3"),
           {
             isLooping: true,
           }
@@ -56,18 +56,18 @@ export default function SpeakersTest({ currSoundTest, setCurrSoundTest }) {
     }
   }
 
-  async function enableBothSpeakers() {
-    setIsEnabledRight(false);
-    setIsEnabledLeft(false);
-    setIsEnabledBoth((prev) => !prev);
+  async function enableBehind() {
+    setIsEnabledOver(false);
+    setIsEnabledLateral(false);
+    setIsEnabledBehind((prev) => !prev);
 
-    await playSpeaker();
+    await playTest();
 
-    async function playSpeaker() {
-      if (!isEnabledBoth) {
+    async function playTest() {
+      if (!isEnabledBehind) {
         if (currSoundTest) currSoundTest.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/soundtests/both-speakers.mp3"),
+          require("../../assets/soundtests/behind.mp3"),
           {
             isLooping: true,
           }
@@ -78,92 +78,85 @@ export default function SpeakersTest({ currSoundTest, setCurrSoundTest }) {
       } else currSoundTest.unloadAsync() || undefined;
     }
   }
-
-  const openSpeakerIsolationInfo = () => {
-    console.log("Here to Disappear");
-  };
 
   return (
-    <View className="bg-[#101C43] justify-center rounded-xl mx-3 mt-4">
+    <View className="bg-[#101C43] justify-center rounded-xl mx-3 my-4">
       <View className="flex-row items-center justify-between">
-        <Text className="text-white m-4">Speaker Isolation</Text>
+        <Text className="text-white m-4">Stereo Imaging</Text>
 
-        <TouchableOpacity
-          onPress={openSpeakerIsolationInfo}
-          className="bg-[#05103A] items-center justify-center h-8 w-8 mr-3 rounded"
-        >
+        <TouchableOpacity className="bg-[#05103A] items-center justify-center h-8 w-8 mr-3 rounded">
           <FontAwesome5 name="info" size={20} color="white" />
         </TouchableOpacity>
       </View>
 
       <View className="flex-row bg-[#101C43] items-center justify-between mb-3">
-        <TouchableOpacity onPress={enableRightSpeaker}>
+        <TouchableOpacity onPress={enableOverTest}>
           <View
             className={`${
-              isEnabledRight ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              isEnabledOver ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 ml-3 rounded-xl`}
           >
             <View
               className={`${
-                isEnabledRight ? "bg-[#74daf1]" : "bg-[#101C43]"
+                isEnabledOver ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={isEnabledRight ? "pause" : "play"}
+                name={isEnabledOver ? "pause" : "play"}
                 size={30}
                 color="white"
               />
             </View>
 
-            <Text className="text-white text-xs mt-3">Front Speaker</Text>
+            <Text className="text-white text-xs mt-3">Arc Over</Text>
           </View>
         </TouchableOpacity>
 
         <View className="h-[75%] w-[1px] bg-[#05103A]" />
 
-        <TouchableOpacity onPress={enableBothSpeakers}>
+        <TouchableOpacity onPress={enableLateral}>
           <View
             className={`${
-              isEnabledBoth ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              isEnabledLateral ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 rounded-xl`}
           >
             <View
               className={`${
-                isEnabledBoth ? "bg-[#74daf1]" : "bg-[#101C43]"
+                isEnabledLateral ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={isEnabledBoth ? "pause" : "play"}
+                name={isEnabledLateral ? "pause" : "play"}
                 size={30}
                 color="white"
               />
             </View>
 
-            <Text className="text-white text-xs mt-3">Both Sides</Text>
+            <Text className="text-white text-xs mt-3">Lateral</Text>
           </View>
         </TouchableOpacity>
 
         <View className="h-[75%] w-[1px] bg-[#05103A]" />
 
-        <TouchableOpacity onPress={enableLeftSpeaker}>
+        <TouchableOpacity onPress={enableBehind}>
           <View
             className={`${
-              isEnabledLeft ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              isEnabledBehind ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 mr-3 rounded-xl`}
           >
             <View
               className={`${
-                isEnabledLeft ? "bg-[#74daf1]" : "bg-[#101C43]"
+                isEnabledBehind ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={isEnabledLeft ? "pause" : "play"}
+                name={isEnabledBehind ? "pause" : "play"}
                 size={30}
                 color="white"
               />
             </View>
 
-            <Text className="text-white text-xs mt-3">Back Speaker</Text>
+            <Text className="text-white text-xs mt-3">Behind</Text>
           </View>
         </TouchableOpacity>
       </View>

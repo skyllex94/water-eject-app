@@ -5,8 +5,28 @@ import OverallTest from "../components/SoundTestTab/OverallTest";
 import BassTest from "../components/SoundTestTab/BassTest";
 import SpeakersTest from "../components/SoundTestTab/SpeakersTest";
 import PolarityTest from "../components/SoundTestTab/PolarityTest";
+import ImagingTest from "../components/SoundTestTab/ImagingTest";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Paywall from "./Paywall";
 
-export default function SoundTest() {
+// React Native Navigator - Stack Navigator initializer
+const Stack = createNativeStackNavigator();
+
+export default function SoundTestStack() {
+  <Stack.Navigator initialRouteName="SoundTests">
+    <Stack.Screen
+      name="SoundTests"
+      component={SoundTests}
+      options={{
+        tabBarStyle: {
+          backgroundColor: "#101C43",
+        },
+      }}
+    />
+  </Stack.Navigator>;
+}
+
+function SoundTests() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currSoundTest, setCurrSoundTest] = useState(null);
 
@@ -27,17 +47,21 @@ export default function SoundTest() {
           setCurrSoundTest={setCurrSoundTest}
         />
 
+        <SpeakersTest
+          currSoundTest={currSoundTest}
+          setCurrSoundTest={setCurrSoundTest}
+        />
         <BassTest
           currSoundTest={currSoundTest}
           setCurrSoundTest={setCurrSoundTest}
         />
 
-        <SpeakersTest
+        <PolarityTest
           currSoundTest={currSoundTest}
           setCurrSoundTest={setCurrSoundTest}
         />
 
-        <PolarityTest
+        <ImagingTest
           currSoundTest={currSoundTest}
           setCurrSoundTest={setCurrSoundTest}
         />

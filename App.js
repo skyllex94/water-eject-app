@@ -3,12 +3,11 @@ import { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { Audio } from "expo-av";
 
 import { Context } from "./components/Context";
 import HomeStackScreen from "./screens/Home";
 import MeterScreen from "./screens/Meter";
-import SoundTest from "./screens/SoundTest";
+import SoundTestStack from "./screens/SoundTest";
 import Settings from "./screens/Settings";
 
 // Decibel Metering Imports to be stopped when switching tabs
@@ -82,7 +81,7 @@ function App() {
             name="Water Eject"
             component={HomeStackScreen}
             options={{
-              tabBarLabel: "Water Eject",
+              tabBarLabel: "Water Clearence",
               headerShown: false,
               tabBarStyle: {
                 backgroundColor: "#101C40",
@@ -127,8 +126,8 @@ function App() {
             }}
           />
           <Tab.Screen
-            name="Audio Tests"
-            component={SoundTest}
+            name="Sound Tests"
+            component={SoundTestStack}
             options={{
               tabBarLabel: "Sound Tests",
               headerShown: false,
