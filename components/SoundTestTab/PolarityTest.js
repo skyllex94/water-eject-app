@@ -5,7 +5,11 @@ import { Audio } from "expo-av";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-export default function PolarityTest({ currSoundTest, setCurrSoundTest }) {
+export default function PolarityTest({
+  currSoundTest,
+  setCurrSoundTest,
+  navigation,
+}) {
   const [isEnabled75hzInPhase, setIsEnabled75hzInPhase] = useState(false);
   const [isEnabled75hzOffPhase, setIsEnabled75hzOffPhase] = useState(false);
   const [isEnabledInPhaseRumble, setIsEnabledInPhaseRumble] = useState(false);
@@ -169,12 +173,19 @@ export default function PolarityTest({ currSoundTest, setCurrSoundTest }) {
     }
   }
 
+  function openInfoModal() {
+    navigation.navigate("PolarityInfo");
+  }
+
   return (
     <View className="bg-[#101C43] justify-center rounded-xl mx-3 mt-4">
       <View className="flex-row items-center justify-between">
-        <Text className="text-white m-4">Stereo Polarity</Text>
+        <Text className="text-white m-5">Stereo Polarity</Text>
 
-        <TouchableOpacity className="bg-[#05103A] items-center justify-center h-8 w-8 mr-3 rounded">
+        <TouchableOpacity
+          onPress={openInfoModal}
+          className="bg-[#05103A] items-center justify-center h-8 w-8 mr-3 rounded-md"
+        >
           <FontAwesome5 name="info" size={20} color="white" />
         </TouchableOpacity>
       </View>

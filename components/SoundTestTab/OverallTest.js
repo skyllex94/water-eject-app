@@ -95,7 +95,7 @@ export default function OverallTest({ currSoundTest, setCurrSoundTest }) {
 
   return (
     <View className="bg-[#101C43] justify-center rounded-xl mx-3">
-      <Text className="text-white m-4">Overall Sound</Text>
+      <Text className="text-white m-5">Overall Sound</Text>
 
       <TouchableOpacity className="overall-sound1 items-center">
         <TouchableOpacity

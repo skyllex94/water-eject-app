@@ -7,35 +7,51 @@ import SpeakersTest from "../components/SoundTestTab/SpeakersTest";
 import PolarityTest from "../components/SoundTestTab/PolarityTest";
 import ImagingTest from "../components/SoundTestTab/ImagingTest";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Paywall from "./Paywall";
+import IsolationInfo from "../components/SoundTestTab/IsolationInfo";
+import PolarityInfo from "../components/SoundTestTab/PolarityInfo";
+import ImagingInfo from "../components/SoundTestTab/ImagingInfo";
 
 // React Native Navigator - Stack Navigator initializer
 const Stack = createNativeStackNavigator();
 
 export default function SoundTestStack() {
-  <Stack.Navigator initialRouteName="SoundTests">
-    <Stack.Screen
-      name="SoundTests"
-      component={SoundTests}
-      options={{
-        tabBarStyle: {
-          backgroundColor: "#101C43",
-        },
-      }}
-    />
-  </Stack.Navigator>;
+  return (
+    <Stack.Navigator initialRouteName="SoundTests">
+      <Stack.Screen
+        name="SoundTests"
+        component={SoundTests}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="IsolationInfo"
+        component={IsolationInfo}
+        options={{
+          presentation: "modal",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="PolarityInfo"
+        component={PolarityInfo}
+        options={{
+          presentation: "modal",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ImagingInfo"
+        component={ImagingInfo}
+        options={{
+          presentation: "modal",
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
 }
 
-function SoundTests() {
-  const [isPlaying, setIsPlaying] = useState(false);
+function SoundTests({ navigation }) {
   const [currSoundTest, setCurrSoundTest] = useState(null);
-
-  async function playPauseController() {
-    if (currSoundTest) setCurrSoundTest(currSoundTest.pauseAsync());
-    else setCurrSoundTest(currSoundTest.playAsync());
-
-    setIsPlaying(!isPlaying);
-  }
 
   return (
     <SafeAreaView className="flex-1 bg-[#05103A]">
@@ -50,6 +66,7 @@ function SoundTests() {
         <SpeakersTest
           currSoundTest={currSoundTest}
           setCurrSoundTest={setCurrSoundTest}
+          navigation={navigation}
         />
         <BassTest
           currSoundTest={currSoundTest}
@@ -59,11 +76,13 @@ function SoundTests() {
         <PolarityTest
           currSoundTest={currSoundTest}
           setCurrSoundTest={setCurrSoundTest}
+          navigation={navigation}
         />
 
         <ImagingTest
           currSoundTest={currSoundTest}
           setCurrSoundTest={setCurrSoundTest}
+          navigation={navigation}
         />
       </ScrollView>
 

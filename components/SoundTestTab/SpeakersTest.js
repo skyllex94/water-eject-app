@@ -5,7 +5,11 @@ import { Audio } from "expo-av";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-export default function SpeakersTest({ currSoundTest, setCurrSoundTest }) {
+export default function SpeakersTest({
+  currSoundTest,
+  setCurrSoundTest,
+  navigation,
+}) {
   const [isEnabledLeft, setIsEnabledLeft] = useState(false);
   const [isEnabledRight, setIsEnabledRight] = useState(false);
   const [isEnabledBoth, setIsEnabledBoth] = useState(false);
@@ -80,17 +84,17 @@ export default function SpeakersTest({ currSoundTest, setCurrSoundTest }) {
   }
 
   const openSpeakerIsolationInfo = () => {
-    console.log("Here to Disappear");
+    navigation.navigate("IsolationInfo");
   };
 
   return (
     <View className="bg-[#101C43] justify-center rounded-xl mx-3 mt-4">
       <View className="flex-row items-center justify-between">
-        <Text className="text-white m-4">Speaker Isolation</Text>
+        <Text className="text-white m-5">Speaker Isolation</Text>
 
         <TouchableOpacity
           onPress={openSpeakerIsolationInfo}
-          className="bg-[#05103A] items-center justify-center h-8 w-8 mr-3 rounded"
+          className="bg-[#05103A] items-center justify-center h-8 w-8 mr-3 rounded-md"
         >
           <FontAwesome5 name="info" size={20} color="white" />
         </TouchableOpacity>

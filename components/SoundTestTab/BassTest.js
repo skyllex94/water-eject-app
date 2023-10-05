@@ -93,7 +93,7 @@ export default function BassTest({ currSoundTest, setCurrSoundTest }) {
 
   return (
     <View className="bg-[#101C43] justify-center rounded-xl mx-3 mt-4">
-      <Text className="text-white ml-3 m-4">Bass Accuracy</Text>
+      <Text className="text-white ml-3 m-5">Bass Accuracy</Text>
 
       <TouchableOpacity className="overall-sound1 items-center">
         <TouchableOpacity

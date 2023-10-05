@@ -5,7 +5,11 @@ import { Audio } from "expo-av";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-export default function ImagingTest({ currSoundTest, setCurrSoundTest }) {
+export default function ImagingTest({
+  currSoundTest,
+  setCurrSoundTest,
+  navigation,
+}) {
   const [isEnabledOver, setIsEnabledOver] = useState(false);
   const [isEnabledLateral, setIsEnabledLateral] = useState(false);
   const [isEnabledBehind, setIsEnabledBehind] = useState(false);
@@ -79,12 +83,19 @@ export default function ImagingTest({ currSoundTest, setCurrSoundTest }) {
     }
   }
 
+  function openImagingModal() {
+    navigation.navigate("ImagingInfo");
+  }
+
   return (
     <View className="bg-[#101C43] justify-center rounded-xl mx-3 my-4">
       <View className="flex-row items-center justify-between">
-        <Text className="text-white m-4">Stereo Imaging</Text>
+        <Text className="text-white m-5">Stereo Imaging</Text>
 
-        <TouchableOpacity className="bg-[#05103A] items-center justify-center h-8 w-8 mr-3 rounded">
+        <TouchableOpacity
+          onPress={openImagingModal}
+          className="bg-[#05103A] items-center justify-center h-8 w-8 mr-3 rounded-md"
+        >
           <FontAwesome5 name="info" size={20} color="white" />
         </TouchableOpacity>
       </View>
