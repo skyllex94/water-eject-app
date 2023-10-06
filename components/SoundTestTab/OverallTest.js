@@ -3,8 +3,6 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { Audio } from "expo-av";
 
 import Icon from "react-native-vector-icons/FontAwesome";
-import { Tooltip } from "@rneui/themed";
-
 import { startTimer, stopTimer, stopWaveformTimer } from "../util/Funcs";
 import SoundTestWave from "./SoundTestWave";
 

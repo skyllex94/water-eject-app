@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Audio } from "expo-av";
 
 import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { Context } from "../Context";
 
 export default function PolarityTest({
   currSoundTest,
@@ -12,23 +13,22 @@ export default function PolarityTest({
 }) {
   const [isEnabled75hzInPhase, setIsEnabled75hzInPhase] = useState(false);
   const [isEnabled75hzOffPhase, setIsEnabled75hzOffPhase] = useState(false);
-  const [isEnabledInPhaseRumble, setIsEnabledInPhaseRumble] = useState(false);
   const [isEnabledOffPhaseRumble, setIsEnabledOffPhaseRumble] = useState(false);
   const [isEnabledGuitarInPhase, setIsEnabledGuitarInPhase] = useState(false);
   const [isEnabledGuitarOffPhase, setIsEnabledGuitarOffPhase] = useState(false);
 
+  const { tests, setTests } = useContext(Context);
+
   async function enableInPhaseRumble() {
-    setIsEnabledOffPhaseRumble(false);
-    setIsEnabled75hzInPhase(false);
-    setIsEnabled75hzOffPhase(false);
-    setIsEnabledGuitarInPhase(false);
-    setIsEnabledGuitarOffPhase(false);
-    setIsEnabledInPhaseRumble((prev) => !prev);
+    setTests((state) => ({
+      ...!state,
+      isEnabledInPhaseRumble: !tests.isEnabledInPhaseRumble,
+    }));
 
     await playPolarity();
 
     async function playPolarity() {
-      if (!isEnabledInPhaseRumble) {
+      if (!tests.isEnabledInPhaseRumble) {
         if (currSoundTest) currSoundTest.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/in-phase-rumble.mp3"),
@@ -44,17 +44,15 @@ export default function PolarityTest({
   }
 
   async function enableOffPhaseRumble() {
-    setIsEnabledInPhaseRumble(false);
-    setIsEnabled75hzInPhase(false);
-    setIsEnabled75hzOffPhase(false);
-    setIsEnabledGuitarInPhase(false);
-    setIsEnabledGuitarOffPhase(false);
-    setIsEnabledOffPhaseRumble((prev) => !prev);
+    setTests((state) => ({
+      ...!state,
+      isEnabledOffPhaseRumble: !tests.isEnabledOffPhaseRumble,
+    }));
 
     await playPolarity();
 
     async function playPolarity() {
-      if (!isEnabledOffPhaseRumble) {
+      if (!tests.isEnabledOffPhaseRumble) {
         if (currSoundTest) currSoundTest.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/off-phase-rumble.mp3"),
@@ -70,17 +68,15 @@ export default function PolarityTest({
   }
 
   async function enable75hzInPhase() {
-    setIsEnabledInPhaseRumble(false);
-    setIsEnabledOffPhaseRumble(false);
-    setIsEnabled75hzOffPhase(false);
-    setIsEnabledGuitarInPhase(false);
-    setIsEnabledGuitarOffPhase(false);
-    setIsEnabled75hzInPhase((prev) => !prev);
+    setTests((state) => ({
+      ...!state,
+      isEnabled75hzInPhase: !tests.isEnabled75hzInPhase,
+    }));
 
     await playPolarity();
 
     async function playPolarity() {
-      if (!isEnabled75hzInPhase) {
+      if (!tests.isEnabled75hzInPhase) {
         if (currSoundTest) currSoundTest.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/in-phase-75hz.mp3"),
@@ -96,17 +92,15 @@ export default function PolarityTest({
   }
 
   async function enable75hzOffPhase() {
-    setIsEnabledInPhaseRumble(false);
-    setIsEnabledOffPhaseRumble(false);
-    setIsEnabled75hzInPhase(false);
-    setIsEnabledGuitarInPhase(false);
-    setIsEnabledGuitarOffPhase(false);
-    setIsEnabled75hzOffPhase((prev) => !prev);
+    setTests((state) => ({
+      ...!state,
+      isEnabled75hzOffPhase: !tests.isEnabled75hzOffPhase,
+    }));
 
     await playPolarity();
 
     async function playPolarity() {
-      if (!isEnabled75hzOffPhase) {
+      if (!tests.isEnabled75hzOffPhase) {
         if (currSoundTest) currSoundTest.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/off-phase-75hz.mp3"),
@@ -122,17 +116,15 @@ export default function PolarityTest({
   }
 
   async function enabledGuitarInPhase() {
-    setIsEnabledInPhaseRumble(false);
-    setIsEnabledOffPhaseRumble(false);
-    setIsEnabled75hzInPhase(false);
-    setIsEnabled75hzOffPhase(false);
-    setIsEnabledGuitarOffPhase(false);
-    setIsEnabledGuitarInPhase((prev) => !prev);
+    setTests((state) => ({
+      ...!state,
+      isEnabledGuitarInPhase: !tests.isEnabledGuitarInPhase,
+    }));
 
     await playPolarity();
 
     async function playPolarity() {
-      if (!isEnabledGuitarInPhase) {
+      if (!tests.isEnabledGuitarInPhase) {
         if (currSoundTest) currSoundTest.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/in-phase-guitar.mp3"),
@@ -148,17 +140,15 @@ export default function PolarityTest({
   }
 
   async function enabledGuitarOffPhase() {
-    setIsEnabledInPhaseRumble(false);
-    setIsEnabledOffPhaseRumble(false);
-    setIsEnabled75hzInPhase(false);
-    setIsEnabled75hzOffPhase(false);
-    setIsEnabledGuitarInPhase(false);
-    setIsEnabledGuitarOffPhase((prev) => !prev);
+    setTests((state) => ({
+      ...!state,
+      isEnabledGuitarOffPhase: !tests.isEnabledGuitarOffPhase,
+    }));
 
     await playPolarity();
 
     async function playPolarity() {
-      if (!isEnabledGuitarOffPhase) {
+      if (!tests.isEnabledGuitarOffPhase) {
         if (currSoundTest) currSoundTest.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/off-phase-guitar.mp3"),
@@ -194,16 +184,16 @@ export default function PolarityTest({
         <TouchableOpacity onPress={enableInPhaseRumble}>
           <View
             className={`${
-              isEnabledInPhaseRumble ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              tests.isEnabledInPhaseRumble ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 ml-3 rounded-xl`}
           >
             <View
               className={`${
-                isEnabledInPhaseRumble ? "bg-[#74daf1]" : "bg-[#101C43]"
+                tests.isEnabledInPhaseRumble ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={isEnabledInPhaseRumble ? "pause" : "play"}
+                name={tests.isEnabledInPhaseRumble ? "pause" : "play"}
                 size={30}
                 color="white"
               />
@@ -220,16 +210,16 @@ export default function PolarityTest({
         <TouchableOpacity onPress={enable75hzInPhase}>
           <View
             className={`${
-              isEnabled75hzInPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              tests.isEnabled75hzInPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 rounded-xl`}
           >
             <View
               className={`${
-                isEnabled75hzInPhase ? "bg-[#74daf1]" : "bg-[#101C43]"
+                tests.isEnabled75hzInPhase ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={isEnabled75hzInPhase ? "pause" : "play"}
+                name={tests.isEnabled75hzInPhase ? "pause" : "play"}
                 size={30}
                 color="white"
               />
@@ -246,16 +236,16 @@ export default function PolarityTest({
         <TouchableOpacity onPress={enabledGuitarInPhase}>
           <View
             className={`${
-              isEnabledGuitarInPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              tests.isEnabledGuitarInPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 mr-3 p-2 rounded-xl`}
           >
             <View
               className={`${
-                isEnabledGuitarInPhase ? "bg-[#74daf1]" : "bg-[#101C43]"
+                tests.isEnabledGuitarInPhase ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={isEnabledGuitarInPhase ? "pause" : "play"}
+                name={tests.isEnabledGuitarInPhase ? "pause" : "play"}
                 size={30}
                 color="white"
               />
@@ -272,16 +262,16 @@ export default function PolarityTest({
         <TouchableOpacity onPress={enableOffPhaseRumble}>
           <View
             className={`${
-              isEnabledOffPhaseRumble ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              tests.isEnabledOffPhaseRumble ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 ml-3 rounded-xl`}
           >
             <View
               className={`${
-                isEnabledOffPhaseRumble ? "bg-[#74daf1]" : "bg-[#101C43]"
+                tests.isEnabledOffPhaseRumble ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={isEnabledOffPhaseRumble ? "pause" : "play"}
+                name={tests.isEnabledOffPhaseRumble ? "pause" : "play"}
                 size={30}
                 color="white"
               />
@@ -298,16 +288,16 @@ export default function PolarityTest({
         <TouchableOpacity onPress={enable75hzOffPhase}>
           <View
             className={`${
-              isEnabled75hzOffPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              tests.isEnabled75hzOffPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 rounded-xl`}
           >
             <View
               className={`${
-                isEnabled75hzOffPhase ? "bg-[#74daf1]" : "bg-[#101C43]"
+                tests.isEnabled75hzOffPhase ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={isEnabled75hzOffPhase ? "pause" : "play"}
+                name={tests.isEnabled75hzOffPhase ? "pause" : "play"}
                 size={30}
                 color="white"
               />
@@ -324,16 +314,16 @@ export default function PolarityTest({
         <TouchableOpacity onPress={enabledGuitarOffPhase}>
           <View
             className={`${
-              isEnabledGuitarOffPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              tests.isEnabledGuitarOffPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 mr-3 rounded-xl`}
           >
             <View
               className={`${
-                isEnabledGuitarOffPhase ? "bg-[#74daf1]" : "bg-[#101C43]"
+                tests.isEnabledGuitarOffPhase ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={isEnabledGuitarOffPhase ? "pause" : "play"}
+                name={tests.isEnabledGuitarOffPhase ? "pause" : "play"}
                 size={30}
                 color="white"
               />

@@ -68,6 +68,7 @@ function SoundTests({ navigation }) {
           setCurrSoundTest={setCurrSoundTest}
           navigation={navigation}
         />
+
         <BassTest
           currSoundTest={currSoundTest}
           setCurrSoundTest={setCurrSoundTest}

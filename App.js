@@ -23,6 +23,9 @@ function App() {
   const [isEnabledPrep, setIsEnabledPrep] = useState(false);
   const [isEnabledMain, setIsEnabledMain] = useState(false);
 
+  // State for testing sounds
+  const [tests, setTests] = useState({});
+
   // Currently playing frequency or program sound
   const [currSound, setCurrSound] = useState();
   const [navigationPaywall, setNavigationPaywall] = useState();
@@ -68,6 +71,8 @@ function App() {
         setNavigationPaywall,
         visualizerParams,
         setVisualizerParams,
+        tests,
+        setTests,
       }}
     >
       <NavigationContainer>

@@ -1,28 +1,25 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Audio } from "expo-av";
 
 import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { Context } from "../Context";
 
 export default function ImagingTest({
   currSoundTest,
   setCurrSoundTest,
   navigation,
 }) {
-  const [isEnabledOver, setIsEnabledOver] = useState(false);
-  const [isEnabledLateral, setIsEnabledLateral] = useState(false);
-  const [isEnabledBehind, setIsEnabledBehind] = useState(false);
+  const { tests, setTests } = useContext(Context);
 
   async function enableOverTest() {
-    setIsEnabledBehind(false);
-    setIsEnabledLateral(false);
-    setIsEnabledOver((prev) => !prev);
+    setTests((state) => ({ ...!state, isEnabledOver: !tests.isEnabledOver }));
 
     await playTest();
 
     async function playTest() {
-      if (!isEnabledOver) {
+      if (!tests.isEnabledOver) {
         if (currSoundTest) currSoundTest.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/over.mp3"),
@@ -38,14 +35,16 @@ export default function ImagingTest({
   }
 
   async function enableLateral() {
-    setIsEnabledOver(false);
-    setIsEnabledBehind(false);
-    setIsEnabledLateral((prev) => !prev);
+    setTests((state) => ({
+      ...!state,
+      isEnabledLateral: !tests.isEnabledLateral,
+    }));
 
+    console.log(tests);
     await playTest();
 
     async function playTest() {
-      if (!isEnabledLateral) {
+      if (!tests.isEnabledLateral) {
         if (currSoundTest) currSoundTest.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/lateral.mp3"),
@@ -61,14 +60,17 @@ export default function ImagingTest({
   }
 
   async function enableBehind() {
-    setIsEnabledOver(false);
-    setIsEnabledLateral(false);
-    setIsEnabledBehind((prev) => !prev);
+    setTests((state) => ({
+      ...!state,
+      isEnabledBehind: !tests.isEnabledBehind,
+    }));
+
+    console.log(tests);
 
     await playTest();
 
     async function playTest() {
-      if (!isEnabledBehind) {
+      if (!tests.isEnabledBehind) {
         if (currSoundTest) currSoundTest.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/behind.mp3"),
@@ -104,16 +106,16 @@ export default function ImagingTest({
         <TouchableOpacity onPress={enableOverTest}>
           <View
             className={`${
-              isEnabledOver ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              tests.isEnabledOver ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 ml-3 rounded-xl`}
           >
             <View
               className={`${
-                isEnabledOver ? "bg-[#74daf1]" : "bg-[#101C43]"
+                tests.isEnabledOver ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={isEnabledOver ? "pause" : "play"}
+                name={tests.isEnabledOver ? "pause" : "play"}
                 size={30}
                 color="white"
               />
@@ -128,16 +130,16 @@ export default function ImagingTest({
         <TouchableOpacity onPress={enableLateral}>
           <View
             className={`${
-              isEnabledLateral ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              tests.isEnabledLateral ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 rounded-xl`}
           >
             <View
               className={`${
-                isEnabledLateral ? "bg-[#74daf1]" : "bg-[#101C43]"
+                tests.isEnabledLateral ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={isEnabledLateral ? "pause" : "play"}
+                name={tests.isEnabledLateral ? "pause" : "play"}
                 size={30}
                 color="white"
               />
@@ -152,16 +154,16 @@ export default function ImagingTest({
         <TouchableOpacity onPress={enableBehind}>
           <View
             className={`${
-              isEnabledBehind ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              tests.isEnabledBehind ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 mr-3 rounded-xl`}
           >
             <View
               className={`${
-                isEnabledBehind ? "bg-[#74daf1]" : "bg-[#101C43]"
+                tests.isEnabledBehind ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={isEnabledBehind ? "pause" : "play"}
+                name={tests.isEnabledBehind ? "pause" : "play"}
                 size={30}
                 color="white"
               />
