@@ -1,8 +1,8 @@
 import { SafeAreaView, Text, ScrollView } from "react-native";
 import React, { useState } from "react";
 
-import OverallTest from "../components/SoundTestTab/OverallTest";
-import BassTest from "../components/SoundTestTab/BassTest";
+import OverallTest from "../components/SoundTestTab/OverallTests/OverallTest";
+import BassTest from "../components/SoundTestTab/BassTests/BassTest";
 import SpeakersTest from "../components/SoundTestTab/SpeakersTest";
 import PolarityTest from "../components/SoundTestTab/PolarityTest";
 import ImagingTest from "../components/SoundTestTab/ImagingTest";
@@ -51,6 +51,7 @@ export default function SoundTestStack() {
 }
 
 function SoundTests({ navigation }) {
+  // State for the current sound test
   const [currSoundTest, setCurrSoundTest] = useState(null);
 
   return (

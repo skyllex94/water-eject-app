@@ -9,7 +9,7 @@ export default function SoundTestWave({
   waveform,
   enableSound,
 }) {
-  const [setTime] = useState(243);
+  const [time, setTime] = useState(243);
   return (
     <TouchableOpacity disabled={true}>
       <SoundCloudWaveform
