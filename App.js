@@ -14,21 +14,15 @@ import Settings from "./screens/Settings";
 import { AudioRecorder } from "react-native-audio";
 
 function App() {
-  // States for enabling any sound to play or stop playing
-  const [isEnabled120, setIsEnabled120] = useState(false);
-  const [isEnabled160, setIsEnabled160] = useState(false);
-  const [isEnabled300, setIsEnabled300] = useState(false);
-  const [isEnabled500, setIsEnabled500] = useState(false);
-
-  const [isEnabledPrep, setIsEnabledPrep] = useState(false);
-  const [isEnabledMain, setIsEnabledMain] = useState(false);
-
-  // State for testing sounds
-  const [tests, setTests] = useState({});
-
+  // UI for the water ejection tab
+  const [freq, setFreq] = useState({});
   // Currently playing frequency or program sound
   const [currSound, setCurrSound] = useState();
-  const [navigationPaywall, setNavigationPaywall] = useState();
+
+  // UI State for testing sounds
+  const [tests, setTests] = useState({});
+  // The Audio Music Object for the sound test playing
+  const [currSoundTest, setCurrSoundTest] = useState();
 
   // Sound Visualizer State
   const [visualizerParams, setVisualizerParams] = useState({
@@ -37,14 +31,8 @@ function App() {
     amplitude: 5,
   });
 
-  function turnOffAllFreq() {
-    if (isEnabled120) setIsEnabled120(false);
-    if (isEnabled160) setIsEnabled160(false);
-    if (isEnabled300) setIsEnabled300(false);
-    if (isEnabled500) setIsEnabled500(false);
-    if (isEnabledPrep) setIsEnabledPrep(false);
-    if (isEnabledMain) setIsEnabledMain(false);
-
+  function turnOffAllFreqUI() {
+    setFreq((state) => !state);
     setVisualizerParams({ speed: 500, frequency: 2, amplitude: 10 });
   }
 
@@ -53,26 +41,16 @@ function App() {
   return (
     <Context.Provider
       value={{
-        isEnabled120,
-        setIsEnabled120,
-        isEnabled160,
-        setIsEnabled160,
-        isEnabled300,
-        setIsEnabled300,
-        isEnabled500,
-        setIsEnabled500,
-        isEnabledPrep,
-        setIsEnabledPrep,
-        isEnabledMain,
-        setIsEnabledMain,
+        freq,
+        setFreq,
         currSound,
         setCurrSound,
-        navigationPaywall,
-        setNavigationPaywall,
         visualizerParams,
         setVisualizerParams,
         tests,
         setTests,
+        currSoundTest,
+        setCurrSoundTest,
       }}
     >
       <NavigationContainer>
@@ -101,7 +79,11 @@ function App() {
             }}
             listeners={{
               tabPress: async () => {
-                await AudioRecorder.stopRecording();
+                AudioRecorder.stopRecording();
+                // Unload the audio object for the sound test
+                if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+                // Turn off any UI on the test tab which might be playing
+                if (tests) setTests((state) => !state);
               },
             }}
           />
@@ -124,9 +106,14 @@ function App() {
             }}
             listeners={{
               tabPress: async () => {
-                turnOffAllFreq();
-
                 if (currSound) currSound.unloadAsync() || undefined;
+                // UI objects to be turned off
+                turnOffAllFreqUI();
+
+                // Unload the audio object for the sound test
+                if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+                // Turn off any UI on the test tab which might be playing
+                if (tests) setTests((state) => !state);
               },
             }}
           />

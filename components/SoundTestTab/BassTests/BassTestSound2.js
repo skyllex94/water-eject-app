@@ -8,13 +8,14 @@ import SoundTestWave from "../SoundTestWave";
 import { useContext } from "react";
 import { Context } from "../../Context";
 
-export default function BassTestSound2({ currSoundTest, setCurrSoundTest }) {
-  const { tests, setTests } = useContext(Context);
+export default function BassTestSound2({}) {
+  const { tests, setTests, currSoundTest, setCurrSoundTest } =
+    useContext(Context);
 
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [waveformTime, setWaveformTime] = useState(0);
-  const totalTime = 50; // in seconds
+  const totalTime = 46; // in seconds
 
   const refCounter = useRef();
   const refWaveFormCounter = useRef();
@@ -27,6 +28,7 @@ export default function BassTestSound2({ currSoundTest, setCurrSoundTest }) {
       setWaveformTime(0);
       stopTimer(refCounter, setSeconds, setMinutes);
       stopWaveformTimer(refWaveFormCounter, setWaveformTime);
+      setTests((state) => ({ ...state, isEnabled151Rum: false }));
     }
   }, [seconds, waveformTime, tests.isEnabled151Rum]);
 
@@ -91,13 +93,14 @@ export default function BassTestSound2({ currSoundTest, setCurrSoundTest }) {
             <SoundTestWave
               currentTime={waveformTime}
               totalTime={totalTime}
-              waveform={"https://w1.sndcdn.com/PP3Eb34ToNki_m.png"}
+              waveform={"http://w1.sndcdn.com/fxguEjG4ax6B_m.png"}
+              height={65}
             />
           </View>
 
           <View className="flex-row justify-between">
             <Text className="pt-2 ml-3 font-bold text-white">
-              Bass Instrumental 2
+              Bass Instrumental - 151 Rum
             </Text>
             <Text className="pt-2 mr-3 font-bold text-white">
               {minutes}:{seconds < 10 && "0"}

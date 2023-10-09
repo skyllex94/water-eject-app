@@ -147,7 +147,7 @@ export default function Paywall({ navigation }) {
                     Expertly made programs with proven results
                   </Text>
                   <Text className="text-white text-sm font-extralight">
-                    Rest assured with out 8 minute preparation alternating
+                    Rest assured with our 8 minute preparation alternating
                     sound, and after that our dedicated 16 minutes main water
                     ejection program, your phone will thank you.
                   </Text>

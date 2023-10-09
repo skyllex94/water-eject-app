@@ -6,12 +6,10 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Context } from "../Context";
 
-export default function SpeakersTest({
-  currSoundTest,
-  setCurrSoundTest,
-  navigation,
-}) {
-  const { tests, setTests } = useContext(Context);
+export default function SpeakersTest({ navigation }) {
+  // Test sound states
+  const { tests, setTests, currSoundTest, setCurrSoundTest } =
+    useContext(Context);
 
   async function enableFrontSpeaker() {
     setTests((state) => ({ ...!state, isEnabledFront: !tests.isEnabledFront }));
@@ -112,7 +110,7 @@ export default function SpeakersTest({
               />
             </View>
 
-            <Text className="text-white text-xs mt-3">Front Speaker</Text>
+            <Text className="text-white text-center mt-3">Front Speaker</Text>
           </View>
         </TouchableOpacity>
 
@@ -136,7 +134,7 @@ export default function SpeakersTest({
               />
             </View>
 
-            <Text className="text-white text-xs mt-3">Both Sides</Text>
+            <Text className="text-white text-center mt-3">Both Speakers</Text>
           </View>
         </TouchableOpacity>
 
@@ -160,7 +158,7 @@ export default function SpeakersTest({
               />
             </View>
 
-            <Text className="text-white text-xs mt-3">Back Speaker</Text>
+            <Text className="text-white text-center mt-3">Back Speaker</Text>
           </View>
         </TouchableOpacity>
       </View>

@@ -7,8 +7,9 @@ import { startTimer, stopTimer, stopWaveformTimer } from "../../util/Funcs";
 import SoundTestWave from "../SoundTestWave";
 import { Context } from "../../Context";
 
-export default function OverallTestSong1({ currSoundTest, setCurrSoundTest }) {
-  const { tests, setTests } = useContext(Context);
+export default function OverallTestSong1() {
+  const { tests, setTests, currSoundTest, setCurrSoundTest } =
+    useContext(Context);
 
   // JK States and Refs
   const [seconds, setSeconds] = useState(0);

@@ -14,17 +14,7 @@ export default function PrepProgram({ navigation }) {
   const { isProMember } = useRevenueCat();
   const { setVisualizerParams } = useContext(Context);
 
-  const {
-    setIsEnabled120,
-    setIsEnabled160,
-    setIsEnabled300,
-    setIsEnabled500,
-    isEnabledPrep,
-    setIsEnabledPrep,
-    setIsEnabledMain,
-    currSound,
-    setCurrSound,
-  } = useContext(Context);
+  const { freq, setFreq, currSound, setCurrSound } = useContext(Context);
 
   const defaultVisualizerParams = { speed: 500, frequency: 2, amplitude: 15 };
 
@@ -42,47 +32,42 @@ export default function PrepProgram({ navigation }) {
       setMinutesPrep((prev) => prev + 1);
       setSecondsPrep(0);
     }
-    if (!isEnabledPrep || (minutesPrep === 8 && secondsPrep === 1)) {
+    if (!freq.isEnabledPrep || (minutesPrep === 8 && secondsPrep === 1)) {
       setMinutesPrep(0);
       setSecondsPrep(0);
       setWaveformTime(0);
       stopTimer(prepRefCounter, setSecondsPrep, setMinutesPrep);
       stopWaveformTimer(prepRefWaveformCounter, setWaveformTime);
     }
-  }, [secondsPrep, waveformTime, isEnabledPrep]);
+  }, [secondsPrep, waveformTime, freq.isEnabledPrep]);
 
   async function enablePrepFreq() {
-    setIsEnabled120(false);
-    setIsEnabled160(false);
-    setIsEnabled300(false);
-    setIsEnabled500(false);
-    setIsEnabledMain(false);
-    setIsEnabledPrep((prev) => !prev);
-    await playPrep(!isEnabledPrep);
-  }
+    setFreq((state) => ({ ...!state, isEnabledPrep: !freq.isEnabledPrep }));
+    await playPrep();
 
-  async function playPrep(isEnabled) {
-    if (isEnabled) {
-      if (currSound) currSound.unloadAsync() || undefined;
-      const { sound } = await Audio.Sound.createAsync(
-        require(`../assets/programs/prep.mp3`),
-        { isLooping: false }
-      );
+    async function playPrep() {
+      if (!freq.isEnabledPrep) {
+        if (currSound) currSound.unloadAsync() || undefined;
+        const { sound } = await Audio.Sound.createAsync(
+          require(`../assets/programs/prep.mp3`),
+          { isLooping: false }
+        );
 
-      setCurrSound(sound);
-      await sound.playAsync();
+        setCurrSound(sound);
+        await sound.playAsync();
 
-      // Set Visualizer Preset Params
-      setVisualizerParams({ speed: 75, frequency: 18, amplitude: 200 });
+        // Set Visualizer Preset Params
+        setVisualizerParams({ speed: 75, frequency: 18, amplitude: 200 });
 
-      // Start the audio timer state
-      startTimer(prepRefCounter, setSecondsPrep);
-      startTimer(prepRefWaveformCounter, setWaveformTime);
-    } else {
-      currSound.unloadAsync() || undefined;
-      setVisualizerParams(defaultVisualizerParams);
-      stopTimer(prepRefCounter, setSecondsPrep, setMinutesPrep);
-      stopWaveformTimer(prepRefWaveformCounter, setWaveformTime);
+        // Start the audio timer state
+        startTimer(prepRefCounter, setSecondsPrep);
+        startTimer(prepRefWaveformCounter, setWaveformTime);
+      } else {
+        currSound.unloadAsync() || undefined;
+        setVisualizerParams(defaultVisualizerParams);
+        stopTimer(prepRefCounter, setSecondsPrep, setMinutesPrep);
+        stopWaveformTimer(prepRefWaveformCounter, setWaveformTime);
+      }
     }
   }
 
@@ -93,19 +78,21 @@ export default function PrepProgram({ navigation }) {
   return (
     <TouchableOpacity>
       <TouchableOpacity
-        style={isEnabledPrep ? styles.freqBtnActive : styles.freqBtn}
+        style={freq.isEnabledPrep ? styles.freqBtnActive : styles.freqBtn}
         onPress={isProMember ? enablePrepFreq : openPurchaseModal}
       >
         <View
           style={
-            isEnabledPrep
+            freq.isEnabledPrep
               ? styles.prepWaveformContainerActive
               : styles.prepWaveformContainer
           }
         >
-          <View style={isEnabledPrep ? styles.playActive : styles.prepPlay}>
+          <View
+            style={freq.isEnabledPrep ? styles.playActive : styles.prepPlay}
+          >
             <Icon
-              name={isEnabledPrep ? "stop" : "play"}
+              name={freq.isEnabledPrep ? "stop" : "play"}
               size={30}
               color="white"
             />

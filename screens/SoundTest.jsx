@@ -10,6 +10,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import IsolationInfo from "../components/SoundTestTab/IsolationInfo";
 import PolarityInfo from "../components/SoundTestTab/PolarityInfo";
 import ImagingInfo from "../components/SoundTestTab/ImagingInfo";
+import { useContext } from "react";
+import { Context } from "../components/Context";
+import Paywall from "./Paywall";
 
 // React Native Navigator - Stack Navigator initializer
 const Stack = createNativeStackNavigator();
@@ -46,46 +49,40 @@ export default function SoundTestStack() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="Paywall"
+        component={Paywall}
+        options={{
+          presentation: "modal",
+          tabBarLabel: "Paywall",
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   );
 }
 
 function SoundTests({ navigation }) {
-  // State for the current sound test
-  const [currSoundTest, setCurrSoundTest] = useState(null);
+  // Context state for the current sound object test
+  const { currSoundTest, setCurrSoundTest } = useContext(Context);
 
   return (
     <SafeAreaView className="flex-1 bg-[#05103A]">
       <Text className="text-white text-xl text-center mb-4">Sound Tests</Text>
 
       <ScrollView>
-        <OverallTest
-          currSoundTest={currSoundTest}
-          setCurrSoundTest={setCurrSoundTest}
-        />
+        <OverallTest />
 
-        <SpeakersTest
-          currSoundTest={currSoundTest}
-          setCurrSoundTest={setCurrSoundTest}
-          navigation={navigation}
-        />
+        <SpeakersTest navigation={navigation} />
 
         <BassTest
           currSoundTest={currSoundTest}
           setCurrSoundTest={setCurrSoundTest}
         />
 
-        <PolarityTest
-          currSoundTest={currSoundTest}
-          setCurrSoundTest={setCurrSoundTest}
-          navigation={navigation}
-        />
+        <PolarityTest navigation={navigation} />
 
-        <ImagingTest
-          currSoundTest={currSoundTest}
-          setCurrSoundTest={setCurrSoundTest}
-          navigation={navigation}
-        />
+        <ImagingTest navigation={navigation} />
       </ScrollView>
 
       {/* <View className="flex-row relative items-center justify-center">

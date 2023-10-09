@@ -6,12 +6,9 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Context } from "../Context";
 
-export default function ImagingTest({
-  currSoundTest,
-  setCurrSoundTest,
-  navigation,
-}) {
-  const { tests, setTests } = useContext(Context);
+export default function ImagingTest({ navigation }) {
+  const { tests, setTests, currSoundTest, setCurrSoundTest } =
+    useContext(Context);
 
   async function enableOverTest() {
     setTests((state) => ({ ...!state, isEnabledOver: !tests.isEnabledOver }));
@@ -121,7 +118,7 @@ export default function ImagingTest({
               />
             </View>
 
-            <Text className="text-white text-xs mt-3">Arc Over</Text>
+            <Text className="text-white mt-3">Arc Over</Text>
           </View>
         </TouchableOpacity>
 
@@ -145,7 +142,7 @@ export default function ImagingTest({
               />
             </View>
 
-            <Text className="text-white text-xs mt-3">Lateral</Text>
+            <Text className="text-white mt-3">Lateral</Text>
           </View>
         </TouchableOpacity>
 
@@ -169,7 +166,7 @@ export default function ImagingTest({
               />
             </View>
 
-            <Text className="text-white text-xs mt-3">Behind</Text>
+            <Text className="text-white mt-3">Behind</Text>
           </View>
         </TouchableOpacity>
       </View>

@@ -7,8 +7,9 @@ import { startTimer, stopTimer, stopWaveformTimer } from "../../util/Funcs";
 import SoundTestWave from "../SoundTestWave";
 import { Context } from "../../Context";
 
-export default function OverallTestSong2({ currSoundTest, setCurrSoundTest }) {
-  const { tests, setTests } = useContext(Context);
+export default function OverallTestSong2() {
+  const { tests, setTests, currSoundTest, setCurrSoundTest } =
+    useContext(Context);
 
   // GoldLink States and Refs
   const [secsGL, setSecsGL] = useState(0);

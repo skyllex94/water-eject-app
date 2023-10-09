@@ -10,18 +10,8 @@ import useRevenueCat from "../hooks/useRevenueCat";
 import SoundCloudWave from "./SoundCloudWave";
 
 export default function MainProgram({ navigation }) {
-  const {
-    setIsEnabled120,
-    setIsEnabled160,
-    setIsEnabled300,
-    setIsEnabled500,
-    setIsEnabledPrep,
-    isEnabledMain,
-    setIsEnabledMain,
-    currSound,
-    setCurrSound,
-    setVisualizerParams,
-  } = useContext(Context);
+  const { freq, setFreq, currSound, setCurrSound, setVisualizerParams } =
+    useContext(Context);
 
   const { isProMember } = useRevenueCat();
 
@@ -42,44 +32,38 @@ export default function MainProgram({ navigation }) {
       setSecondsMain(0);
     }
 
-    if (!isEnabledMain || (minutesMain === 16 && secondsMain === 27)) {
+    if (!freq.isEnabledMain || (minutesMain === 16 && secondsMain === 27)) {
       setMinutesMain(0);
       setSecondsMain(0);
       setWaveformTime(0);
       stopTimer(mainRefCounter, setSecondsMain, setMinutesMain);
       stopWaveformTimer(mainWaveformRefCounter, setWaveformTime);
     }
-  }, [secondsMain, waveformTime, isEnabledMain]);
+  }, [secondsMain, waveformTime, freq.isEnabledMain]);
 
   async function enableMainFreq() {
-    setIsEnabled120(false);
-    setIsEnabled160(false);
-    setIsEnabled300(false);
-    setIsEnabled500(false);
-    setIsEnabledPrep(false);
-    setIsEnabledMain((prev) => !prev);
+    setFreq((state) => ({ ...!state, isEnabledMain: !freq.isEnabledMain }));
+    await playMain();
 
-    await playMain(!isEnabledMain);
-  }
+    async function playMain() {
+      if (!freq.isEnabledMain) {
+        if (currSound) currSound.unloadAsync() || undefined;
+        const { sound } = await Audio.Sound.createAsync(
+          require(`../assets/programs/main.mp3`),
+          { isLooping: false }
+        );
+        setCurrSound(sound);
+        await sound.playAsync();
+        setVisualizerParams({ speed: 75, frequency: 22, amplitude: 200 });
 
-  async function playMain(isEnabled) {
-    if (isEnabled) {
-      if (currSound) currSound.unloadAsync() || undefined;
-      const { sound } = await Audio.Sound.createAsync(
-        require(`../assets/programs/main.mp3`),
-        { isLooping: false }
-      );
-      setCurrSound(sound);
-      await sound.playAsync();
-      setVisualizerParams({ speed: 75, frequency: 22, amplitude: 200 });
-
-      startTimer(mainRefCounter, setSecondsMain);
-      startTimer(mainWaveformRefCounter, setWaveformTime);
-    } else {
-      currSound.unloadAsync() || undefined;
-      setVisualizerParams(defaultVisualizerParams);
-      stopTimer(mainRefCounter, setSecondsMain, setMinutesMain);
-      stopWaveformTimer(mainWaveformRefCounter, setWaveformTime);
+        startTimer(mainRefCounter, setSecondsMain);
+        startTimer(mainWaveformRefCounter, setWaveformTime);
+      } else {
+        currSound.unloadAsync() || undefined;
+        setVisualizerParams(defaultVisualizerParams);
+        stopTimer(mainRefCounter, setSecondsMain, setMinutesMain);
+        stopWaveformTimer(mainWaveformRefCounter, setWaveformTime);
+      }
     }
   }
 
@@ -90,18 +74,18 @@ export default function MainProgram({ navigation }) {
   return (
     <TouchableOpacity
       onPress={isProMember ? enableMainFreq : openPurchaseModal}
-      style={isEnabledMain ? styles.freqBtnActive : styles.freqBtn}
+      style={freq.isEnabledMain ? styles.freqBtnActive : styles.freqBtn}
     >
       <View
         style={
-          isEnabledMain
+          freq.isEnabledMain
             ? styles.prepWaveformContainerActive
             : styles.prepWaveformContainer
         }
       >
-        <View style={isEnabledMain ? styles.playActive : styles.prepPlay}>
+        <View style={freq.isEnabledMain ? styles.playActive : styles.prepPlay}>
           <Icon
-            name={isEnabledMain ? "stop" : "play"}
+            name={freq.isEnabledMain ? "stop" : "play"}
             size={30}
             color="white"
           />

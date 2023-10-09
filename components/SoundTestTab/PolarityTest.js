@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Audio } from "expo-av";
 
@@ -6,18 +6,9 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Context } from "../Context";
 
-export default function PolarityTest({
-  currSoundTest,
-  setCurrSoundTest,
-  navigation,
-}) {
-  const [isEnabled75hzInPhase, setIsEnabled75hzInPhase] = useState(false);
-  const [isEnabled75hzOffPhase, setIsEnabled75hzOffPhase] = useState(false);
-  const [isEnabledOffPhaseRumble, setIsEnabledOffPhaseRumble] = useState(false);
-  const [isEnabledGuitarInPhase, setIsEnabledGuitarInPhase] = useState(false);
-  const [isEnabledGuitarOffPhase, setIsEnabledGuitarOffPhase] = useState(false);
-
-  const { tests, setTests } = useContext(Context);
+export default function PolarityTest({ navigation }) {
+  const { tests, setTests, currSoundTest, setCurrSoundTest } =
+    useContext(Context);
 
   async function enableInPhaseRumble() {
     setTests((state) => ({
@@ -199,7 +190,7 @@ export default function PolarityTest({
               />
             </View>
 
-            <Text className="text-white text-center text-xs mt-3">
+            <Text className="text-white text-center mt-3">
               Rumble {"\n"} In Phase
             </Text>
           </View>
@@ -225,7 +216,7 @@ export default function PolarityTest({
               />
             </View>
 
-            <Text className="text-white text-center text-xs mt-3">
+            <Text className="text-white text-center mt-3">
               75 Hz Tone {"\n"} In Phase
             </Text>
           </View>
@@ -251,7 +242,7 @@ export default function PolarityTest({
               />
             </View>
 
-            <Text className="text-white text-center text-xs mt-3">
+            <Text className="text-white text-center mt-3">
               Guitar {"\n"} In Phase
             </Text>
           </View>
@@ -277,8 +268,8 @@ export default function PolarityTest({
               />
             </View>
 
-            <Text className="text-white text-center text-xs mt-3">
-              Rumble {"\n"} Out of Phase
+            <Text className="text-white text-center mt-3">
+              Rumble Out of Phase
             </Text>
           </View>
         </TouchableOpacity>
@@ -303,8 +294,8 @@ export default function PolarityTest({
               />
             </View>
 
-            <Text className="text-white text-center text-xs mt-3">
-              75 Hz Tone Out of Phase
+            <Text className="text-white text-center mt-3">
+              75 Hz Out of Phase
             </Text>
           </View>
         </TouchableOpacity>
@@ -329,8 +320,8 @@ export default function PolarityTest({
               />
             </View>
 
-            <Text className="text-white text-center text-xs mt-3">
-              Guitar {"\n"} Out of Phase
+            <Text className="text-white text-center mt-3">
+              Guitar Out of Phase
             </Text>
           </View>
         </TouchableOpacity>
