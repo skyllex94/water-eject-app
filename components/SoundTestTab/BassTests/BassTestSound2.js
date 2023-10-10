@@ -3,14 +3,21 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { Audio } from "expo-av";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-import { startTimer, stopTimer, stopWaveformTimer } from "../../util/Funcs";
+import {
+  openPurchaseModal,
+  startTimer,
+  stopTimer,
+  stopWaveformTimer,
+} from "../../util/Funcs";
 import SoundTestWave from "../SoundTestWave";
 import { useContext } from "react";
 import { Context } from "../../Context";
+import useRevenueCat from "../../../hooks/useRevenueCat";
 
-export default function BassTestSound2({}) {
+export default function BassTestSound2({ navigation }) {
   const { tests, setTests, currSoundTest, setCurrSoundTest } =
     useContext(Context);
+  const { isProMember } = useRevenueCat();
 
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
@@ -32,7 +39,7 @@ export default function BassTestSound2({}) {
     }
   }, [seconds, waveformTime, tests.isEnabled151Rum]);
 
-  async function enableGoldLinkSong() {
+  async function enable151RumBass() {
     setTests((state) => ({
       ...!state,
       isEnabled151Rum: !tests.isEnabled151Rum,
@@ -69,7 +76,9 @@ export default function BassTestSound2({}) {
             ? "w-[95%] bg-[#4AD0EE] my-3 rounded-xl"
             : "w-[95%] my-3"
         } `}
-        onPress={enableGoldLinkSong}
+        onPress={
+          isProMember ? enable151RumBass : () => openPurchaseModal(navigation)
+        }
       >
         <View
           className={`${

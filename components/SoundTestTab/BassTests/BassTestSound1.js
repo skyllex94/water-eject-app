@@ -3,14 +3,21 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { Audio } from "expo-av";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-import { startTimer, stopTimer, stopWaveformTimer } from "../../util/Funcs";
+import {
+  openPurchaseModal,
+  startTimer,
+  stopTimer,
+  stopWaveformTimer,
+} from "../../util/Funcs";
 import SoundTestWave from "../SoundTestWave";
 import { useContext } from "react";
 import { Context } from "../../Context";
+import useRevenueCat from "../../../hooks/useRevenueCat";
 
-export default function BassTestSound1() {
+export default function BassTestSound1({ navigation }) {
   const { tests, setTests, currSoundTest, setCurrSoundTest } =
     useContext(Context);
+  const { isProMember } = useRevenueCat();
 
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
@@ -67,7 +74,9 @@ export default function BassTestSound1() {
         className={`${
           tests.isEnabledUsedTo ? "w-[95%] bg-[#4AD0EE] rounded-xl" : "w-[95%]"
         } `}
-        onPress={enableUsedToTest}
+        onPress={
+          isProMember ? enableUsedToTest : () => openPurchaseModal(navigation)
+        }
       >
         <View
           className={`${

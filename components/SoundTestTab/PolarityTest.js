@@ -5,10 +5,13 @@ import { Audio } from "expo-av";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Context } from "../Context";
+import useRevenueCat from "../../hooks/useRevenueCat";
+import { openPurchaseModal } from "../util/Funcs";
 
 export default function PolarityTest({ navigation }) {
   const { tests, setTests, currSoundTest, setCurrSoundTest } =
     useContext(Context);
+  const { isProMember } = useRevenueCat();
 
   async function enableInPhaseRumble() {
     setTests((state) => ({
@@ -158,6 +161,9 @@ export default function PolarityTest({ navigation }) {
     navigation.navigate("PolarityInfo");
   }
 
+  // Start here - see if you can optimize the structure and make in dynamically generated
+  const polarityTests = ["RumbleInPhase", "HzInPhase", "GuitarInPhase"];
+
   return (
     <View className="bg-[#101C43] justify-center rounded-xl mx-3 mt-4">
       <View className="flex-row items-center justify-between">
@@ -172,7 +178,13 @@ export default function PolarityTest({ navigation }) {
       </View>
 
       <View className="in-phase-group flex-row bg-[#101C43] items-center justify-between mb-3">
-        <TouchableOpacity onPress={enableInPhaseRumble}>
+        <TouchableOpacity
+          onPress={
+            isProMember
+              ? enableInPhaseRumble
+              : () => openPurchaseModal(navigation)
+          }
+        >
           <View
             className={`${
               tests.isEnabledInPhaseRumble ? "bg-[#87e5fa]" : "bg-[#05103A]"
@@ -198,7 +210,13 @@ export default function PolarityTest({ navigation }) {
 
         <View className="devider h-[75%] w-[1px] bg-[#05103A]" />
 
-        <TouchableOpacity onPress={enable75hzInPhase}>
+        <TouchableOpacity
+          onPress={
+            isProMember
+              ? enable75hzInPhase
+              : () => openPurchaseModal(navigation)
+          }
+        >
           <View
             className={`${
               tests.isEnabled75hzInPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
@@ -224,7 +242,13 @@ export default function PolarityTest({ navigation }) {
 
         <View className="devider h-[75%] w-[1px] bg-[#05103A]" />
 
-        <TouchableOpacity onPress={enabledGuitarInPhase}>
+        <TouchableOpacity
+          onPress={
+            isProMember
+              ? enabledGuitarInPhase
+              : () => openPurchaseModal(navigation)
+          }
+        >
           <View
             className={`${
               tests.isEnabledGuitarInPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
@@ -250,7 +274,13 @@ export default function PolarityTest({ navigation }) {
       </View>
 
       <View className="off-phase-group flex-row bg-[#101C43] items-center justify-between mt-2 mb-3">
-        <TouchableOpacity onPress={enableOffPhaseRumble}>
+        <TouchableOpacity
+          onPress={
+            isProMember
+              ? enableOffPhaseRumble
+              : () => openPurchaseModal(navigation)
+          }
+        >
           <View
             className={`${
               tests.isEnabledOffPhaseRumble ? "bg-[#87e5fa]" : "bg-[#05103A]"
@@ -276,7 +306,13 @@ export default function PolarityTest({ navigation }) {
 
         <View className="h-[75%] w-[1px] bg-[#05103A]" />
 
-        <TouchableOpacity onPress={enable75hzOffPhase}>
+        <TouchableOpacity
+          onPress={
+            isProMember
+              ? enable75hzOffPhase
+              : () => openPurchaseModal(navigation)
+          }
+        >
           <View
             className={`${
               tests.isEnabled75hzOffPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
@@ -302,7 +338,13 @@ export default function PolarityTest({ navigation }) {
 
         <View className="h-[75%] w-[1px] bg-[#05103A]" />
 
-        <TouchableOpacity onPress={enabledGuitarOffPhase}>
+        <TouchableOpacity
+          onPress={
+            isProMember
+              ? enabledGuitarOffPhase
+              : () => openPurchaseModal(navigation)
+          }
+        >
           <View
             className={`${
               tests.isEnabledGuitarOffPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"

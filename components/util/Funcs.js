@@ -12,3 +12,7 @@ export function stopWaveformTimer(counterRef, setWaveformTimer) {
   clearInterval(counterRef.current);
   setWaveformTimer(0);
 }
+
+export function openPurchaseModal(navigation) {
+  navigation.navigate("Paywall");
+}

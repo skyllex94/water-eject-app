@@ -5,11 +5,14 @@ import { Audio } from "expo-av";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Context } from "../Context";
+import useRevenueCat from "../../hooks/useRevenueCat";
+import { openPurchaseModal } from "../util/Funcs";
 
 export default function SpeakersTest({ navigation }) {
   // Test sound states
   const { tests, setTests, currSoundTest, setCurrSoundTest } =
     useContext(Context);
+  const { isProMember } = useRevenueCat();
 
   async function enableFrontSpeaker() {
     setTests((state) => ({ ...!state, isEnabledFront: !tests.isEnabledFront }));
@@ -81,7 +84,15 @@ export default function SpeakersTest({ navigation }) {
   return (
     <View className="bg-[#101C43] justify-center rounded-xl mx-3 mt-4">
       <View className="flex-row items-center justify-between">
-        <Text className="text-white m-5">Speaker Isolation</Text>
+        <View className="flex-row items-center m-5">
+          {isProMember ? null : (
+            <View className="mr-2">
+              <FontAwesome5 name="lock" size={16} color="white" />
+            </View>
+          )}
+
+          <Text className="text-white">Speaker Isolation</Text>
+        </View>
 
         <TouchableOpacity
           onPress={openSpeakerIsolationInfo}
@@ -92,7 +103,13 @@ export default function SpeakersTest({ navigation }) {
       </View>
 
       <View className="flex-row bg-[#101C43] items-center justify-between mb-3">
-        <TouchableOpacity onPress={enableFrontSpeaker}>
+        <TouchableOpacity
+          onPress={
+            isProMember
+              ? enableFrontSpeaker
+              : () => openPurchaseModal(navigation)
+          }
+        >
           <View
             className={`${
               tests.isEnabledFront ? "bg-[#87e5fa]" : "bg-[#05103A]"
@@ -116,7 +133,13 @@ export default function SpeakersTest({ navigation }) {
 
         <View className="h-[75%] w-[1px] bg-[#05103A]" />
 
-        <TouchableOpacity onPress={enableBothSpeakers}>
+        <TouchableOpacity
+          onPress={
+            isProMember
+              ? enableBothSpeakers
+              : () => openPurchaseModal(navigation)
+          }
+        >
           <View
             className={`${
               tests.isEnabledBoth ? "bg-[#87e5fa]" : "bg-[#05103A]"
@@ -140,7 +163,13 @@ export default function SpeakersTest({ navigation }) {
 
         <View className="h-[75%] w-[1px] bg-[#05103A]" />
 
-        <TouchableOpacity onPress={enableBackSpeaker}>
+        <TouchableOpacity
+          onPress={
+            isProMember
+              ? enableBackSpeaker
+              : () => openPurchaseModal(navigation)
+          }
+        >
           <View
             className={`${
               tests.isEnabledBack ? "bg-[#87e5fa]" : "bg-[#05103A]"
