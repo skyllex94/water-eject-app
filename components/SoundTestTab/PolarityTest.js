@@ -161,13 +161,25 @@ export default function PolarityTest({ navigation }) {
     navigation.navigate("PolarityInfo");
   }
 
-  // Start here - see if you can optimize the structure and make in dynamically generated
-  const polarityTests = ["RumbleInPhase", "HzInPhase", "GuitarInPhase"];
+  // TODO - see if you can optimize the structure and make in dynamically generated
+  const testsInPhase = ["RumbleInPhase", "HzInPhase", "GuitarInPhase"];
+  const testsOutPhase = ["RumbleOutPhase", "HzOutPhase", "GuitarOutPhase"];
 
   return (
-    <View className="bg-[#101C43] justify-center rounded-xl mx-3 mt-4">
+    <View
+      className={`${
+        isProMember ? "bg-[#101C43]" : "bg-[#101C43]"
+      }  justify-center rounded-xl mx-3 mt-4`}
+    >
       <View className="flex-row items-center justify-between">
-        <Text className="text-white m-5">Stereo Polarity</Text>
+        <View className="flex-row items-center m-5">
+          {!isProMember && (
+            <View className="mr-2">
+              <FontAwesome5 name="lock" size={18} color="white" />
+            </View>
+          )}
+          <Text className="text-white">Stereo Polarity</Text>
+        </View>
 
         <TouchableOpacity
           onPress={openInfoModal}

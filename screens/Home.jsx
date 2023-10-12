@@ -5,6 +5,8 @@ import Programs from "../components/Programs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Paywall from "./Paywall";
 import SoundVisualizer from "../components/SoundVisualizer";
+import { Text } from "react-native";
+import { View } from "react-native";
 
 const HomeStackScreen = () => {
   // React Native Navigator - Stack Navigator initializer
@@ -39,6 +41,8 @@ const HomeStackScreen = () => {
 function WaterEjection({ navigation }) {
   return (
     <SafeAreaView className="flex-1 bg-[#05103A]">
+      <Text className="text-white text-center text-xl">Water Clearence</Text>
+
       <SoundVisualizer />
       <Frequencies />
       <Programs navigation={navigation} />

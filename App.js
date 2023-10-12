@@ -77,15 +77,17 @@ function App() {
                 />
               ),
             }}
-            listeners={{
-              tabPress: async () => {
-                AudioRecorder.stopRecording();
-                // Unload the audio object for the sound test
-                if (currSoundTest) currSoundTest.unloadAsync() || undefined;
-                // Turn off any UI on the test tab which might be playing
-                if (tests) setTests((state) => !state);
-              },
-            }}
+            listeners={
+              {
+                // tabPress: async () => {
+                //   AudioRecorder.stopRecording();
+                //   // Unload the audio object for the sound test
+                //   if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+                //   // Turn off any UI on the test tab which might be playing
+                //   if (tests) setTests((state) => !state);
+                // },
+              }
+            }
           />
           <Tab.Screen
             name="Meter"
@@ -104,18 +106,19 @@ function App() {
                 />
               ),
             }}
-            listeners={{
-              tabPress: async () => {
-                if (currSound) currSound.unloadAsync() || undefined;
-                // UI objects to be turned off
-                turnOffAllFreqUI();
-
-                // Unload the audio object for the sound test
-                if (currSoundTest) currSoundTest.unloadAsync() || undefined;
-                // Turn off any UI on the test tab which might be playing
-                if (tests) setTests((state) => !state);
-              },
-            }}
+            listeners={
+              {
+                // tabPress: async () => {
+                //   if (currSound) currSound.unloadAsync() || undefined;
+                //   // UI objects to be turned off
+                //   turnOffAllFreqUI();
+                //   // Unload the audio object for the sound test
+                //   if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+                //   // Turn off any UI on the test tab which might be playing
+                //   if (tests) setTests((state) => !state);
+                // },
+              }
+            }
           />
           <Tab.Screen
             name="Sound Tests"

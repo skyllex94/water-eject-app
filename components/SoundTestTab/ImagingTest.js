@@ -1,14 +1,18 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Audio } from "expo-av";
 
 import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesome5 } from "@expo/vector-icons";
+
 import { Context } from "../Context";
+import useRevenueCat from "../../hooks/useRevenueCat";
+import { openPurchaseModal } from "../util/Funcs";
 
 export default function ImagingTest({ navigation }) {
   const { tests, setTests, currSoundTest, setCurrSoundTest } =
     useContext(Context);
+  const { isProMember } = useRevenueCat();
 
   async function enableOverTest() {
     setTests((state) => ({ ...!state, isEnabledOver: !tests.isEnabledOver }));
@@ -89,7 +93,14 @@ export default function ImagingTest({ navigation }) {
   return (
     <View className="bg-[#101C43] justify-center rounded-xl mx-3 my-4">
       <View className="flex-row items-center justify-between">
-        <Text className="text-white m-5">Stereo Imaging</Text>
+        <View className="flex-row items-center m-5">
+          {!isProMember && (
+            <View className="mr-2">
+              <FontAwesome5 name="lock" size={18} color="white" />
+            </View>
+          )}
+          <Text className="text-white">Stereo Imaging</Text>
+        </View>
 
         <TouchableOpacity
           onPress={openImagingModal}
@@ -100,7 +111,11 @@ export default function ImagingTest({ navigation }) {
       </View>
 
       <View className="flex-row bg-[#101C43] items-center justify-between mb-3">
-        <TouchableOpacity onPress={enableOverTest}>
+        <TouchableOpacity
+          onPress={
+            isProMember ? enableOverTest : () => openPurchaseModal(navigation)
+          }
+        >
           <View
             className={`${
               tests.isEnabledOver ? "bg-[#87e5fa]" : "bg-[#05103A]"
@@ -124,7 +139,11 @@ export default function ImagingTest({ navigation }) {
 
         <View className="h-[75%] w-[1px] bg-[#05103A]" />
 
-        <TouchableOpacity onPress={enableLateral}>
+        <TouchableOpacity
+          onPress={
+            isProMember ? enableLateral : () => openPurchaseModal(navigation)
+          }
+        >
           <View
             className={`${
               tests.isEnabledLateral ? "bg-[#87e5fa]" : "bg-[#05103A]"
@@ -148,7 +167,11 @@ export default function ImagingTest({ navigation }) {
 
         <View className="h-[75%] w-[1px] bg-[#05103A]" />
 
-        <TouchableOpacity onPress={enableBehind}>
+        <TouchableOpacity
+          onPress={
+            isProMember ? enableBehind : () => openPurchaseModal(navigation)
+          }
+        >
           <View
             className={`${
               tests.isEnabledBehind ? "bg-[#87e5fa]" : "bg-[#05103A]"

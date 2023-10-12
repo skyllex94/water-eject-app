@@ -15,7 +15,7 @@ export default function OverallTestSong2() {
   const [secsGL, setSecsGL] = useState(0);
   const [minsGL, setMinsGL] = useState(0);
   const [waveTimeGL, setWaveTimeGL] = useState(0);
-  const totalTimeGL = 47;
+  const totalTimeGL = 45;
 
   const refCounterGoldLink = useRef();
   const refWaveformCounterGoldLink = useRef();
@@ -103,7 +103,7 @@ export default function OverallTestSong2() {
             </Text>
             <Text className="pt-2 mr-3 font-bold text-white">
               {minsGL}:{secsGL < 10 && "0"}
-              {secsGL} / 0:46
+              {secsGL} / 0:45
             </Text>
           </View>
         </View>
