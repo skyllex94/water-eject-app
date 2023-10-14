@@ -10,6 +10,9 @@ import MeterScreen from "./screens/Meter";
 import SoundTestStack from "./screens/SoundTest";
 import Settings from "./screens/Settings";
 
+// Toast Notification Manager for Settings mainly
+import ToastManager from "toastify-react-native";
+
 // Decibel Metering Imports to be stopped when switching tabs
 import { AudioRecorder } from "react-native-audio";
 
@@ -54,6 +57,7 @@ function App() {
       }}
     >
       <NavigationContainer>
+        <ToastManager />
         <StatusBar
           animated={true}
           backgroundColor="#61dafb"
