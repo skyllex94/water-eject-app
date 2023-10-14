@@ -9,7 +9,7 @@ export default function OurAppsSection() {
       <Text className="text-gray-500 uppercase ml-4">Our Apps</Text>
       <View className="items-center">
         <ScrollView
-          className="bg-[#162255] w-[95%] mt-5 rounded-lg"
+          className="bg-[#101C43] w-[95%] mt-5 rounded-lg" // bg-[#162255]
           alwaysBounceHorizontal
           alwaysBounceVertical={false}
         >

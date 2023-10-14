@@ -41,7 +41,7 @@ const HomeStackScreen = () => {
 function WaterEjection({ navigation }) {
   return (
     <SafeAreaView className="flex-1 bg-[#05103A]">
-      <Text className="text-white text-center text-xl">Water Clearence</Text>
+      <Text className="text-white text-center text-xl">Water Clearance</Text>
 
       <SoundVisualizer />
       <Frequencies />

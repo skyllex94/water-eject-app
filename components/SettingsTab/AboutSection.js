@@ -8,7 +8,7 @@ export default function AboutSection() {
     <View>
       <Text className="text-gray-500 uppercase ml-4">About</Text>
       <View className="items-center">
-        <TouchableOpacity className="bg-[#162255] justify-center mt-5 h-12 w-[95%] rounded-lg">
+        <TouchableOpacity className="bg-[#101C43] justify-center mt-5 h-12 w-[95%] rounded-lg">
           <View className="flex-row justify-between items-center">
             <View className="flex-row items-center ml-5">
               <View className="mr-2">
@@ -20,7 +20,7 @@ export default function AboutSection() {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity className="bg-[#162255] justify-center mt-2 h-12 w-[95%] rounded-lg">
+        <TouchableOpacity className="bg-[#101C43] justify-center mt-2 h-12 w-[95%] rounded-lg">
           <View className="flex-row justify-between items-center">
             <View className="flex-row items-center ml-5">
               <View className="mr-2">

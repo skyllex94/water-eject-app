@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Linking } from "react-native";
 import React from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
@@ -8,7 +8,14 @@ export default function GeneralSection() {
     <View>
       <Text className="text-gray-500 uppercase ml-4">General</Text>
       <View className="items-center">
-        <TouchableOpacity className="bg-[#162255] justify-center mt-5 h-12 w-[95%] rounded-lg">
+        <TouchableOpacity
+          onPress={() =>
+            Linking.openURL(
+              "https://sites.google.com/view/water-clearance/history"
+            )
+          }
+          className="bg-[#101C43] justify-center mt-5 h-12 w-[95%] rounded-lg"
+        >
           <View className="flex-row items-center ml-5">
             <View className="mr-2">
               <MaterialIcons name="privacy-tip" size={24} color="white" />
@@ -17,7 +24,7 @@ export default function GeneralSection() {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity className="bg-[#162255] justify-center mt-2 h-12 w-[95%] rounded-lg">
+        <TouchableOpacity className="bg-[#101C43] justify-center mt-2 h-12 w-[95%] rounded-lg">
           <View className="flex-row items-center ml-5">
             <View className="mr-2">
               <Entypo name="news" size={24} color="white" />
@@ -26,7 +33,7 @@ export default function GeneralSection() {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity className="bg-[#162255] justify-center mt-2 mb-5 h-12 w-[95%] rounded-lg">
+        <TouchableOpacity className="bg-[#101C43] justify-center mt-2 mb-5 h-12 w-[95%] rounded-lg">
           <View className="flex-row justify-between items-center">
             <View className="flex-row items-center ml-5">
               <View className="mr-2">
@@ -35,7 +42,7 @@ export default function GeneralSection() {
               <Text className="text-white text-lg">Support</Text>
             </View>
             <Text className="text-gray-400 text-md mr-2">
-              kkanchev94@gmail.com
+              zionstudiosapps@gmail.com
             </Text>
           </View>
         </TouchableOpacity>

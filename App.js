@@ -64,7 +64,7 @@ function App() {
             name="Water Eject"
             component={HomeStackScreen}
             options={{
-              tabBarLabel: "Water Clearence",
+              tabBarLabel: "Water Clearance",
               headerShown: false,
               tabBarStyle: {
                 backgroundColor: "#101C40",
