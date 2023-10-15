@@ -13,7 +13,7 @@ export default function SoundCloudWave({ currentTime, totalTime, waveform }) {
         className="m-0 p-0 "
         waveformUrl={waveform}
         height={25}
-        width={320}
+        width={300}
         inactive="#E5E4E2"
         inactiveInverse="white"
         active="#277a8c"

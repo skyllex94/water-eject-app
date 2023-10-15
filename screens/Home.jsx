@@ -1,4 +1,4 @@
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, ScrollView } from "react-native";
 import Frequencies from "../components/Frequencies";
 import Programs from "../components/Programs";
 
@@ -6,19 +6,17 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Paywall from "./Paywall";
 import SoundVisualizer from "../components/SoundVisualizer";
 import { Text } from "react-native";
-import { View } from "react-native";
 
-const HomeStackScreen = () => {
+export default function HomeStackScreen() {
   // React Native Navigator - Stack Navigator initializer
   const Stack = createNativeStackNavigator();
 
   return (
-    <Stack.Navigator initialRouteName="HomeRoute">
+    <Stack.Navigator initialRouteName="WaterClearance">
       <Stack.Screen
-        name="HomeStack"
-        component={WaterEjection}
+        name="WaterClearance"
+        component={WaterClearanceTab}
         options={{
-          tabBarLabel: "Home",
           headerShown: false,
           tabBarStyle: {
             backgroundColor: "#101C43",
@@ -36,18 +34,18 @@ const HomeStackScreen = () => {
       />
     </Stack.Navigator>
   );
-};
+}
 
-function WaterEjection({ navigation }) {
+function WaterClearanceTab({ navigation }) {
   return (
     <SafeAreaView className="flex-1 bg-[#05103A]">
       <Text className="text-white text-center text-xl">Water Clearance</Text>
 
-      <SoundVisualizer />
-      <Frequencies />
-      <Programs navigation={navigation} />
+      <ScrollView>
+        <SoundVisualizer />
+        <Frequencies />
+        <Programs navigation={navigation} />
+      </ScrollView>
     </SafeAreaView>
   );
 }
-
-export default HomeStackScreen;

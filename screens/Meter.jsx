@@ -1,15 +1,42 @@
-import { Text, SafeAreaView, Alert, View } from "react-native";
+import { Text, SafeAreaView, Alert, View, ScrollView } from "react-native";
 import { Audio } from "expo-av";
 import DecibelDisplay from "../components/MeterTab/DecibelDisplay";
 import { useEffect, useState } from "react";
 import DecibelControls from "../components/MeterTab/DecibelControls";
 import DecibelInfo from "../components/MeterTab/DecibelInfo";
 
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Paywall from "./Paywall";
+
 // Decibel Level imports
 import { AudioRecorder, AudioUtils } from "react-native-audio";
 let audioPath = AudioUtils.CachesDirectoryPath + "/test.aac";
 
-export default function MeterScreen() {
+// React Native Navigator - Stack Navigator initializer
+const Stack = createNativeStackNavigator();
+
+export default function Meter() {
+  return (
+    <Stack.Navigator initialRouteName="MeterTab">
+      <Stack.Screen
+        name="MeterTab"
+        component={MeterTab}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Paywall"
+        component={Paywall}
+        options={{
+          presentation: "modal",
+          tabBarLabel: "Paywall",
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function MeterTab({ navigation }) {
   // Decibel State UI
   const [currDecibels, setCurrDecibels] = useState(30);
   const [isOnMetering, setIsOnMetering] = useState(false);
@@ -61,21 +88,24 @@ export default function MeterScreen() {
     <SafeAreaView className="flex-1 bg-[#05103A]">
       <Text className="text-white text-center text-xl">Decibel Meter</Text>
 
-      <DecibelDisplay currDecibels={currDecibels} />
-      <DecibelInfo
-        sampleRate={sampleRate}
-        setSampleRate={setSampleRate}
-        audioQuality={audioQuality}
-        setAudioQuality={setAudioQuality}
-        audioEncodingBitRate={audioEncodingBitRate}
-        setAudioEncodingBitRate={setAudioEncodingBitRate}
-      />
-      <DecibelControls
-        startDecibelMetering={startDecibelMetering}
-        stopDecibelMetering={stopDecibelMetering}
-        isOnMetering={isOnMetering}
-        setIsOnMetering={setIsOnMetering}
-      />
+      <ScrollView>
+        <DecibelDisplay currDecibels={currDecibels} />
+        <DecibelInfo
+          sampleRate={sampleRate}
+          setSampleRate={setSampleRate}
+          audioQuality={audioQuality}
+          setAudioQuality={setAudioQuality}
+          audioEncodingBitRate={audioEncodingBitRate}
+          setAudioEncodingBitRate={setAudioEncodingBitRate}
+        />
+        <DecibelControls
+          startDecibelMetering={startDecibelMetering}
+          stopDecibelMetering={stopDecibelMetering}
+          isOnMetering={isOnMetering}
+          setIsOnMetering={setIsOnMetering}
+          navigation={navigation}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 }

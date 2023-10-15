@@ -11,12 +11,12 @@ import { Entypo } from "@expo/vector-icons";
 
 // Support email clipping dependencies
 import { Toast } from "toastify-react-native";
-import Clipboard from "@react-native-clipboard/clipboard";
+import * as Clipboard from "expo-clipboard";
 
 export default function GeneralSection() {
-  function copySupportEmail() {
+  async function copySupportEmail() {
+    await Clipboard.setStringAsync("zionstudiosapps@gmail.com");
     Toast.info("Support email copied.", "top");
-    Clipboard.setString("hello world");
   }
 
   return (

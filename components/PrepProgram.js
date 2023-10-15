@@ -107,7 +107,7 @@ export default function PrepProgram({ navigation }) {
         </View>
 
         <View style={styles.prepTextContainer}>
-          <Text style={styles.freqText}>Speaker Preparation Frequency</Text>
+          <Text style={styles.freqText}>Speakers Prep Program</Text>
           <Text style={styles.prepTime}>
             {minutesPrep}:{secondsPrep < 10 && "0"}
             {secondsPrep} / 8:01
@@ -119,10 +119,6 @@ export default function PrepProgram({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 3,
-    justifyContent: "flex-start",
-  },
   lockedOption: {
     backgroundColor: "red",
   },
@@ -133,7 +129,7 @@ const styles = StyleSheet.create({
     height: 120,
     padding: 10,
     borderRadius: 15,
-    backgroundColor: "#101C43",
+    backgroundColor: bgColor,
     marginTop: 14,
   },
   freqBtnActive: {

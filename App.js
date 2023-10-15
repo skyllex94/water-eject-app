@@ -16,7 +16,7 @@ import ToastManager from "toastify-react-native";
 // Decibel Metering Imports to be stopped when switching tabs
 import { AudioRecorder } from "react-native-audio";
 
-function App() {
+export default function App() {
   // UI for the water ejection tab
   const [freq, setFreq] = useState({});
   // Currently playing frequency or program sound
@@ -165,5 +165,3 @@ function App() {
     </Context.Provider>
   );
 }
-
-export default App;

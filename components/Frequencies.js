@@ -16,7 +16,7 @@ import { buttonsColor } from "../styles/ColorsUI";
 import { Context } from "./Context";
 import { useContext, useEffect } from "react";
 
-function Frequencies() {
+export default function Frequencies() {
   const { currSound, setCurrSound, setVisualizerParams, freq, setFreq } =
     useContext(Context);
 
@@ -126,117 +126,121 @@ function Frequencies() {
   }
 
   return (
-    <View style={styles.main}>
-      <View style={styles.lowFreqOptions}>
-        <TouchableOpacity
-          onPress={isEnabled120hz}
-          style={freq.isEnabled120 ? styles.freqBtnActive : styles.freqBtn}
-        >
-          <View style={styles.freqIconText}>
-            <View
-              style={
-                freq.isEnabled120 ? styles.iconWrapperOn : styles.iconWrapper
-              }
-            >
-              <Image style={styles.icon} source={lowFreq}></Image>
+    <View className="flex-3 justify-center">
+      <View className={`bg-[${buttonsColor}] mx-3 py-3 rounded-xl`}>
+        <Text className="text-white font-bold ml-4 mb-4">
+          Helpful Frequencies
+        </Text>
+        <View className="flex-row justify-center">
+          <TouchableOpacity
+            onPress={isEnabled120hz}
+            style={freq.isEnabled120 ? styles.freqBtnActive : styles.freqBtn}
+          >
+            <View style={styles.freqIconText}>
+              <View
+                style={
+                  freq.isEnabled120 ? styles.iconWrapperOn : styles.iconWrapper
+                }
+              >
+                <Image style={styles.icon} source={lowFreq}></Image>
+              </View>
+              <Text style={styles.freqText}>120 Hz</Text>
             </View>
-            <Text style={styles.freqText}>120 Hz</Text>
-          </View>
-          <View style={styles.freqControlText}>
-            <Text style={styles.freqOnOff}>
-              {freq.isEnabled120 ? "On" : "Off"}
-            </Text>
-            <Switch
-              trackColor={{ true: iconActiveColor }}
-              value={freq.isEnabled120}
-              onValueChange={isEnabled120hz}
-            />
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={isEnabled160hz}
-          style={freq.isEnabled160 ? styles.freqBtnActive : styles.freqBtn}
-        >
-          <View style={styles.freqIconText}>
-            <View
-              style={
-                freq.isEnabled160 ? styles.iconWrapperOn : styles.iconWrapper
-              }
-            >
-              <Image style={styles.icon} source={medFreq}></Image>
+            <View style={styles.freqControlText}>
+              <Text style={styles.freqOnOff}>
+                {freq.isEnabled120 ? "On" : "Off"}
+              </Text>
+              <Switch
+                trackColor={{ true: iconActiveColor }}
+                value={freq.isEnabled120}
+                onValueChange={isEnabled120hz}
+              />
             </View>
-            <Text style={styles.freqText}>160 Hz</Text>
-          </View>
-          <View style={styles.freqControlText}>
-            <Text style={styles.freqOnOff}>
-              {freq.isEnabled160 ? "On" : "Off"}
-            </Text>
-            <Switch
-              trackColor={{ true: iconActiveColor }}
-              value={freq.isEnabled160}
-              onValueChange={isEnabled160hz}
-            />
-          </View>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.highFreqOptions}>
-        <TouchableOpacity
-          onPress={isEnabled300hz}
-          style={freq.isEnabled300 ? styles.freqBtnActive : styles.freqBtn}
-        >
-          <View style={styles.freqIconText}>
-            <View
-              style={
-                freq.isEnabled300 ? styles.iconWrapperOn : styles.iconWrapper
-              }
-            >
-              <Image style={styles.icon} source={highFreq} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={isEnabled160hz}
+            style={freq.isEnabled160 ? styles.freqBtnActive : styles.freqBtn}
+          >
+            <View style={styles.freqIconText}>
+              <View
+                style={
+                  freq.isEnabled160 ? styles.iconWrapperOn : styles.iconWrapper
+                }
+              >
+                <Image style={styles.icon} source={medFreq}></Image>
+              </View>
+              <Text style={styles.freqText}>160 Hz</Text>
             </View>
-            <Text style={styles.freqText}>300 Hz</Text>
-          </View>
-          <View style={styles.freqControlText}>
-            <Text style={styles.freqOnOff}>
-              {freq.isEnabled300 ? "On" : "Off"}
-            </Text>
-            <Switch
-              trackColor={{ true: iconActiveColor }}
-              value={freq.isEnabled300}
-              onValueChange={isEnabled300hz}
-            />
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={enable500Hz}
-          style={freq.isEnabled500 ? styles.freqBtnActive : styles.freqBtn}
-        >
-          <View style={styles.freqIconText}>
-            <View
-              style={
-                freq.isEnabled500 ? styles.iconWrapperOn : styles.iconWrapper
-              }
-            >
-              <Image style={styles.icon} source={xtHighFreq} />
+            <View style={styles.freqControlText}>
+              <Text style={styles.freqOnOff}>
+                {freq.isEnabled160 ? "On" : "Off"}
+              </Text>
+              <Switch
+                trackColor={{ true: iconActiveColor }}
+                value={freq.isEnabled160}
+                onValueChange={isEnabled160hz}
+              />
             </View>
-            <Text style={styles.freqText}>500 Hz</Text>
-          </View>
-          <View style={styles.freqControlText}>
-            <Text style={styles.freqOnOff}>
-              {freq.isEnabled500 ? "On" : "Off"}
-            </Text>
-            <Switch
-              trackColor={{ true: iconActiveColor }}
-              value={freq.isEnabled500}
-              onValueChange={enable500Hz}
-            />
-          </View>
-        </TouchableOpacity>
+          </TouchableOpacity>
+        </View>
+        <View className="flex-row justify-center mt-4">
+          <TouchableOpacity
+            onPress={isEnabled300hz}
+            style={freq.isEnabled300 ? styles.freqBtnActive : styles.freqBtn}
+          >
+            <View style={styles.freqIconText}>
+              <View
+                style={
+                  freq.isEnabled300 ? styles.iconWrapperOn : styles.iconWrapper
+                }
+              >
+                <Image style={styles.icon} source={highFreq} />
+              </View>
+              <Text style={styles.freqText}>300 Hz</Text>
+            </View>
+            <View style={styles.freqControlText}>
+              <Text style={styles.freqOnOff}>
+                {freq.isEnabled300 ? "On" : "Off"}
+              </Text>
+              <Switch
+                trackColor={{ true: iconActiveColor }}
+                value={freq.isEnabled300}
+                onValueChange={isEnabled300hz}
+              />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={enable500Hz}
+            style={freq.isEnabled500 ? styles.freqBtnActive : styles.freqBtn}
+          >
+            <View style={styles.freqIconText}>
+              <View
+                style={
+                  freq.isEnabled500 ? styles.iconWrapperOn : styles.iconWrapper
+                }
+              >
+                <Image style={styles.icon} source={xtHighFreq} />
+              </View>
+              <Text style={styles.freqText}>500 Hz</Text>
+            </View>
+            <View style={styles.freqControlText}>
+              <Text style={styles.freqOnOff}>
+                {freq.isEnabled500 ? "On" : "Off"}
+              </Text>
+              <Switch
+                trackColor={{ true: iconActiveColor }}
+                value={freq.isEnabled500}
+                onValueChange={enable500Hz}
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
 }
 
 const bgColor = "#05103A";
-const activeColor = "#4AD0EE";
 const iconActiveColor = "#87e5fa";
 
 const styles = StyleSheet.create({
@@ -261,7 +265,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 10,
     borderRadius: 15,
-    backgroundColor: buttonsColor,
+    backgroundColor: bgColor,
   },
   freqBtnActive: {
     width: "45%",
@@ -280,7 +284,7 @@ const styles = StyleSheet.create({
     width: 50,
     padding: 10,
     borderRadius: 10,
-    backgroundColor: bgColor,
+    backgroundColor: buttonsColor,
   },
   iconWrapperOn: {
     width: 50,
@@ -312,5 +316,3 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-
-export default Frequencies;

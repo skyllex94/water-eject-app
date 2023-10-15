@@ -1,4 +1,4 @@
-import { Dimensions, SafeAreaView, StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 
 import {
   Skia,
@@ -77,12 +77,8 @@ export const SoundVisualizer = () => {
     return vec(0, verticalShift.current + 250);
   }, [verticalShift]);
 
-  const getLabelYValueOffset = (position) => {
-    return verticalShiftConst + 50 * position;
-  };
-
   return (
-    <SafeAreaView style={styles.container}>
+    <View className="flex-1 my-4 mx-3 h-[100]">
       <Canvas style={styles.canvas} onTouch={touchHandler}>
         <Path path={animatedPath} style="fill">
           <LinearGradient
@@ -93,18 +89,13 @@ export const SoundVisualizer = () => {
         </Path>
       </Canvas>
       <View style={styles.bottomBorder} />
-    </SafeAreaView>
+    </View>
   );
 };
 
 export default SoundVisualizer;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginHorizontal: 15,
-    marginVertical: 20,
-  },
   canvas: {
     flex: 1,
   },

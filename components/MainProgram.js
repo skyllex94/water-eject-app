@@ -101,7 +101,7 @@ export default function MainProgram({ navigation }) {
       </View>
 
       <View style={styles.prepTextContainer}>
-        <Text style={styles.freqText}>Water Ejection Dedicated Program</Text>
+        <Text style={styles.freqText}>Water Clearance Program</Text>
         <Text style={styles.prepTime}>
           {minutesMain}:{secondsMain < 10 && "0"}
           {secondsMain} / 16:27
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     height: 120,
     padding: 10,
     borderRadius: 15,
-    backgroundColor: "#101C43",
+    backgroundColor: bgColor,
     marginTop: 14,
   },
   freqBtnActive: {
