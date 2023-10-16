@@ -30,10 +30,10 @@ export default function Paywall({ navigation }) {
         currentOffering.weekly
       );
       if (purchaserInfo.customerInfo.entitlements.active.pro) {
-        console.log(
-          "Weekly Package Purchased.",
-          purchaserInfo.customerInfo.entitlements.active
-        );
+        // console.log(
+        //   "Weekly Package Purchased.",
+        //   purchaserInfo.customerInfo.entitlements.active
+        // );
         navigation.goBack();
       }
     } catch (e) {

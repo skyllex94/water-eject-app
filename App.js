@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { Context } from "./components/Context";
-import HomeStackScreen from "./screens/Home";
+import HomeStackScreen from "./screens/Clearance";
 import MeterScreen from "./screens/Meter";
 import SoundTestStack from "./screens/SoundTest";
 import Settings from "./screens/Settings";
@@ -15,6 +15,7 @@ import ToastManager from "toastify-react-native";
 
 // Decibel Metering Imports to be stopped when switching tabs
 import { AudioRecorder } from "react-native-audio";
+import WaterClearance from "./screens/Clearance";
 
 export default function App() {
   // UI for the water ejection tab
@@ -66,7 +67,7 @@ export default function App() {
         <Tab.Navigator>
           <Tab.Screen
             name="Water Eject"
-            component={HomeStackScreen}
+            component={WaterClearance}
             options={{
               tabBarLabel: "Water Clearance",
               headerShown: false,

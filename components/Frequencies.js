@@ -16,6 +16,9 @@ import { buttonsColor } from "../styles/ColorsUI";
 import { Context } from "./Context";
 import { useContext, useEffect } from "react";
 
+// Decibel Metering Imports to be stopped when switching tabs
+import { AudioRecorder } from "react-native-audio";
+
 export default function Frequencies() {
   const { currSound, setCurrSound, setVisualizerParams, freq, setFreq } =
     useContext(Context);
@@ -26,6 +29,10 @@ export default function Frequencies() {
     playAudioInSilentMode();
   }, []);
 
+  function stopDecibelMeter() {
+    AudioRecorder.stopRecording();
+  }
+
   async function playAudioInSilentMode() {
     return await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
   }
@@ -33,6 +40,7 @@ export default function Frequencies() {
   async function isEnabled120hz() {
     setFreq((state) => ({ ...!state, isEnabled120: !freq.isEnabled120 }));
 
+    stopDecibelMeter();
     await startFrequency120();
 
     async function startFrequency120() {
@@ -59,6 +67,7 @@ export default function Frequencies() {
   async function isEnabled160hz() {
     setFreq((state) => ({ ...!state, isEnabled160: !freq.isEnabled160 }));
 
+    stopDecibelMeter();
     await startFrequency160();
 
     async function startFrequency160() {
@@ -82,6 +91,7 @@ export default function Frequencies() {
   async function isEnabled300hz() {
     setFreq((state) => ({ ...!state, isEnabled300: !freq.isEnabled300 }));
 
+    stopDecibelMeter();
     await startFrequency300();
 
     async function startFrequency300() {
@@ -105,6 +115,7 @@ export default function Frequencies() {
   async function enable500Hz() {
     setFreq((state) => ({ ...!state, isEnabled500: !freq.isEnabled500 }));
 
+    stopDecibelMeter();
     await startFrequency500();
 
     async function startFrequency500() {
@@ -128,9 +139,7 @@ export default function Frequencies() {
   return (
     <View className="flex-3 justify-center">
       <View className={`bg-[${buttonsColor}] mx-3 py-3 rounded-xl`}>
-        <Text className="text-white font-bold ml-4 mb-4">
-          Helpful Frequencies
-        </Text>
+        <Text className="text-white font-bold ml-4 mb-4">Frequencies</Text>
         <View className="flex-row justify-center">
           <TouchableOpacity
             onPress={isEnabled120hz}

@@ -78,7 +78,7 @@ export const SoundVisualizer = () => {
   }, [verticalShift]);
 
   return (
-    <View className="flex-1 my-4 mx-3 h-[100]">
+    <View className="my-4 mx-3 h-[120]">
       <Canvas style={styles.canvas} onTouch={touchHandler}>
         <Path path={animatedPath} style="fill">
           <LinearGradient
