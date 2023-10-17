@@ -10,7 +10,7 @@ import useRevenueCat from "../hooks/useRevenueCat";
 import SoundCloudWave from "./SoundCloudWave";
 
 export default function MainProgram({ navigation }) {
-  const { freq, setFreq, currSound, setCurrSound, setVisualizerParams } =
+  const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
     useContext(Context);
 
   const { isProMember } = useRevenueCat();
@@ -32,21 +32,21 @@ export default function MainProgram({ navigation }) {
       setSecondsMain(0);
     }
 
-    if (!freq.isEnabledMain || (minutesMain === 16 && secondsMain === 27)) {
+    if (!sound.isEnabledMain || (minutesMain === 16 && secondsMain === 27)) {
       setMinutesMain(0);
       setSecondsMain(0);
       setWaveformTime(0);
       stopTimer(mainRefCounter, setSecondsMain, setMinutesMain);
       stopWaveformTimer(mainWaveformRefCounter, setWaveformTime);
     }
-  }, [secondsMain, waveformTime, freq.isEnabledMain]);
+  }, [secondsMain, waveformTime, sound.isEnabledMain]);
 
   async function enableMainFreq() {
-    setFreq((state) => ({ ...!state, isEnabledMain: !freq.isEnabledMain }));
+    setSound((state) => ({ ...!state, isEnabledMain: !sound.isEnabledMain }));
     await playMain();
 
     async function playMain() {
-      if (!freq.isEnabledMain) {
+      if (!sound.isEnabledMain) {
         if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require(`../assets/programs/main.mp3`),
@@ -74,18 +74,18 @@ export default function MainProgram({ navigation }) {
   return (
     <TouchableOpacity
       onPress={isProMember ? enableMainFreq : openPurchaseModal}
-      style={freq.isEnabledMain ? styles.freqBtnActive : styles.freqBtn}
+      style={sound.isEnabledMain ? styles.freqBtnActive : styles.freqBtn}
     >
       <View
         style={
-          freq.isEnabledMain
+          sound.isEnabledMain
             ? styles.prepWaveformContainerActive
             : styles.prepWaveformContainer
         }
       >
-        <View style={freq.isEnabledMain ? styles.playActive : styles.prepPlay}>
+        <View style={sound.isEnabledMain ? styles.playActive : styles.prepPlay}>
           <Icon
-            name={freq.isEnabledMain ? "stop" : "play"}
+            name={sound.isEnabledMain ? "stop" : "play"}
             size={30}
             color="white"
           />

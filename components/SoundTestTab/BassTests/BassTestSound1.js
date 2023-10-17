@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 import {
   openPurchaseModal,
+  resetVisualizer,
   startTimer,
   stopTimer,
   stopWaveformTimer,
@@ -15,7 +16,7 @@ import { Context } from "../../Context";
 import useRevenueCat from "../../../hooks/useRevenueCat";
 
 export default function BassTestSound1({ navigation }) {
-  const { tests, setTests, currSoundTest, setCurrSoundTest } =
+  const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
     useContext(Context);
   const { isProMember } = useRevenueCat();
 
@@ -29,39 +30,40 @@ export default function BassTestSound1({ navigation }) {
 
   // Incrementing minutes for audio timers
   useEffect(() => {
-    if (!tests.isEnabledUsedTo || (minutes === 0 && seconds === totalTime)) {
+    if (!sound.isEnabledUsedTo || (minutes === 0 && seconds === totalTime)) {
       setMinutes(0);
       setSeconds(0);
       setWaveformTime(0);
       stopTimer(refCounter, setSeconds, setMinutes);
       stopWaveformTimer(refWaveFormCounter, setWaveformTime);
-      setTests((state) => ({ ...state, isEnabledUsedTo: false }));
+      setSound((state) => ({ ...state, isEnabledUsedTo: false }));
     }
-  }, [seconds, waveformTime, tests.isEnabledUsedTo]);
+  }, [seconds, waveformTime, sound.isEnabledUsedTo]);
 
   async function enableUsedToTest() {
-    setTests((state) => ({
+    setSound((state) => ({
       ...!state,
-      isEnabledUsedTo: !tests.isEnabledUsedTo,
+      isEnabledUsedTo: !sound.isEnabledUsedTo,
     }));
 
     await playSong();
 
     async function playSong() {
-      if (!tests.isEnabledUsedTo) {
-        if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+      if (!sound.isEnabledUsedTo) {
+        if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../../assets/soundtests/used-to.mp3")
         );
 
-        setCurrSoundTest(sound);
+        resetVisualizer(setVisualizerParams);
+        setCurrSound(sound);
         await sound.playAsync();
 
         // Start the audio timer state
         startTimer(refCounter, setSeconds);
         startTimer(refWaveFormCounter, setWaveformTime);
       } else {
-        currSoundTest.unloadAsync() || undefined;
+        currSound.unloadAsync() || undefined;
         stopTimer(refCounter, setSeconds, setMinutes);
         stopWaveformTimer(refWaveFormCounter, setWaveformTime);
       }
@@ -72,7 +74,7 @@ export default function BassTestSound1({ navigation }) {
     <TouchableOpacity className="overall-sound1 items-center">
       <TouchableOpacity
         className={`${
-          tests.isEnabledUsedTo ? "w-[95%] bg-[#4AD0EE] rounded-xl" : "w-[95%]"
+          sound.isEnabledUsedTo ? "w-[95%] bg-[#4AD0EE] rounded-xl" : "w-[95%]"
         } `}
         onPress={
           isProMember ? enableUsedToTest : () => openPurchaseModal(navigation)
@@ -80,7 +82,7 @@ export default function BassTestSound1({ navigation }) {
       >
         <View
           className={`${
-            tests.isEnabledUsedTo
+            sound.isEnabledUsedTo
               ? "bg-[#87E5FA] justify-between py-2 rounded-xl border-white"
               : "bg-[#05103A] justify-between py-2 rounded-xl border-white"
           }  `}
@@ -88,11 +90,11 @@ export default function BassTestSound1({ navigation }) {
           <View className="flex-row h-14">
             <View
               className={`${
-                tests.isEnabledUsedTo ? "bg-[#87e5fa]" : "bg-[#101C43]"
+                sound.isEnabledUsedTo ? "bg-[#87e5fa]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 ml-3 mt-1 rounded-xl`}
             >
               <Icon
-                name={tests.isEnabledUsedTo ? "stop" : "play"}
+                name={sound.isEnabledUsedTo ? "stop" : "play"}
                 size={30}
                 color="white"
               />

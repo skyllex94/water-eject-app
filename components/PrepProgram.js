@@ -14,7 +14,7 @@ export default function PrepProgram({ navigation }) {
   const { isProMember } = useRevenueCat();
   const { setVisualizerParams } = useContext(Context);
 
-  const { freq, setFreq, currSound, setCurrSound } = useContext(Context);
+  const { sound, setSound, currSound, setCurrSound } = useContext(Context);
 
   const defaultVisualizerParams = { speed: 500, frequency: 2, amplitude: 15 };
 
@@ -32,21 +32,21 @@ export default function PrepProgram({ navigation }) {
       setMinutesPrep((prev) => prev + 1);
       setSecondsPrep(0);
     }
-    if (!freq.isEnabledPrep || (minutesPrep === 8 && secondsPrep === 1)) {
+    if (!sound.isEnabledPrep || (minutesPrep === 8 && secondsPrep === 1)) {
       setMinutesPrep(0);
       setSecondsPrep(0);
       setWaveformTime(0);
       stopTimer(prepRefCounter, setSecondsPrep, setMinutesPrep);
       stopWaveformTimer(prepRefWaveformCounter, setWaveformTime);
     }
-  }, [secondsPrep, waveformTime, freq.isEnabledPrep]);
+  }, [secondsPrep, waveformTime, sound.isEnabledPrep]);
 
   async function enablePrepFreq() {
-    setFreq((state) => ({ ...!state, isEnabledPrep: !freq.isEnabledPrep }));
+    setSound((state) => ({ ...!state, isEnabledPrep: !sound.isEnabledPrep }));
     await playPrep();
 
     async function playPrep() {
-      if (!freq.isEnabledPrep) {
+      if (!sound.isEnabledPrep) {
         if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require(`../assets/programs/prep.mp3`),
@@ -78,21 +78,21 @@ export default function PrepProgram({ navigation }) {
   return (
     <TouchableOpacity>
       <TouchableOpacity
-        style={freq.isEnabledPrep ? styles.freqBtnActive : styles.freqBtn}
+        style={sound.isEnabledPrep ? styles.freqBtnActive : styles.freqBtn}
         onPress={isProMember ? enablePrepFreq : openPurchaseModal}
       >
         <View
           style={
-            freq.isEnabledPrep
+            sound.isEnabledPrep
               ? styles.prepWaveformContainerActive
               : styles.prepWaveformContainer
           }
         >
           <View
-            style={freq.isEnabledPrep ? styles.playActive : styles.prepPlay}
+            style={sound.isEnabledPrep ? styles.playActive : styles.prepPlay}
           >
             <Icon
-              name={freq.isEnabledPrep ? "stop" : "play"}
+              name={sound.isEnabledPrep ? "stop" : "play"}
               size={30}
               color="white"
             />

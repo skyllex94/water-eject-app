@@ -3,12 +3,17 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { Audio } from "expo-av";
 
 import Icon from "react-native-vector-icons/FontAwesome";
-import { startTimer, stopTimer, stopWaveformTimer } from "../../util/Funcs";
+import {
+  resetVisualizer,
+  startTimer,
+  stopTimer,
+  stopWaveformTimer,
+} from "../../util/Funcs";
 import SoundTestWave from "../SoundTestWave";
 import { Context } from "../../Context";
 
 export default function OverallTestSong1() {
-  const { tests, setTests, currSoundTest, setCurrSoundTest } =
+  const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
     useContext(Context);
 
   // JK States and Refs
@@ -26,36 +31,37 @@ export default function OverallTestSong1() {
       setMinutes((prev) => prev + 1);
       setSeconds(0);
     }
-    if (!tests.isEnabledJKSong || (minutes === 1 && seconds === 9)) {
+    if (!sound.isEnabledJKSong || (minutes === 1 && seconds === 9)) {
       stopTimer(refCounter, setSeconds, setMinutes);
       stopWaveformTimer(refWaveFormCounter, setWaveformTime);
-      setTests((state) => ({ ...state, isEnabledJKSong: false }));
+      setSound((state) => ({ ...state, isEnabledJKSong: false }));
     }
-  }, [seconds, waveformTime, tests.isEnabledJKSong]);
+  }, [seconds, waveformTime, sound.isEnabledJKSong]);
 
   async function enableJKSong() {
-    setTests((state) => ({
+    setSound((state) => ({
       ...!state,
-      isEnabledJKSong: !tests.isEnabledJKSong,
+      isEnabledJKSong: !sound.isEnabledJKSong,
     }));
 
     await playSong();
 
     async function playSong() {
-      if (!tests.isEnabledJKSong) {
-        if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+      if (!sound.isEnabledJKSong) {
+        if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../../assets/soundtests/jk-whoisjk-baby-what-u-wanna-do.mp3")
         );
 
-        setCurrSoundTest(sound);
+        resetVisualizer(setVisualizerParams);
+        setCurrSound(sound);
         await sound.playAsync();
 
         // Start the audio timer state
         startTimer(refCounter, setSeconds);
         startTimer(refWaveFormCounter, setWaveformTime);
       } else {
-        currSoundTest.unloadAsync() || undefined;
+        currSound.unloadAsync() || undefined;
         stopTimer(refCounter, setSeconds, setMinutes);
         stopWaveformTimer(refWaveFormCounter, setWaveformTime);
       }
@@ -66,13 +72,13 @@ export default function OverallTestSong1() {
     <TouchableOpacity className="overall-sound1 items-center">
       <TouchableOpacity
         className={`${
-          tests.isEnabledJKSong ? "w-[95%] bg-[#4AD0EE] rounded-xl" : "w-[95%]"
+          sound.isEnabledJKSong ? "w-[95%] bg-[#4AD0EE] rounded-xl" : "w-[95%]"
         } `}
         onPress={enableJKSong}
       >
         <View
           className={`${
-            tests.isEnabledJKSong
+            sound.isEnabledJKSong
               ? "bg-[#87E5FA] justify-between py-2 rounded-xl border-white"
               : "bg-[#05103A] justify-between py-2 rounded-xl border-white"
           }  `}
@@ -80,11 +86,11 @@ export default function OverallTestSong1() {
           <View className="flex-row h-14">
             <View
               className={`${
-                tests.isEnabledJKSong ? "bg-[#87e5fa]" : "bg-[#101C43]"
+                sound.isEnabledJKSong ? "bg-[#87e5fa]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 ml-3 mt-1 rounded-xl`}
             >
               <Icon
-                name={tests.isEnabledJKSong ? "stop" : "play"}
+                name={sound.isEnabledJKSong ? "stop" : "play"}
                 size={30}
                 color="white"
               />

@@ -7,21 +7,21 @@ import { FontAwesome5 } from "@expo/vector-icons";
 
 import { Context } from "../Context";
 import useRevenueCat from "../../hooks/useRevenueCat";
-import { openPurchaseModal } from "../util/Funcs";
+import { openPurchaseModal, resetVisualizer } from "../util/Funcs";
 
 export default function ImagingTest({ navigation }) {
-  const { tests, setTests, currSoundTest, setCurrSoundTest } =
+  const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
     useContext(Context);
   const { isProMember } = useRevenueCat();
 
   async function enableOverTest() {
-    setTests((state) => ({ ...!state, isEnabledOver: !tests.isEnabledOver }));
+    setSound((state) => ({ ...!state, isEnabledOver: !sound.isEnabledOver }));
 
     await playTest();
 
     async function playTest() {
-      if (!tests.isEnabledOver) {
-        if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+      if (!sound.isEnabledOver) {
+        if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/over.mp3"),
           {
@@ -29,24 +29,25 @@ export default function ImagingTest({ navigation }) {
           }
         );
 
-        setCurrSoundTest(sound);
+        resetVisualizer(setVisualizerParams);
+        setCurrSound(sound);
         await sound.playAsync();
-      } else currSoundTest.unloadAsync() || undefined;
+      } else currSound.unloadAsync() || undefined;
     }
   }
 
   async function enableLateral() {
-    setTests((state) => ({
+    setSound((state) => ({
       ...!state,
-      isEnabledLateral: !tests.isEnabledLateral,
+      isEnabledLateral: !sound.isEnabledLateral,
     }));
 
-    console.log(tests);
+    console.log(sound);
     await playTest();
 
     async function playTest() {
-      if (!tests.isEnabledLateral) {
-        if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+      if (!sound.isEnabledLateral) {
+        if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/lateral.mp3"),
           {
@@ -54,25 +55,26 @@ export default function ImagingTest({ navigation }) {
           }
         );
 
-        setCurrSoundTest(sound);
+        resetVisualizer(setVisualizerParams);
+        setCurrSound(sound);
         await sound.playAsync();
-      } else currSoundTest.unloadAsync() || undefined;
+      } else currSound.unloadAsync() || undefined;
     }
   }
 
   async function enableBehind() {
-    setTests((state) => ({
+    setSound((state) => ({
       ...!state,
-      isEnabledBehind: !tests.isEnabledBehind,
+      isEnabledBehind: !sound.isEnabledBehind,
     }));
 
-    console.log(tests);
+    console.log(sound);
 
     await playTest();
 
     async function playTest() {
-      if (!tests.isEnabledBehind) {
-        if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+      if (!sound.isEnabledBehind) {
+        if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/behind.mp3"),
           {
@@ -80,9 +82,10 @@ export default function ImagingTest({ navigation }) {
           }
         );
 
-        setCurrSoundTest(sound);
+        resetVisualizer(setVisualizerParams);
+        setCurrSound(sound);
         await sound.playAsync();
-      } else currSoundTest.unloadAsync() || undefined;
+      } else currSound.unloadAsync() || undefined;
     }
   }
 
@@ -118,16 +121,16 @@ export default function ImagingTest({ navigation }) {
         >
           <View
             className={`${
-              tests.isEnabledOver ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              sound.isEnabledOver ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 ml-3 rounded-xl`}
           >
             <View
               className={`${
-                tests.isEnabledOver ? "bg-[#74daf1]" : "bg-[#101C43]"
+                sound.isEnabledOver ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={tests.isEnabledOver ? "pause" : "play"}
+                name={sound.isEnabledOver ? "pause" : "play"}
                 size={30}
                 color="white"
               />
@@ -146,16 +149,16 @@ export default function ImagingTest({ navigation }) {
         >
           <View
             className={`${
-              tests.isEnabledLateral ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              sound.isEnabledLateral ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 rounded-xl`}
           >
             <View
               className={`${
-                tests.isEnabledLateral ? "bg-[#74daf1]" : "bg-[#101C43]"
+                sound.isEnabledLateral ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={tests.isEnabledLateral ? "pause" : "play"}
+                name={sound.isEnabledLateral ? "pause" : "play"}
                 size={30}
                 color="white"
               />
@@ -174,16 +177,16 @@ export default function ImagingTest({ navigation }) {
         >
           <View
             className={`${
-              tests.isEnabledBehind ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              sound.isEnabledBehind ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 mr-3 rounded-xl`}
           >
             <View
               className={`${
-                tests.isEnabledBehind ? "bg-[#74daf1]" : "bg-[#101C43]"
+                sound.isEnabledBehind ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={tests.isEnabledBehind ? "pause" : "play"}
+                name={sound.isEnabledBehind ? "pause" : "play"}
                 size={30}
                 color="white"
               />

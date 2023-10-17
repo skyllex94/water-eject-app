@@ -20,7 +20,7 @@ import { useContext, useEffect } from "react";
 import { AudioRecorder } from "react-native-audio";
 
 export default function Frequencies() {
-  const { currSound, setCurrSound, setVisualizerParams, freq, setFreq } =
+  const { currSound, setCurrSound, setVisualizerParams, sound, setSound } =
     useContext(Context);
 
   const defaultVisualizerParams = { speed: 500, frequency: 3, amplitude: 10 };
@@ -38,13 +38,13 @@ export default function Frequencies() {
   }
 
   async function isEnabled120hz() {
-    setFreq((state) => ({ ...!state, isEnabled120: !freq.isEnabled120 }));
+    setSound((state) => ({ ...!state, isEnabled120: !sound.isEnabled120 }));
 
     stopDecibelMeter();
     await startFrequency120();
 
     async function startFrequency120() {
-      if (!freq.isEnabled120) {
+      if (!sound.isEnabled120) {
         if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require(`../assets/frequencies/120hz_cut.mp3`),
@@ -65,13 +65,13 @@ export default function Frequencies() {
   }
 
   async function isEnabled160hz() {
-    setFreq((state) => ({ ...!state, isEnabled160: !freq.isEnabled160 }));
+    setSound((state) => ({ ...!state, isEnabled160: !sound.isEnabled160 }));
 
     stopDecibelMeter();
     await startFrequency160();
 
     async function startFrequency160() {
-      if (!freq.isEnabled160) {
+      if (!sound.isEnabled160) {
         if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require(`../assets/frequencies/160hz_cut.mp3`),
@@ -89,13 +89,13 @@ export default function Frequencies() {
   }
 
   async function isEnabled300hz() {
-    setFreq((state) => ({ ...!state, isEnabled300: !freq.isEnabled300 }));
+    setSound((state) => ({ ...!state, isEnabled300: !sound.isEnabled300 }));
 
     stopDecibelMeter();
     await startFrequency300();
 
     async function startFrequency300() {
-      if (!freq.isEnabled300) {
+      if (!sound.isEnabled300) {
         if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require(`../assets/frequencies/300hz_cut.mp3`),
@@ -113,13 +113,13 @@ export default function Frequencies() {
   }
 
   async function enable500Hz() {
-    setFreq((state) => ({ ...!state, isEnabled500: !freq.isEnabled500 }));
+    setSound((state) => ({ ...!state, isEnabled500: !sound.isEnabled500 }));
 
     stopDecibelMeter();
     await startFrequency500();
 
     async function startFrequency500() {
-      if (!freq.isEnabled500) {
+      if (!sound.isEnabled500) {
         if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require(`../assets/frequencies/500hz_cut.mp3`),
@@ -143,12 +143,12 @@ export default function Frequencies() {
         <View className="flex-row justify-center">
           <TouchableOpacity
             onPress={isEnabled120hz}
-            style={freq.isEnabled120 ? styles.freqBtnActive : styles.freqBtn}
+            style={sound.isEnabled120 ? styles.freqBtnActive : styles.freqBtn}
           >
             <View style={styles.freqIconText}>
               <View
                 style={
-                  freq.isEnabled120 ? styles.iconWrapperOn : styles.iconWrapper
+                  sound.isEnabled120 ? styles.iconWrapperOn : styles.iconWrapper
                 }
               >
                 <Image style={styles.icon} source={lowFreq}></Image>
@@ -157,23 +157,23 @@ export default function Frequencies() {
             </View>
             <View style={styles.freqControlText}>
               <Text style={styles.freqOnOff}>
-                {freq.isEnabled120 ? "On" : "Off"}
+                {sound.isEnabled120 ? "On" : "Off"}
               </Text>
               <Switch
                 trackColor={{ true: iconActiveColor }}
-                value={freq.isEnabled120}
+                value={sound.isEnabled120}
                 onValueChange={isEnabled120hz}
               />
             </View>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={isEnabled160hz}
-            style={freq.isEnabled160 ? styles.freqBtnActive : styles.freqBtn}
+            style={sound.isEnabled160 ? styles.freqBtnActive : styles.freqBtn}
           >
             <View style={styles.freqIconText}>
               <View
                 style={
-                  freq.isEnabled160 ? styles.iconWrapperOn : styles.iconWrapper
+                  sound.isEnabled160 ? styles.iconWrapperOn : styles.iconWrapper
                 }
               >
                 <Image style={styles.icon} source={medFreq}></Image>
@@ -182,11 +182,11 @@ export default function Frequencies() {
             </View>
             <View style={styles.freqControlText}>
               <Text style={styles.freqOnOff}>
-                {freq.isEnabled160 ? "On" : "Off"}
+                {sound.isEnabled160 ? "On" : "Off"}
               </Text>
               <Switch
                 trackColor={{ true: iconActiveColor }}
-                value={freq.isEnabled160}
+                value={sound.isEnabled160}
                 onValueChange={isEnabled160hz}
               />
             </View>
@@ -195,12 +195,12 @@ export default function Frequencies() {
         <View className="flex-row justify-center mt-4">
           <TouchableOpacity
             onPress={isEnabled300hz}
-            style={freq.isEnabled300 ? styles.freqBtnActive : styles.freqBtn}
+            style={sound.isEnabled300 ? styles.freqBtnActive : styles.freqBtn}
           >
             <View style={styles.freqIconText}>
               <View
                 style={
-                  freq.isEnabled300 ? styles.iconWrapperOn : styles.iconWrapper
+                  sound.isEnabled300 ? styles.iconWrapperOn : styles.iconWrapper
                 }
               >
                 <Image style={styles.icon} source={highFreq} />
@@ -209,23 +209,23 @@ export default function Frequencies() {
             </View>
             <View style={styles.freqControlText}>
               <Text style={styles.freqOnOff}>
-                {freq.isEnabled300 ? "On" : "Off"}
+                {sound.isEnabled300 ? "On" : "Off"}
               </Text>
               <Switch
                 trackColor={{ true: iconActiveColor }}
-                value={freq.isEnabled300}
+                value={sound.isEnabled300}
                 onValueChange={isEnabled300hz}
               />
             </View>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={enable500Hz}
-            style={freq.isEnabled500 ? styles.freqBtnActive : styles.freqBtn}
+            style={sound.isEnabled500 ? styles.freqBtnActive : styles.freqBtn}
           >
             <View style={styles.freqIconText}>
               <View
                 style={
-                  freq.isEnabled500 ? styles.iconWrapperOn : styles.iconWrapper
+                  sound.isEnabled500 ? styles.iconWrapperOn : styles.iconWrapper
                 }
               >
                 <Image style={styles.icon} source={xtHighFreq} />
@@ -234,11 +234,11 @@ export default function Frequencies() {
             </View>
             <View style={styles.freqControlText}>
               <Text style={styles.freqOnOff}>
-                {freq.isEnabled500 ? "On" : "Off"}
+                {sound.isEnabled500 ? "On" : "Off"}
               </Text>
               <Switch
                 trackColor={{ true: iconActiveColor }}
-                value={freq.isEnabled500}
+                value={sound.isEnabled500}
                 onValueChange={enable500Hz}
               />
             </View>

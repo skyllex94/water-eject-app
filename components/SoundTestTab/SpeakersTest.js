@@ -6,22 +6,22 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Context } from "../Context";
 import useRevenueCat from "../../hooks/useRevenueCat";
-import { openPurchaseModal } from "../util/Funcs";
+import { openPurchaseModal, resetVisualizer } from "../util/Funcs";
 
 export default function SpeakersTest({ navigation }) {
   // Test sound states
-  const { tests, setTests, currSoundTest, setCurrSoundTest } =
+  const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
     useContext(Context);
   const { isProMember } = useRevenueCat();
 
   async function enableFrontSpeaker() {
-    setTests((state) => ({ ...!state, isEnabledFront: !tests.isEnabledFront }));
+    setSound((state) => ({ ...!state, isEnabledFront: !sound.isEnabledFront }));
 
     await playSpeaker();
 
     async function playSpeaker() {
-      if (!tests.isEnabledFront) {
-        if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+      if (!sound.isEnabledFront) {
+        if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/right-speaker.mp3"),
           {
@@ -29,20 +29,21 @@ export default function SpeakersTest({ navigation }) {
           }
         );
 
-        setCurrSoundTest(sound);
+        resetVisualizer(setVisualizerParams);
+        setCurrSound(sound);
         await sound.playAsync();
-      } else currSoundTest.unloadAsync() || undefined;
+      } else currSound.unloadAsync() || undefined;
     }
   }
 
   async function enableBackSpeaker() {
-    setTests((state) => ({ ...!state, isEnabledBack: !tests.isEnabledBack }));
+    setSound((state) => ({ ...!state, isEnabledBack: !sound.isEnabledBack }));
 
     await playSpeaker();
 
     async function playSpeaker() {
-      if (!tests.isEnabledBack) {
-        if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+      if (!sound.isEnabledBack) {
+        if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/left-speaker.mp3"),
           {
@@ -50,20 +51,21 @@ export default function SpeakersTest({ navigation }) {
           }
         );
 
-        setCurrSoundTest(sound);
+        resetVisualizer(setVisualizerParams);
+        setCurrSound(sound);
         await sound.playAsync();
-      } else currSoundTest.unloadAsync() || undefined;
+      } else currSound.unloadAsync() || undefined;
     }
   }
 
   async function enableBothSpeakers() {
-    setTests((state) => ({ ...!state, isEnabledBoth: !tests.isEnabledBoth }));
+    setSound((state) => ({ ...!state, isEnabledBoth: !sound.isEnabledBoth }));
 
     await playSpeaker();
 
     async function playSpeaker() {
-      if (!tests.isEnabledBoth) {
-        if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+      if (!sound.isEnabledBoth) {
+        if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/both-speakers.mp3"),
           {
@@ -71,9 +73,10 @@ export default function SpeakersTest({ navigation }) {
           }
         );
 
-        setCurrSoundTest(sound);
+        resetVisualizer(setVisualizerParams);
+        setCurrSound(sound);
         await sound.playAsync();
-      } else currSoundTest.unloadAsync() || undefined;
+      } else currSound.unloadAsync() || undefined;
     }
   }
 
@@ -112,16 +115,16 @@ export default function SpeakersTest({ navigation }) {
         >
           <View
             className={`${
-              tests.isEnabledFront ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              sound.isEnabledFront ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 ml-3 rounded-xl`}
           >
             <View
               className={`${
-                tests.isEnabledFront ? "bg-[#74daf1]" : "bg-[#101C43]"
+                sound.isEnabledFront ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={tests.isEnabledFront ? "pause" : "play"}
+                name={sound.isEnabledFront ? "pause" : "play"}
                 size={30}
                 color="white"
               />
@@ -142,16 +145,16 @@ export default function SpeakersTest({ navigation }) {
         >
           <View
             className={`${
-              tests.isEnabledBoth ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              sound.isEnabledBoth ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 rounded-xl`}
           >
             <View
               className={`${
-                tests.isEnabledBoth ? "bg-[#74daf1]" : "bg-[#101C43]"
+                sound.isEnabledBoth ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={tests.isEnabledBoth ? "pause" : "play"}
+                name={sound.isEnabledBoth ? "pause" : "play"}
                 size={30}
                 color="white"
               />
@@ -172,16 +175,16 @@ export default function SpeakersTest({ navigation }) {
         >
           <View
             className={`${
-              tests.isEnabledBack ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              sound.isEnabledBack ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 mr-3 rounded-xl`}
           >
             <View
               className={`${
-                tests.isEnabledBack ? "bg-[#74daf1]" : "bg-[#101C43]"
+                sound.isEnabledBack ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={tests.isEnabledBack ? "pause" : "play"}
+                name={sound.isEnabledBack ? "pause" : "play"}
                 size={30}
                 color="white"
               />

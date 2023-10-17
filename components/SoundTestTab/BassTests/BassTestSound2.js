@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 import {
   openPurchaseModal,
+  resetVisualizer,
   startTimer,
   stopTimer,
   stopWaveformTimer,
@@ -15,8 +16,7 @@ import { Context } from "../../Context";
 import useRevenueCat from "../../../hooks/useRevenueCat";
 
 export default function BassTestSound2({ navigation }) {
-  const { tests, setTests, currSoundTest, setCurrSoundTest } =
-    useContext(Context);
+  const { sound, setSound, currSound, setCurrSound } = useContext(Context);
   const { isProMember } = useRevenueCat();
 
   const [seconds, setSeconds] = useState(0);
@@ -29,39 +29,40 @@ export default function BassTestSound2({ navigation }) {
 
   // Incrementing minutes for audio timers
   useEffect(() => {
-    if (!tests.isEnabled151Rum || (minutes === 0 && seconds === totalTime)) {
+    if (!sound.isEnabled151Rum || (minutes === 0 && seconds === totalTime)) {
       setMinutes(0);
       setSeconds(0);
       setWaveformTime(0);
       stopTimer(refCounter, setSeconds, setMinutes);
       stopWaveformTimer(refWaveFormCounter, setWaveformTime);
-      setTests((state) => ({ ...state, isEnabled151Rum: false }));
+      setSound((state) => ({ ...state, isEnabled151Rum: false }));
     }
-  }, [seconds, waveformTime, tests.isEnabled151Rum]);
+  }, [seconds, waveformTime, sound.isEnabled151Rum]);
 
   async function enable151RumBass() {
-    setTests((state) => ({
+    setSound((state) => ({
       ...!state,
-      isEnabled151Rum: !tests.isEnabled151Rum,
+      isEnabled151Rum: !sound.isEnabled151Rum,
     }));
 
     await playSong();
 
     async function playSong() {
-      if (!tests.isEnabled151Rum) {
-        if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+      if (!sound.isEnabled151Rum) {
+        if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../../assets/soundtests/151-rum.mp3")
         );
 
-        setCurrSoundTest(sound);
+        resetVisualizer(setVisualizerParams);
+        setCurrSound(sound);
         await sound.playAsync();
 
         // Start the audio timer state
         startTimer(refCounter, setSeconds);
         startTimer(refWaveFormCounter, setWaveformTime);
       } else {
-        currSoundTest.unloadAsync() || undefined;
+        currSound.unloadAsync() || undefined;
         stopTimer(refCounter, setSeconds, setMinutes);
         stopWaveformTimer(refWaveFormCounter, setWaveformTime);
       }
@@ -72,7 +73,7 @@ export default function BassTestSound2({ navigation }) {
     <TouchableOpacity className="overall-sound2 items-center">
       <TouchableOpacity
         className={`${
-          tests.isEnabled151Rum
+          sound.isEnabled151Rum
             ? "w-[95%] bg-[#4AD0EE] my-3 rounded-xl"
             : "w-[95%] my-3"
         } `}
@@ -82,7 +83,7 @@ export default function BassTestSound2({ navigation }) {
       >
         <View
           className={`${
-            tests.isEnabled151Rum
+            sound.isEnabled151Rum
               ? "bg-[#87E5FA] justify-between py-2 rounded-xl border-white"
               : "bg-[#05103A] justify-between py-2 rounded-xl border-white"
           }  `}
@@ -90,11 +91,11 @@ export default function BassTestSound2({ navigation }) {
           <View className="flex-row h-14">
             <View
               className={`${
-                tests.isEnabled151Rum ? "bg-[#87e5fa]" : "bg-[#101C43]"
+                sound.isEnabled151Rum ? "bg-[#87e5fa]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 ml-3 mt-1 rounded-xl`}
             >
               <Icon
-                name={tests.isEnabled151Rum ? "stop" : "play"}
+                name={sound.isEnabled151Rum ? "stop" : "play"}
                 size={30}
                 color="white"
               />

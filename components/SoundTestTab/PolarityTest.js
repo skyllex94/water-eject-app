@@ -6,24 +6,24 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Context } from "../Context";
 import useRevenueCat from "../../hooks/useRevenueCat";
-import { openPurchaseModal } from "../util/Funcs";
+import { openPurchaseModal, resetVisualizer } from "../util/Funcs";
 
 export default function PolarityTest({ navigation }) {
-  const { tests, setTests, currSoundTest, setCurrSoundTest } =
+  const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
     useContext(Context);
   const { isProMember } = useRevenueCat();
 
   async function enableInPhaseRumble() {
-    setTests((state) => ({
+    setSound((state) => ({
       ...!state,
-      isEnabledInPhaseRumble: !tests.isEnabledInPhaseRumble,
+      isEnabledInPhaseRumble: !sound.isEnabledInPhaseRumble,
     }));
 
     await playPolarity();
 
     async function playPolarity() {
-      if (!tests.isEnabledInPhaseRumble) {
-        if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+      if (!sound.isEnabledInPhaseRumble) {
+        if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/in-phase-rumble.mp3"),
           {
@@ -31,23 +31,24 @@ export default function PolarityTest({ navigation }) {
           }
         );
 
-        setCurrSoundTest(sound);
+        resetVisualizer(setVisualizerParams);
+        setCurrSound(sound);
         await sound.playAsync();
-      } else currSoundTest.unloadAsync() || undefined;
+      } else currSound.unloadAsync() || undefined;
     }
   }
 
   async function enableOffPhaseRumble() {
-    setTests((state) => ({
+    setSound((state) => ({
       ...!state,
-      isEnabledOffPhaseRumble: !tests.isEnabledOffPhaseRumble,
+      isEnabledOffPhaseRumble: !sound.isEnabledOffPhaseRumble,
     }));
 
     await playPolarity();
 
     async function playPolarity() {
-      if (!tests.isEnabledOffPhaseRumble) {
-        if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+      if (!sound.isEnabledOffPhaseRumble) {
+        if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/off-phase-rumble.mp3"),
           {
@@ -55,23 +56,24 @@ export default function PolarityTest({ navigation }) {
           }
         );
 
-        setCurrSoundTest(sound);
+        resetVisualizer(setVisualizerParams);
+        setCurrSound(sound);
         await sound.playAsync();
-      } else currSoundTest.unloadAsync() || undefined;
+      } else currSound.unloadAsync() || undefined;
     }
   }
 
   async function enable75hzInPhase() {
-    setTests((state) => ({
+    setSound((state) => ({
       ...!state,
-      isEnabled75hzInPhase: !tests.isEnabled75hzInPhase,
+      isEnabled75hzInPhase: !sound.isEnabled75hzInPhase,
     }));
 
     await playPolarity();
 
     async function playPolarity() {
-      if (!tests.isEnabled75hzInPhase) {
-        if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+      if (!sound.isEnabled75hzInPhase) {
+        if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/in-phase-75hz.mp3"),
           {
@@ -79,23 +81,24 @@ export default function PolarityTest({ navigation }) {
           }
         );
 
-        setCurrSoundTest(sound);
+        resetVisualizer(setVisualizerParams);
+        setCurrSound(sound);
         await sound.playAsync();
-      } else currSoundTest.unloadAsync() || undefined;
+      } else currSound.unloadAsync() || undefined;
     }
   }
 
   async function enable75hzOffPhase() {
-    setTests((state) => ({
+    setSound((state) => ({
       ...!state,
-      isEnabled75hzOffPhase: !tests.isEnabled75hzOffPhase,
+      isEnabled75hzOffPhase: !sound.isEnabled75hzOffPhase,
     }));
 
     await playPolarity();
 
     async function playPolarity() {
-      if (!tests.isEnabled75hzOffPhase) {
-        if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+      if (!sound.isEnabled75hzOffPhase) {
+        if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/off-phase-75hz.mp3"),
           {
@@ -103,23 +106,24 @@ export default function PolarityTest({ navigation }) {
           }
         );
 
-        setCurrSoundTest(sound);
+        resetVisualizer(setVisualizerParams);
+        setCurrSound(sound);
         await sound.playAsync();
-      } else currSoundTest.unloadAsync() || undefined;
+      } else currSound.unloadAsync() || undefined;
     }
   }
 
   async function enabledGuitarInPhase() {
-    setTests((state) => ({
+    setSound((state) => ({
       ...!state,
-      isEnabledGuitarInPhase: !tests.isEnabledGuitarInPhase,
+      isEnabledGuitarInPhase: !sound.isEnabledGuitarInPhase,
     }));
 
     await playPolarity();
 
     async function playPolarity() {
-      if (!tests.isEnabledGuitarInPhase) {
-        if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+      if (!sound.isEnabledGuitarInPhase) {
+        if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/in-phase-guitar.mp3"),
           {
@@ -127,23 +131,24 @@ export default function PolarityTest({ navigation }) {
           }
         );
 
-        setCurrSoundTest(sound);
+        resetVisualizer(setVisualizerParams);
+        setCurrSound(sound);
         await sound.playAsync();
-      } else currSoundTest.unloadAsync() || undefined;
+      } else currSound.unloadAsync() || undefined;
     }
   }
 
   async function enabledGuitarOffPhase() {
-    setTests((state) => ({
+    setSound((state) => ({
       ...!state,
-      isEnabledGuitarOffPhase: !tests.isEnabledGuitarOffPhase,
+      isEnabledGuitarOffPhase: !sound.isEnabledGuitarOffPhase,
     }));
 
     await playPolarity();
 
     async function playPolarity() {
-      if (!tests.isEnabledGuitarOffPhase) {
-        if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+      if (!sound.isEnabledGuitarOffPhase) {
+        if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require("../../assets/soundtests/off-phase-guitar.mp3"),
           {
@@ -151,9 +156,10 @@ export default function PolarityTest({ navigation }) {
           }
         );
 
-        setCurrSoundTest(sound);
+        resetVisualizer(setVisualizerParams);
+        setCurrSound(sound);
         await sound.playAsync();
-      } else currSoundTest.unloadAsync() || undefined;
+      } else currSound.unloadAsync() || undefined;
     }
   }
 
@@ -199,16 +205,16 @@ export default function PolarityTest({ navigation }) {
         >
           <View
             className={`${
-              tests.isEnabledInPhaseRumble ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              sound.isEnabledInPhaseRumble ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 ml-3 rounded-xl`}
           >
             <View
               className={`${
-                tests.isEnabledInPhaseRumble ? "bg-[#74daf1]" : "bg-[#101C43]"
+                sound.isEnabledInPhaseRumble ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={tests.isEnabledInPhaseRumble ? "pause" : "play"}
+                name={sound.isEnabledInPhaseRumble ? "pause" : "play"}
                 size={30}
                 color="white"
               />
@@ -231,16 +237,16 @@ export default function PolarityTest({ navigation }) {
         >
           <View
             className={`${
-              tests.isEnabled75hzInPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              sound.isEnabled75hzInPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 rounded-xl`}
           >
             <View
               className={`${
-                tests.isEnabled75hzInPhase ? "bg-[#74daf1]" : "bg-[#101C43]"
+                sound.isEnabled75hzInPhase ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={tests.isEnabled75hzInPhase ? "pause" : "play"}
+                name={sound.isEnabled75hzInPhase ? "pause" : "play"}
                 size={30}
                 color="white"
               />
@@ -263,16 +269,16 @@ export default function PolarityTest({ navigation }) {
         >
           <View
             className={`${
-              tests.isEnabledGuitarInPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              sound.isEnabledGuitarInPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 mr-3 p-2 rounded-xl`}
           >
             <View
               className={`${
-                tests.isEnabledGuitarInPhase ? "bg-[#74daf1]" : "bg-[#101C43]"
+                sound.isEnabledGuitarInPhase ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={tests.isEnabledGuitarInPhase ? "pause" : "play"}
+                name={sound.isEnabledGuitarInPhase ? "pause" : "play"}
                 size={30}
                 color="white"
               />
@@ -295,16 +301,16 @@ export default function PolarityTest({ navigation }) {
         >
           <View
             className={`${
-              tests.isEnabledOffPhaseRumble ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              sound.isEnabledOffPhaseRumble ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 ml-3 rounded-xl`}
           >
             <View
               className={`${
-                tests.isEnabledOffPhaseRumble ? "bg-[#74daf1]" : "bg-[#101C43]"
+                sound.isEnabledOffPhaseRumble ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={tests.isEnabledOffPhaseRumble ? "pause" : "play"}
+                name={sound.isEnabledOffPhaseRumble ? "pause" : "play"}
                 size={30}
                 color="white"
               />
@@ -327,16 +333,16 @@ export default function PolarityTest({ navigation }) {
         >
           <View
             className={`${
-              tests.isEnabled75hzOffPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              sound.isEnabled75hzOffPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 rounded-xl`}
           >
             <View
               className={`${
-                tests.isEnabled75hzOffPhase ? "bg-[#74daf1]" : "bg-[#101C43]"
+                sound.isEnabled75hzOffPhase ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={tests.isEnabled75hzOffPhase ? "pause" : "play"}
+                name={sound.isEnabled75hzOffPhase ? "pause" : "play"}
                 size={30}
                 color="white"
               />
@@ -359,16 +365,16 @@ export default function PolarityTest({ navigation }) {
         >
           <View
             className={`${
-              tests.isEnabledGuitarOffPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
+              sound.isEnabledGuitarOffPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
             } items-center justify-center w-24 p-2 mr-3 rounded-xl`}
           >
             <View
               className={`${
-                tests.isEnabledGuitarOffPhase ? "bg-[#74daf1]" : "bg-[#101C43]"
+                sound.isEnabledGuitarOffPhase ? "bg-[#74daf1]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
             >
               <Icon
-                name={tests.isEnabledGuitarOffPhase ? "pause" : "play"}
+                name={sound.isEnabledGuitarOffPhase ? "pause" : "play"}
                 size={30}
                 color="white"
               />

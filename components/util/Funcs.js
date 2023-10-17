@@ -16,3 +16,7 @@ export function stopWaveformTimer(counterRef, setWaveformTimer) {
 export function openPurchaseModal(navigation) {
   navigation.navigate("Paywall");
 }
+
+export function resetVisualizer(setVisualizerParams) {
+  setVisualizerParams({ speed: 500, frequency: 2, amplitude: 10 });
+}

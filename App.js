@@ -5,7 +5,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { Context } from "./components/Context";
-import HomeStackScreen from "./screens/Clearance";
 import MeterScreen from "./screens/Meter";
 import SoundTestStack from "./screens/SoundTest";
 import Settings from "./screens/Settings";
@@ -16,17 +15,13 @@ import ToastManager from "toastify-react-native";
 // Decibel Metering Imports to be stopped when switching tabs
 import { AudioRecorder } from "react-native-audio";
 import WaterClearance from "./screens/Clearance";
+import Instuctions from "./screens/Instuctions";
 
 export default function App() {
-  // UI for the water ejection tab
-  const [freq, setFreq] = useState({});
+  // UI for any sound playing
+  const [sound, setSound] = useState({});
   // Currently playing frequency or program sound
   const [currSound, setCurrSound] = useState();
-
-  // UI State for testing sounds
-  const [tests, setTests] = useState({});
-  // The Audio Music Object for the sound test playing
-  const [currSoundTest, setCurrSoundTest] = useState();
 
   // Sound Visualizer State
   const [visualizerParams, setVisualizerParams] = useState({
@@ -35,29 +30,21 @@ export default function App() {
     amplitude: 5,
   });
 
-  function turnOffAllFreqUI() {
-    setFreq((state) => !state);
-    setVisualizerParams({ speed: 500, frequency: 2, amplitude: 10 });
-  }
-
   const Tab = createBottomTabNavigator();
 
   return (
     <Context.Provider
       value={{
-        freq,
-        setFreq,
+        sound,
+        setSound,
         currSound,
         setCurrSound,
         visualizerParams,
         setVisualizerParams,
-        tests,
-        setTests,
-        currSoundTest,
-        setCurrSoundTest,
       }}
     >
-      <NavigationContainer>
+      <Instuctions />
+      {/* <NavigationContainer>
         <ToastManager />
         <StatusBar
           animated={true}
@@ -162,7 +149,7 @@ export default function App() {
             }}
           />
         </Tab.Navigator>
-      </NavigationContainer>
+      </NavigationContainer> */}
     </Context.Provider>
   );
 }
