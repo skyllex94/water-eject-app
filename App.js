@@ -1,5 +1,5 @@
-import { StatusBar } from "react-native";
-import { useState } from "react";
+import { ActivityIndicator, StatusBar, View } from "react-native";
+import { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -15,9 +15,41 @@ import ToastManager from "toastify-react-native";
 // Decibel Metering Imports to be stopped when switching tabs
 import { AudioRecorder } from "react-native-audio";
 import WaterClearance from "./screens/Clearance";
-import Instuctions from "./screens/Instuctions";
+
+// Introductory slides of the app
+import OnBoarding from "./screens/OnBoarding";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
+  const [viewedOnBoarding, setViewedOnBoarding] = useState(false);
+
+  useEffect(() => {
+    checkOnBoarding();
+  }, []);
+
+  const checkOnBoarding = async () => {
+    try {
+      const value = await AsyncStorage.getItem("@viewedOnboarding");
+
+      if (value !== null) setViewedOnBoarding(true);
+    } catch (error) {
+      console.log("Error @checkOnboarding", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return loading ? <Loading /> : viewedOnBoarding ? <Main /> : <OnBoarding />;
+}
+
+const Loading = () => (
+  <View className="flex-1 items-center justify-center">
+    <ActivityIndicator size="large" />
+  </View>
+);
+
+export const Main = () => {
   // UI for any sound playing
   const [sound, setSound] = useState({});
   // Currently playing frequency or program sound
@@ -43,8 +75,7 @@ export default function App() {
         setVisualizerParams,
       }}
     >
-      <Instuctions />
-      {/* <NavigationContainer>
+      <NavigationContainer>
         <ToastManager />
         <StatusBar
           animated={true}
@@ -149,7 +180,7 @@ export default function App() {
             }}
           />
         </Tab.Navigator>
-      </NavigationContainer> */}
+      </NavigationContainer>
     </Context.Provider>
   );
-}
+};

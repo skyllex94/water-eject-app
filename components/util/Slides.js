@@ -20,4 +20,11 @@ export default [
       "Our tested and dedicated frequencies with help you remove the stuck water inside your speakers so you can have clear sounding speakers once again.,",
     image: require("../../assets/images/slides/slide3.png"),
   },
+  {
+    id: 4,
+    title: "Multiple Sound tests and included Decibel Meter",
+    description:
+      "Our tested and dedicated frequencies with help you remove the stuck water inside your speakers so you can have clear sounding speakers once again.,",
+    image: require("../../assets/images/slides/slide3.png"),
+  },
 ];
