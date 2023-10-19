@@ -19,28 +19,62 @@ import WaterClearance from "./screens/Clearance";
 // Introductory slides of the app
 import OnBoarding from "./screens/OnBoarding";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+import { DefaultTheme } from "@react-navigation/native";
+
+const navTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: "#101C40",
+  },
+};
 
 export default function App() {
   const [loading, setLoading] = useState(true);
-  const [viewedOnBoarding, setViewedOnBoarding] = useState(false);
+  const [isAppFirstLaunched, setIsAppFirstLaunched] = useState();
+  const Stack = createNativeStackNavigator();
 
   useEffect(() => {
-    checkOnBoarding();
+    checkIfAppWasLaunched();
   }, []);
 
-  const checkOnBoarding = async () => {
+  const checkIfAppWasLaunched = async () => {
     try {
-      const value = await AsyncStorage.getItem("@viewedOnboarding");
+      const value = await AsyncStorage.getItem("@isAppFirstLaunched");
+      console.log("value:", value);
 
-      if (value !== null) setViewedOnBoarding(true);
+      if (value === null) setIsAppFirstLaunched(true);
+      else setIsAppFirstLaunched(false);
     } catch (error) {
-      console.log("Error @checkOnboarding", error);
+      console.log("Error @checkIfAppWasLaunched", error);
     } finally {
       setLoading(false);
     }
   };
 
-  return loading ? <Loading /> : viewedOnBoarding ? <Main /> : <OnBoarding />;
+  return loading ? (
+    <Loading />
+  ) : (
+    <NavigationContainer theme={navTheme}>
+      <Stack.Navigator>
+        {isAppFirstLaunched === true && (
+          <Stack.Screen
+            name="OnBoarding"
+            component={OnBoarding}
+            options={{ headerShown: false }}
+          />
+        )}
+
+        <Stack.Screen
+          name="MainApp"
+          component={Main}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
 
 const Loading = () => (
@@ -49,7 +83,7 @@ const Loading = () => (
   </View>
 );
 
-export const Main = () => {
+const Main = () => {
   // UI for any sound playing
   const [sound, setSound] = useState({});
   // Currently playing frequency or program sound
@@ -75,112 +109,110 @@ export const Main = () => {
         setVisualizerParams,
       }}
     >
-      <NavigationContainer>
-        <ToastManager />
-        <StatusBar
-          animated={true}
-          backgroundColor="#61dafb"
-          barStyle="light-content"
+      <ToastManager />
+      <StatusBar
+        animated={true}
+        backgroundColor="#61dafb"
+        barStyle="light-content"
+      />
+      <Tab.Navigator>
+        <Tab.Screen
+          name="Water Eject"
+          component={WaterClearance}
+          options={{
+            tabBarLabel: "Water Clearance",
+            headerShown: false,
+            tabBarStyle: {
+              backgroundColor: "#101C40",
+            },
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="water-outline"
+                color={"white"}
+                size={size}
+              />
+            ),
+          }}
+          listeners={
+            {
+              // tabPress: async () => {
+              //   AudioRecorder.stopRecording();
+              //   // Unload the audio object for the sound test
+              //   if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+              //   // Turn off any UI on the test tab which might be playing
+              //   if (tests) setTests((state) => !state);
+              // },
+            }
+          }
         />
-        <Tab.Navigator>
-          <Tab.Screen
-            name="Water Eject"
-            component={WaterClearance}
-            options={{
-              tabBarLabel: "Water Clearance",
-              headerShown: false,
-              tabBarStyle: {
-                backgroundColor: "#101C40",
-              },
-              tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons
-                  name="water-outline"
-                  color={"white"}
-                  size={size}
-                />
-              ),
-            }}
-            listeners={
-              {
-                // tabPress: async () => {
-                //   AudioRecorder.stopRecording();
-                //   // Unload the audio object for the sound test
-                //   if (currSoundTest) currSoundTest.unloadAsync() || undefined;
-                //   // Turn off any UI on the test tab which might be playing
-                //   if (tests) setTests((state) => !state);
-                // },
-              }
+        <Tab.Screen
+          name="Meter"
+          component={MeterScreen}
+          options={{
+            tabBarLabel: "dB Meter",
+            headerShown: false,
+            tabBarStyle: {
+              backgroundColor: "#101C40",
+            },
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="speedometer-slow"
+                color={"lightgray"}
+                size={size}
+              />
+            ),
+          }}
+          listeners={
+            {
+              // tabPress: async () => {
+              //   if (currSound) currSound.unloadAsync() || undefined;
+              //   // UI objects to be turned off
+              //   turnOffAllFreqUI();
+              //   // Unload the audio object for the sound test
+              //   if (currSoundTest) currSoundTest.unloadAsync() || undefined;
+              //   // Turn off any UI on the test tab which might be playing
+              //   if (tests) setTests((state) => !state);
+              // },
             }
-          />
-          <Tab.Screen
-            name="Meter"
-            component={MeterScreen}
-            options={{
-              tabBarLabel: "dB Meter",
-              headerShown: false,
-              tabBarStyle: {
-                backgroundColor: "#101C40",
-              },
-              tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons
-                  name="speedometer-slow"
-                  color={"lightgray"}
-                  size={size}
-                />
-              ),
-            }}
-            listeners={
-              {
-                // tabPress: async () => {
-                //   if (currSound) currSound.unloadAsync() || undefined;
-                //   // UI objects to be turned off
-                //   turnOffAllFreqUI();
-                //   // Unload the audio object for the sound test
-                //   if (currSoundTest) currSoundTest.unloadAsync() || undefined;
-                //   // Turn off any UI on the test tab which might be playing
-                //   if (tests) setTests((state) => !state);
-                // },
-              }
-            }
-          />
-          <Tab.Screen
-            name="Sound Tests"
-            component={SoundTestStack}
-            options={{
-              tabBarLabel: "Sound Tests",
-              headerShown: false,
-              tabBarStyle: {
-                backgroundColor: "#101C40",
-              },
-              tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons
-                  name="atom-variant"
-                  color={"lightgray"}
-                  size={size}
-                />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Settings"
-            component={Settings}
-            options={{
-              tabBarLabel: "Settings",
-              headerShown: false,
-              tabBarStyle: {
-                backgroundColor: "#101C40",
-              },
-              tabBarIcon: ({ color, size }) => (
-                <MaterialCommunityIcons
-                  name="cogs"
-                  color={"lightgray"}
-                  size={size}
-                />
-              ),
-            }}
-          />
-        </Tab.Navigator>
-      </NavigationContainer>
+          }
+        />
+        <Tab.Screen
+          name="Sound Tests"
+          component={SoundTestStack}
+          options={{
+            tabBarLabel: "Sound Tests",
+            headerShown: false,
+            tabBarStyle: {
+              backgroundColor: "#101C40",
+            },
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="atom-variant"
+                color={"lightgray"}
+                size={size}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Settings"
+          component={Settings}
+          options={{
+            tabBarLabel: "Settings",
+            headerShown: false,
+            tabBarStyle: {
+              backgroundColor: "#101C40",
+            },
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="cogs"
+                color={"lightgray"}
+                size={size}
+              />
+            ),
+          }}
+        />
+      </Tab.Navigator>
     </Context.Provider>
   );
 };

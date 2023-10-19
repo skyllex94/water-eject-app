@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Entypo, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import useRevenueCat from "../hooks/useRevenueCat";
 import Purchases from "react-native-purchases";
@@ -115,56 +115,58 @@ export default function Paywall({ navigation }) {
             <View className="items-center">
               <MaterialCommunityIcons
                 name="trophy-award"
-                size={120}
+                size={96}
                 color="#E5962D"
               />
             </View>
 
-            <View className="space-y-5 py-3">
+            <View className="space-y-5 py-2">
               <View className="flex-row space-x-8 items-center">
                 <Ionicons name="md-key" size={32} color="#E5962D" />
                 <View className="flex-1">
                   <Text className="text-white font-bold text-lg">
-                    Access to all pro features
+                    Access to all Pro Features
                   </Text>
                   <Text className="text-white text-sm font-extralight">
-                    Access to all dedicated frequency programs for ultimate
-                    results and clear speakers sound.
+                    Access to our 2 dedicated frequency programs (8 and 16
+                    minutes) for ultimate results and clear speakers sound.
+                    Played them once and see the results from them.
                   </Text>
                 </View>
               </View>
             </View>
 
-            <View className="space-y-5 py-3">
+            <View className="space-y-5 py-2">
               <View className="flex-row space-x-8 items-center">
-                <Ionicons
-                  name="md-person-add-outline"
+                <Entypo name="sound" size={32} color="#E5962D" />
+                <View className="flex-1">
+                  <Text className="text-white font-bold text-lg">
+                    Get All of Our Test Sounds
+                  </Text>
+                  <Text className="text-white text-sm font-extralight">
+                    Included 15+ sounds tests: Bass Accuracy for checking bass
+                    improvement, polarity tests for in and out of phase sound
+                    quality, speaker isolation for individual speaker test and
+                    sterio imaging test.
+                  </Text>
+                </View>
+              </View>
+            </View>
+
+            <View className="space-y-5 py-2">
+              <View className="flex-row space-x-8 items-center">
+                <MaterialCommunityIcons
+                  name="speedometer"
                   size={32}
                   color="#E5962D"
                 />
                 <View className="flex-1">
                   <Text className="text-white font-bold text-lg">
-                    Expertly made programs with proven results
+                    Decibel Sound Meter
                   </Text>
                   <Text className="text-white text-sm font-extralight">
-                    Rest assured with our 8 minute preparation alternating
-                    sound, and after that our dedicated 16 minutes main water
-                    ejection program, your phone will thank you.
-                  </Text>
-                </View>
-              </View>
-            </View>
-
-            <View className="space-y-5 py-3">
-              <View className="flex-row space-x-8 items-center">
-                <Ionicons name="md-star" size={32} color="#E5962D" />
-                <View className="flex-1">
-                  <Text className="text-white font-bold text-lg">
-                    Access to our custom frequencies
-                  </Text>
-                  <Text className="text-white text-sm font-extralight">
-                    Get a lot more value with our included custom frequency
-                    creator and decibal meters.
+                    Enjoy an accurate decibel meter so you can measure the
+                    current decibel level at any place you are.
                   </Text>
                 </View>
               </View>

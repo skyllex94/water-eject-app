@@ -40,8 +40,10 @@ export default function WaterClearance() {
 function WaterClearanceTab({ navigation }) {
   async function clearAsyncStorage() {
     try {
-      await AsyncStorage.removeItem("@viewedOnboarding");
-    } catch (err) {}
+      await AsyncStorage.removeItem("@isAppFirstLaunched");
+    } catch (err) {
+      console.log("RemoveItem from Async Storage Error.", err);
+    }
   }
 
   return (

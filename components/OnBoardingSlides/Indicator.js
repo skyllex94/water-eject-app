@@ -22,7 +22,7 @@ export default function Indicator({ data, scrollX }) {
 
         return (
           <Animated.View
-            className={`bg-[#101C40] h-[10px] rounded-xl mx-[8px]`}
+            className={`bg-[#8995ba] h-[10px] rounded-xl mx-[8px]`}
             style={[{ width: dotWidth, opacity }]}
             key={i.toString()}
           />

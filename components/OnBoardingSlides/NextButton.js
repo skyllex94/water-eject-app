@@ -46,7 +46,7 @@ export default function NextButton({ percentage, slideForward }) {
       <Svg width={size} height={size}>
         <G rotation="-90" origin={center}>
           <Circle
-            stroke="#e6e7e8"
+            stroke="#fff"
             cx={center}
             cy={center}
             r={radius}
@@ -56,7 +56,7 @@ export default function NextButton({ percentage, slideForward }) {
 
           <Circle
             ref={progressRef}
-            stroke="#101C40"
+            stroke="#307283"
             cx={center}
             cy={center}
             r={radius}
@@ -70,7 +70,7 @@ export default function NextButton({ percentage, slideForward }) {
       <TouchableOpacity
         onPress={slideForward}
         activeOpacity={0.6}
-        className="absolute bg-[#101C40] rounded-full p-6"
+        className="absolute bg-[#8995ba] rounded-full p-6"
       >
         <AntDesign name="arrowright" size={32} color="white" />
       </TouchableOpacity>

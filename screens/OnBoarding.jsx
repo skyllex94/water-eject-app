@@ -6,9 +6,8 @@ import Indicator from "../components/OnBoardingSlides/Indicator";
 import NextButton from "../components/OnBoardingSlides/NextButton";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Main } from "../App";
 
-export default function OnBoarding() {
+export default function OnBoarding({ navigation }) {
   const [currSlide, setCurrSlide] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
   const slidesRef = useRef();
@@ -22,10 +21,12 @@ export default function OnBoarding() {
   const slideForward = async () => {
     if (currSlide < slides.length - 1)
       slidesRef.current.scrollToIndex({ index: currSlide + 1 });
+    // If there's no more slides, complete the OnBoarding screen,
+    // store the value in async storage, and navigate to the App
     else {
       try {
-        await AsyncStorage.setItem("@viewedOnboarding", "true");
-        <Main />;
+        await AsyncStorage.setItem("@isAppFirstLaunched", "false");
+        navigation.replace("MainApp");
       } catch (err) {
         console.log("Error @setItem:", err);
       }
