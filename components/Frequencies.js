@@ -17,9 +17,10 @@ import { Context } from "./Context";
 import { useContext, useEffect } from "react";
 
 // Decibel Metering Imports to be stopped when switching tabs
-import { AudioRecorder } from "react-native-audio";
+import { stopDecibelMeter } from "./util/Funcs";
+import { FontAwesome5 } from "@expo/vector-icons";
 
-export default function Frequencies() {
+export default function Frequencies({ navigation }) {
   const { currSound, setCurrSound, setVisualizerParams, sound, setSound } =
     useContext(Context);
 
@@ -29,10 +30,6 @@ export default function Frequencies() {
     playAudioInSilentMode();
   }, []);
 
-  function stopDecibelMeter() {
-    AudioRecorder.stopRecording();
-  }
-
   async function playAudioInSilentMode() {
     return await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
   }
@@ -40,7 +37,6 @@ export default function Frequencies() {
   async function isEnabled120hz() {
     setSound((state) => ({ ...!state, isEnabled120: !sound.isEnabled120 }));
 
-    stopDecibelMeter();
     await startFrequency120();
 
     async function startFrequency120() {
@@ -67,7 +63,6 @@ export default function Frequencies() {
   async function isEnabled160hz() {
     setSound((state) => ({ ...!state, isEnabled160: !sound.isEnabled160 }));
 
-    stopDecibelMeter();
     await startFrequency160();
 
     async function startFrequency160() {
@@ -91,7 +86,6 @@ export default function Frequencies() {
   async function isEnabled300hz() {
     setSound((state) => ({ ...!state, isEnabled300: !sound.isEnabled300 }));
 
-    stopDecibelMeter();
     await startFrequency300();
 
     async function startFrequency300() {
@@ -115,7 +109,6 @@ export default function Frequencies() {
   async function enable500Hz() {
     setSound((state) => ({ ...!state, isEnabled500: !sound.isEnabled500 }));
 
-    stopDecibelMeter();
     await startFrequency500();
 
     async function startFrequency500() {
@@ -138,8 +131,18 @@ export default function Frequencies() {
 
   return (
     <View className="flex-3 justify-center">
-      <View className={`bg-[${buttonsColor}] mx-3 py-3 rounded-xl`}>
-        <Text className="text-white font-bold ml-4 mb-4">Frequencies</Text>
+      <View className={`bg-[${buttonsColor}] mx-3 pb-3 rounded-xl`}>
+        <View className="flex-row items-center justify-between">
+          <Text className="text-white font-bold ml-4 my-5">Frequencies</Text>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate("InfoFrequencies")}
+            className="bg-[#05103A] items-center justify-center h-8 w-8 mr-3 rounded-md"
+          >
+            <FontAwesome5 name="info" size={20} color="white" />
+          </TouchableOpacity>
+        </View>
+
         <View className="flex-row justify-center">
           <TouchableOpacity
             onPress={isEnabled120hz}

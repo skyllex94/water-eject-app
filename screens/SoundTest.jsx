@@ -16,7 +16,7 @@ import Paywall from "./Paywall";
 // React Native Navigator - Stack Navigator initializer
 const Stack = createNativeStackNavigator();
 
-export default function SoundTestStack() {
+export default function SoundTest() {
   return (
     <Stack.Navigator initialRouteName="SoundTests">
       <Stack.Screen

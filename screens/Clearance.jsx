@@ -7,6 +7,8 @@ import Paywall from "./Paywall";
 import SoundVisualizer from "../components/SoundVisualizer";
 import { Text } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import InfoFrequencies from "../components/ClearanceTab/InfoFrequencies";
+import InfoPrograms from "../components/ClearanceTab/InfoPrograms";
 
 export default function WaterClearance() {
   // React Native Navigator - Stack Navigator initializer
@@ -19,6 +21,28 @@ export default function WaterClearance() {
         component={WaterClearanceTab}
         options={{
           headerShown: false,
+          tabBarStyle: {
+            backgroundColor: "#101C43",
+          },
+        }}
+      />
+      <Stack.Screen
+        name="InfoFrequencies"
+        component={InfoFrequencies}
+        options={{
+          headerShown: false,
+          presentation: "modal",
+          tabBarStyle: {
+            backgroundColor: "#101C43",
+          },
+        }}
+      />
+      <Stack.Screen
+        name="InfoPrograms"
+        component={InfoPrograms}
+        options={{
+          headerShown: false,
+          presentation: "modal",
           tabBarStyle: {
             backgroundColor: "#101C43",
           },
@@ -59,7 +83,7 @@ function WaterClearanceTab({ navigation }) {
         <SoundVisualizer />
       </View>
       <ScrollView>
-        <Frequencies />
+        <Frequencies navigation={navigation} />
         <Programs navigation={navigation} />
       </ScrollView>
     </SafeAreaView>

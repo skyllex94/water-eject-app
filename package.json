@@ -38,11 +38,12 @@
     "react-native-screens": "^3.20.0",
     "react-native-soundcloud-waveform": "^1.0.3",
     "react-native-svg": "^13.14.0",
-    "react-native-svg-transformer": "^1.1.0",
     "react-native-webview": "^12.1.0",
     "simplex-noise": "^4.0.1",
     "tailwindcss": "^3.3.2",
-    "toastify-react-native": "^3.1.0"
+    "toastify-react-native": "^3.1.0",
+    "expo-store-review": "~6.2.1",
+    "expo-linking": "~4.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

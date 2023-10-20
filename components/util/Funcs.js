@@ -1,3 +1,5 @@
+import { AudioRecorder } from "react-native-audio";
+
 export function startTimer(counterRef, setSeconds) {
   counterRef.current = setInterval(() => setSeconds((prev) => prev + 1), 1000);
 }
@@ -19,4 +21,8 @@ export function openPurchaseModal(navigation) {
 
 export function resetVisualizer(setVisualizerParams) {
   setVisualizerParams({ speed: 500, frequency: 2, amplitude: 10 });
+}
+
+export async function stopDecibelMeter() {
+  await AudioRecorder.stopRecording();
 }

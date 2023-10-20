@@ -6,7 +6,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import { Context } from "./components/Context";
 import MeterScreen from "./screens/Meter";
-import SoundTestStack from "./screens/SoundTest";
+import SoundTest from "./screens/SoundTest";
 import Settings from "./screens/Settings";
 
 // Toast Notification Manager for Settings mainly
@@ -22,6 +22,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { DefaultTheme } from "@react-navigation/native";
+import * as StoreReview from "expo-store-review";
 
 const navTheme = {
   ...DefaultTheme,
@@ -38,6 +39,7 @@ export default function App() {
 
   useEffect(() => {
     checkIfAppWasLaunched();
+    StoreReview.requestReview();
   }, []);
 
   const checkIfAppWasLaunched = async () => {
@@ -125,7 +127,7 @@ const Main = () => {
             tabBarStyle: {
               backgroundColor: "#101C40",
             },
-            tabBarIcon: ({ color, size }) => (
+            tabBarIcon: ({ _, size }) => (
               <MaterialCommunityIcons
                 name="water-outline"
                 color={"white"}
@@ -133,17 +135,11 @@ const Main = () => {
               />
             ),
           }}
-          listeners={
-            {
-              // tabPress: async () => {
-              //   AudioRecorder.stopRecording();
-              //   // Unload the audio object for the sound test
-              //   if (currSoundTest) currSoundTest.unloadAsync() || undefined;
-              //   // Turn off any UI on the test tab which might be playing
-              //   if (tests) setTests((state) => !state);
-              // },
-            }
-          }
+          listeners={{
+            tabPress: async () => {
+              AudioRecorder.stopRecording();
+            },
+          }}
         />
         <Tab.Screen
           name="Meter"
@@ -162,23 +158,10 @@ const Main = () => {
               />
             ),
           }}
-          listeners={
-            {
-              // tabPress: async () => {
-              //   if (currSound) currSound.unloadAsync() || undefined;
-              //   // UI objects to be turned off
-              //   turnOffAllFreqUI();
-              //   // Unload the audio object for the sound test
-              //   if (currSoundTest) currSoundTest.unloadAsync() || undefined;
-              //   // Turn off any UI on the test tab which might be playing
-              //   if (tests) setTests((state) => !state);
-              // },
-            }
-          }
         />
         <Tab.Screen
           name="Sound Tests"
-          component={SoundTestStack}
+          component={SoundTest}
           options={{
             tabBarLabel: "Sound Tests",
             headerShown: false,
@@ -192,6 +175,11 @@ const Main = () => {
                 size={size}
               />
             ),
+          }}
+          listeners={{
+            tabPress: async () => {
+              AudioRecorder.stopRecording();
+            },
           }}
         />
         <Tab.Screen
