@@ -9,55 +9,96 @@ import { Text } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import InfoFrequencies from "../components/ClearanceTab/InfoFrequencies";
 import InfoPrograms from "../components/ClearanceTab/InfoPrograms";
+import PlayingProgram from "../components/ClearanceTab/PlayingProgram";
+import { PlayerContext } from "../contexts/PlayerContext";
+import { useState } from "react";
 
 export default function WaterClearance() {
   // React Native Navigator - Stack Navigator initializer
   const Stack = createNativeStackNavigator();
 
+  // Prep Program Player States
+  const [secondsPrep, setSecondsPrep] = useState(0);
+  const [minutesPrep, setMinutesPrep] = useState(0);
+  const [waveformTimePrep, setWaveformTimePrep] = useState(0);
+
+  // Main Program Player States
+  const [secondsMain, setSecondsMain] = useState(0);
+  const [minutesMain, setMinutesMain] = useState(0);
+  const [waveformTimeMain, setWaveformTimeMain] = useState(0);
+
   return (
-    <Stack.Navigator initialRouteName="WaterClearance">
-      <Stack.Screen
-        name="WaterClearance"
-        component={WaterClearanceTab}
-        options={{
-          headerShown: false,
-          tabBarStyle: {
-            backgroundColor: "#101C43",
-          },
-        }}
-      />
-      <Stack.Screen
-        name="InfoFrequencies"
-        component={InfoFrequencies}
-        options={{
-          headerShown: false,
-          presentation: "modal",
-          tabBarStyle: {
-            backgroundColor: "#101C43",
-          },
-        }}
-      />
-      <Stack.Screen
-        name="InfoPrograms"
-        component={InfoPrograms}
-        options={{
-          headerShown: false,
-          presentation: "modal",
-          tabBarStyle: {
-            backgroundColor: "#101C43",
-          },
-        }}
-      />
-      <Stack.Screen
-        name="Paywall"
-        component={Paywall}
-        options={{
-          presentation: "modal",
-          tabBarLabel: "Paywall",
-          headerShown: false,
-        }}
-      />
-    </Stack.Navigator>
+    <PlayerContext.Provider
+      value={{
+        secondsPrep,
+        setSecondsPrep,
+        minutesPrep,
+        setMinutesPrep,
+        waveformTimePrep,
+        setWaveformTimePrep,
+
+        secondsMain,
+        setSecondsMain,
+        minutesMain,
+        setMinutesMain,
+        waveformTimeMain,
+        setWaveformTimeMain,
+      }}
+    >
+      <Stack.Navigator initialRouteName="WaterClearance">
+        <Stack.Screen
+          name="WaterClearance"
+          component={WaterClearanceTab}
+          options={{
+            headerShown: false,
+            tabBarStyle: {
+              backgroundColor: "#101C43",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="InfoFrequencies"
+          component={InfoFrequencies}
+          options={{
+            headerShown: false,
+            presentation: "modal",
+            tabBarStyle: {
+              backgroundColor: "#101C43",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="InfoPrograms"
+          component={InfoPrograms}
+          options={{
+            headerShown: false,
+            presentation: "modal",
+            tabBarStyle: {
+              backgroundColor: "#101C43",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="PlayingProgram"
+          component={PlayingProgram}
+          options={{
+            headerShown: false,
+            tabBarStyle: {
+              backgroundColor: "#101C43",
+            },
+          }}
+        />
+        <Stack.Screen
+          name="Paywall"
+          component={Paywall}
+          options={{
+            presentation: "modal",
+            tabBarLabel: "Paywall",
+            headerShown: false,
+          }}
+        />
+      </Stack.Navigator>
+    </PlayerContext.Provider>
   );
 }
 

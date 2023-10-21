@@ -9,6 +9,7 @@ import { Context } from "./Context";
 import { startTimer, stopTimer, stopWaveformTimer } from "./util/Funcs";
 import useRevenueCat from "../hooks/useRevenueCat";
 import SoundCloudWave from "./SoundCloudWave";
+import { PlayerContext } from "../contexts/PlayerContext";
 
 export default function PrepProgram({ navigation }) {
   const { isProMember } = useRevenueCat();
@@ -18,9 +19,15 @@ export default function PrepProgram({ navigation }) {
 
   const defaultVisualizerParams = { speed: 500, frequency: 2, amplitude: 15 };
 
-  const [secondsPrep, setSecondsPrep] = useState(0);
-  const [minutesPrep, setMinutesPrep] = useState(0);
-  const [waveformTime, setWaveformTime] = useState(0);
+  const {
+    secondsPrep,
+    setSecondsPrep,
+    minutesPrep,
+    setMinutesPrep,
+    waveformTimePrep,
+    setWaveformTimePrep,
+  } = useContext(PlayerContext);
+
   const totalTime = 481; // in seconds
 
   const prepRefCounter = useRef();
@@ -35,18 +42,20 @@ export default function PrepProgram({ navigation }) {
     if (!sound.isEnabledPrep || (minutesPrep === 8 && secondsPrep === 1)) {
       setMinutesPrep(0);
       setSecondsPrep(0);
-      setWaveformTime(0);
+      setWaveformTimePrep(0);
       stopTimer(prepRefCounter, setSecondsPrep, setMinutesPrep);
-      stopWaveformTimer(prepRefWaveformCounter, setWaveformTime);
+      stopWaveformTimer(prepRefWaveformCounter, setWaveformTimePrep);
     }
-  }, [secondsPrep, waveformTime, sound.isEnabledPrep]);
+  }, [secondsPrep, waveformTimePrep, sound.isEnabledPrep]);
 
   async function enablePrepFreq() {
     setSound((state) => ({ ...!state, isEnabledPrep: !sound.isEnabledPrep }));
+
     await playPrep();
 
     async function playPrep() {
       if (!sound.isEnabledPrep) {
+        navigation.navigate("PlayingProgram");
         if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
           require(`../assets/programs/prep.mp3`),
@@ -61,12 +70,12 @@ export default function PrepProgram({ navigation }) {
 
         // Start the audio timer state
         startTimer(prepRefCounter, setSecondsPrep);
-        startTimer(prepRefWaveformCounter, setWaveformTime);
+        startTimer(prepRefWaveformCounter, setWaveformTimePrep);
       } else {
         currSound.unloadAsync() || undefined;
         setVisualizerParams(defaultVisualizerParams);
         stopTimer(prepRefCounter, setSecondsPrep, setMinutesPrep);
-        stopWaveformTimer(prepRefWaveformCounter, setWaveformTime);
+        stopWaveformTimer(prepRefWaveformCounter, setWaveformTimePrep);
       }
     }
   }
@@ -79,7 +88,7 @@ export default function PrepProgram({ navigation }) {
     <TouchableOpacity>
       <TouchableOpacity
         style={sound.isEnabledPrep ? styles.freqBtnActive : styles.freqBtn}
-        onPress={isProMember ? enablePrepFreq : openPurchaseModal}
+        onPress={isProMember ? enablePrepFreq : enablePrepFreq} // TO BE CHANGED BACK - openPurchaseModal
       >
         <View
           style={
@@ -99,7 +108,7 @@ export default function PrepProgram({ navigation }) {
           </View>
           <View style={styles.waveformAll}>
             <SoundCloudWave
-              currentTime={waveformTime}
+              currentTime={waveformTimePrep}
               totalTime={totalTime}
               waveform={"https://w1.sndcdn.com/PP3Eb34ToNki_m.png"}
             />

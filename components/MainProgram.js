@@ -8,6 +8,7 @@ import { bgColor, buttonsColor, iconActiveColor } from "../styles/ColorsUI";
 import { startTimer, stopTimer, stopWaveformTimer } from "./util/Funcs";
 import useRevenueCat from "../hooks/useRevenueCat";
 import SoundCloudWave from "./SoundCloudWave";
+import { PlayerContext } from "../contexts/PlayerContext";
 
 export default function MainProgram({ navigation }) {
   const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
@@ -17,9 +18,15 @@ export default function MainProgram({ navigation }) {
 
   const defaultVisualizerParams = { speed: 500, frequency: 2, amplitude: 15 };
 
-  const [secondsMain, setSecondsMain] = useState(0);
-  const [minutesMain, setMinutesMain] = useState(0);
-  const [waveformTime, setWaveformTime] = useState(0);
+  const {
+    secondsMain,
+    setSecondsMain,
+    minutesMain,
+    setMinutesMain,
+    waveformTimeMain,
+    setWaveformTimeMain,
+  } = useContext(PlayerContext);
+
   const totalWaveformTime = 16 * 60 + 27;
 
   const mainRefCounter = useRef();
@@ -35,11 +42,11 @@ export default function MainProgram({ navigation }) {
     if (!sound.isEnabledMain || (minutesMain === 16 && secondsMain === 27)) {
       setMinutesMain(0);
       setSecondsMain(0);
-      setWaveformTime(0);
+      setWaveformTimeMain(0);
       stopTimer(mainRefCounter, setSecondsMain, setMinutesMain);
-      stopWaveformTimer(mainWaveformRefCounter, setWaveformTime);
+      stopWaveformTimer(mainWaveformRefCounter, setWaveformTimeMain);
     }
-  }, [secondsMain, waveformTime, sound.isEnabledMain]);
+  }, [secondsMain, waveformTimeMain, sound.isEnabledMain]);
 
   async function enableMainFreq() {
     setSound((state) => ({ ...!state, isEnabledMain: !sound.isEnabledMain }));
@@ -57,12 +64,12 @@ export default function MainProgram({ navigation }) {
         setVisualizerParams({ speed: 75, frequency: 22, amplitude: 200 });
 
         startTimer(mainRefCounter, setSecondsMain);
-        startTimer(mainWaveformRefCounter, setWaveformTime);
+        startTimer(mainWaveformRefCounter, setWaveformTimeMain);
       } else {
         currSound.unloadAsync() || undefined;
         setVisualizerParams(defaultVisualizerParams);
         stopTimer(mainRefCounter, setSecondsMain, setMinutesMain);
-        stopWaveformTimer(mainWaveformRefCounter, setWaveformTime);
+        stopWaveformTimer(mainWaveformRefCounter, setWaveformTimeMain);
       }
     }
   }
@@ -73,7 +80,7 @@ export default function MainProgram({ navigation }) {
 
   return (
     <TouchableOpacity
-      onPress={isProMember ? enableMainFreq : openPurchaseModal}
+      onPress={isProMember ? enableMainFreq : enableMainFreq} // CHANGE BACK - openPurchaseModal
       style={sound.isEnabledMain ? styles.freqBtnActive : styles.freqBtn}
     >
       <View
@@ -93,7 +100,7 @@ export default function MainProgram({ navigation }) {
 
         <View style={styles.waveformAll}>
           <SoundCloudWave
-            currentTime={waveformTime}
+            currentTime={waveformTimeMain}
             totalTime={totalWaveformTime}
             waveform={"https://w1.sndcdn.com/XwA2iPEIVF8z_m.png"}
           />

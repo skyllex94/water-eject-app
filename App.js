@@ -39,7 +39,7 @@ export default function App() {
 
   useEffect(() => {
     checkIfAppWasLaunched();
-    StoreReview.requestReview();
+    // StoreReview.requestReview();
   }, []);
 
   const checkIfAppWasLaunched = async () => {
@@ -137,7 +137,7 @@ const Main = () => {
           }}
           listeners={{
             tabPress: async () => {
-              AudioRecorder.stopRecording();
+              AudioRecorder.stopRecording(); // TODO
             },
           }}
         />
@@ -158,6 +158,11 @@ const Main = () => {
               />
             ),
           }}
+          listeners={
+            {
+              // TODO: Put a listener to shut down any playing sound when switching to the dB Meter
+            }
+          }
         />
         <Tab.Screen
           name="Sound Tests"
