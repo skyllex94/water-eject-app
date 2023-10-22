@@ -26,9 +26,11 @@ export default function PrepProgram({ navigation }) {
     setMinutesPrep,
     waveformTimePrep,
     setWaveformTimePrep,
+    currStatusPrep,
+    setCurrStatusPrep,
   } = useContext(PlayerContext);
 
-  const totalTime = 481; // in seconds
+  const totalTime = 8 * 60 + 1; // in seconds
 
   const prepRefCounter = useRef();
   const prepRefWaveformCounter = useRef();
@@ -45,7 +47,13 @@ export default function PrepProgram({ navigation }) {
       setWaveformTimePrep(0);
       stopTimer(prepRefCounter, setSecondsPrep, setMinutesPrep);
       stopWaveformTimer(prepRefWaveformCounter, setWaveformTimePrep);
+      setSound({ isEnabledPrep: false });
+
+      if (currStatusPrep.status === "playing")
+        setCurrStatusPrep({ status: "finished" });
     }
+
+    // if (!sound.isEnabledPrep && minutesPrep === 0 && secondsPrep === 10)
   }, [secondsPrep, waveformTimePrep, sound.isEnabledPrep]);
 
   async function enablePrepFreq() {
@@ -64,6 +72,8 @@ export default function PrepProgram({ navigation }) {
 
         setCurrSound(sound);
         await sound.playAsync();
+        // Update Status bar UI to playing the current program
+        setCurrStatusPrep({ status: "playing" });
 
         // Set Visualizer Preset Params
         setVisualizerParams({ speed: 75, frequency: 18, amplitude: 200 });
@@ -73,6 +83,7 @@ export default function PrepProgram({ navigation }) {
         startTimer(prepRefWaveformCounter, setWaveformTimePrep);
       } else {
         currSound.unloadAsync() || undefined;
+        setCurrStatusPrep({ status: "not-playing" });
         setVisualizerParams(defaultVisualizerParams);
         stopTimer(prepRefCounter, setSecondsPrep, setMinutesPrep);
         stopWaveformTimer(prepRefWaveformCounter, setWaveformTimePrep);
@@ -87,6 +98,7 @@ export default function PrepProgram({ navigation }) {
   return (
     <TouchableOpacity>
       <TouchableOpacity
+        // className={`bg-[${bgColor}] h-[120px] w-[95%] mx-3 p-3 rounded-2xl mt-4`}
         style={sound.isEnabledPrep ? styles.freqBtnActive : styles.freqBtn}
         onPress={isProMember ? enablePrepFreq : enablePrepFreq} // TO BE CHANGED BACK - openPurchaseModal
       >
@@ -139,7 +151,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 15,
     backgroundColor: bgColor,
-    marginTop: 14,
+    marginTop: 16,
   },
   freqBtnActive: {
     width: "95%",

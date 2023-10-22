@@ -25,8 +25,10 @@
     "expo-av": "~13.2.1",
     "expo-clipboard": "~4.1.2",
     "expo-dev-client": "~2.2.1",
+    "expo-linking": "~4.0.1",
     "expo-media-library": "~15.2.3",
     "expo-status-bar": "~1.4.4",
+    "expo-store-review": "~6.2.1",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-native": "^0.71.7",
@@ -38,12 +40,11 @@
     "react-native-screens": "^3.20.0",
     "react-native-soundcloud-waveform": "^1.0.3",
     "react-native-svg": "^13.14.0",
+    "react-native-system-setting": "^1.7.6",
     "react-native-webview": "^12.1.0",
     "simplex-noise": "^4.0.1",
     "tailwindcss": "^3.3.2",
-    "toastify-react-native": "^3.1.0",
-    "expo-store-review": "~6.2.1",
-    "expo-linking": "~4.0.1"
+    "toastify-react-native": "^3.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

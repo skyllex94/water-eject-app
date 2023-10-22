@@ -21,6 +21,9 @@ export default function WaterClearance() {
   const [secondsPrep, setSecondsPrep] = useState(0);
   const [minutesPrep, setMinutesPrep] = useState(0);
   const [waveformTimePrep, setWaveformTimePrep] = useState(0);
+  const [currStatusPrep, setCurrStatusPrep] = useState({
+    status: "not-playing",
+  });
 
   // Main Program Player States
   const [secondsMain, setSecondsMain] = useState(0);
@@ -36,6 +39,8 @@ export default function WaterClearance() {
         setMinutesPrep,
         waveformTimePrep,
         setWaveformTimePrep,
+        currStatusPrep,
+        setCurrStatusPrep,
 
         secondsMain,
         setSecondsMain,

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, useWindowDimensions } from "react-native";
 
 import SoundCloudWaveform from "react-native-soundcloud-waveform";
 
 export default function SoundCloudWave({ currentTime, totalTime, waveform }) {
   const [time, setTime] = useState(243);
+  const width = useWindowDimensions();
 
   return (
     <TouchableOpacity disabled={true}>
@@ -13,7 +14,7 @@ export default function SoundCloudWave({ currentTime, totalTime, waveform }) {
         className="m-0 p-0 "
         waveformUrl={waveform}
         height={25}
-        width={300}
+        width={width.width - 120}
         inactive="#E5E4E2"
         inactiveInverse="white"
         active="#277a8c"

@@ -45,6 +45,7 @@ export default function MainProgram({ navigation }) {
       setWaveformTimeMain(0);
       stopTimer(mainRefCounter, setSecondsMain, setMinutesMain);
       stopWaveformTimer(mainWaveformRefCounter, setWaveformTimeMain);
+      setSound({ isEnabledMain: false });
     }
   }, [secondsMain, waveformTimeMain, sound.isEnabledMain]);
 
