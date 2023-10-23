@@ -52,7 +52,7 @@ function MeterTab({ navigation }) {
 
   async function askForMicPermission() {
     const permissionAnswer = await Audio.requestPermissionsAsync();
-    console.log(permissionAnswer);
+    // console.log(permissionAnswer);
   }
 
   async function startDecibelMetering() {

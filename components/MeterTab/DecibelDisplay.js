@@ -107,7 +107,8 @@ const DecibelDisplay = ({ currDecibels }) => {
   return (
     <SafeAreaView className="flex justify-center items-center">
       <AnimatedCircularProgress
-        className={"absolute z-20"}
+        // Keep the style prop to avoid warnings
+        style={{ position: "absolute", zIndex: 10 }}
         size={260}
         width={18}
         rotation={240}

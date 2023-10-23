@@ -10,7 +10,7 @@ import {
   stopWaveformTimer,
 } from "../../util/Funcs";
 import SoundTestWave from "../SoundTestWave";
-import { Context } from "../../Context";
+import { Context } from "../../../contexts/Context";
 
 export default function OverallTestSong2() {
   const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =

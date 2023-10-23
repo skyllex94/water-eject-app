@@ -6,16 +6,16 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import PrepProgram from "../PrepProgram";
-import { bgColor } from "../../styles/ColorsUI";
+import PrepProgram from "../../components/ClearanceTab/PrepProgram";
+import { bgColor } from "../../constants/ColorsUI";
 import { useContext, useEffect } from "react";
 import { PlayerContext } from "../../contexts/PlayerContext";
 import SystemSetting from "react-native-system-setting";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function PlayingProgram({ navigation }) {
-  const { currStatusPrep } = useContext(PlayerContext);
+export default function PlayingProgramPrep({ navigation }) {
+  const { currStatus, setCurrStatus } = useContext(PlayerContext);
   const [currVolume, setCurrVolume] = useState(0);
 
   // Update volume percentage amount
@@ -25,6 +25,7 @@ export default function PlayingProgram({ navigation }) {
         setCurrVolume(currentVolume)
       );
     }, 1500);
+    setCurrStatus({ status: "starting" });
   }, []);
 
   return (
@@ -45,18 +46,18 @@ export default function PlayingProgram({ navigation }) {
           Place your phone display down as the program is playing.
         </Text>
         <Text className="text-center text-white font-extralight">
-          Have your volume level between 85% and 95%.
+          Have your volume level between 80% and 95%.
         </Text>
 
         <Image
-          className={`bg-[${bgColor}] rounded-xl w-[95%] h-[40%] my-4`}
+          className={`bg-[${bgColor}] rounded-xl w-[92%] h-[40%] my-4`}
           resizeMode="contain"
           source={require("../../assets/images/clearance/iphone_placement_final.gif")}
         />
 
-        <View className={`bg-[${bgColor}] w-[95%] rounded-xl`}>
-          {currStatusPrep.status ===
-          "not-playing" ? null : currStatusPrep.status === "playing" ? (
+        <View className={`bg-[${bgColor}] w-[93%] rounded-xl`}>
+          {currStatus.status === "not-playing" ? null : currStatus.status ===
+            "playing" ? (
             <ActivityIndicator
               className={`bg-[${bgColor}] mt-5 mb-2 rounded-xl`}
               size="large"
@@ -72,11 +73,13 @@ export default function PlayingProgram({ navigation }) {
             </Text>
 
             <Text className="text-center text-white font-extralight">
-              {currStatusPrep.status === "not-playing"
+              {currStatus.status === "not-playing"
                 ? "Stopped / Not Playing"
-                : currStatusPrep.status === "playing"
+                : currStatus.status === "playing"
                 ? "Playing Program"
-                : "Finished Program"}
+                : currStatus.status === "finished"
+                ? "Finished Program"
+                : "Starting..."}
             </Text>
           </View>
           <View

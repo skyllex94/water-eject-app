@@ -11,7 +11,6 @@ export default function SoundCloudWave({ currentTime, totalTime, waveform }) {
     <TouchableOpacity disabled={true}>
       <SoundCloudWaveform
         onPress={() => enableFreq}
-        className="m-0 p-0 "
         waveformUrl={waveform}
         height={25}
         width={width.width - 120}

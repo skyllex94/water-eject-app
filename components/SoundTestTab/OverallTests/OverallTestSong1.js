@@ -10,7 +10,7 @@ import {
   stopWaveformTimer,
 } from "../../util/Funcs";
 import SoundTestWave from "../SoundTestWave";
-import { Context } from "../../Context";
+import { Context } from "../../../contexts/Context";
 
 export default function OverallTestSong1() {
   const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
@@ -55,11 +55,12 @@ export default function OverallTestSong1() {
 
         resetVisualizer(setVisualizerParams);
         setCurrSound(sound);
-        await sound.playAsync();
 
         // Start the audio timer state
         startTimer(refCounter, setSeconds);
         startTimer(refWaveFormCounter, setWaveformTime);
+
+        sound.playAsync();
       } else {
         currSound.unloadAsync() || undefined;
         stopTimer(refCounter, setSeconds, setMinutes);

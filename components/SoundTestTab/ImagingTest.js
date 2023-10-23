@@ -5,7 +5,7 @@ import { Audio } from "expo-av";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-import { Context } from "../Context";
+import { Context } from "../../contexts/Context";
 import useRevenueCat from "../../hooks/useRevenueCat";
 import { openPurchaseModal, resetVisualizer } from "../util/Funcs";
 
@@ -42,7 +42,6 @@ export default function ImagingTest({ navigation }) {
       isEnabledLateral: !sound.isEnabledLateral,
     }));
 
-    console.log(sound);
     await playTest();
 
     async function playTest() {
@@ -67,8 +66,6 @@ export default function ImagingTest({ navigation }) {
       ...!state,
       isEnabledBehind: !sound.isEnabledBehind,
     }));
-
-    console.log(sound);
 
     await playTest();
 

@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { Context } from "./components/Context";
+import { Context } from "./contexts/Context";
 import MeterScreen from "./screens/Meter";
 import SoundTest from "./screens/SoundTest";
 import Settings from "./screens/Settings";
@@ -22,7 +22,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { DefaultTheme } from "@react-navigation/native";
-import * as StoreReview from "expo-store-review";
+import * as StoreReview from "expo-store-review"; // TODO: Integrate the rating popup
+
+// Removing Warning Messages
+import { LogBox } from "react-native";
+LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
+LogBox.ignoreAllLogs(); // Ignore all log notifications
 
 const navTheme = {
   ...DefaultTheme,
@@ -45,8 +50,6 @@ export default function App() {
   const checkIfAppWasLaunched = async () => {
     try {
       const value = await AsyncStorage.getItem("@isAppFirstLaunched");
-      console.log("value:", value);
-
       if (value === null) setIsAppFirstLaunched(true);
       else setIsAppFirstLaunched(false);
     } catch (error) {
@@ -135,11 +138,11 @@ const Main = () => {
               />
             ),
           }}
-          listeners={{
-            tabPress: async () => {
-              AudioRecorder.stopRecording(); // TODO
-            },
-          }}
+          // listeners={{
+          //   tabPress: async () => {
+          //     AudioRecorder.stopRecording(); // TODO
+          //   },
+          // }}
         />
         <Tab.Screen
           name="Meter"
@@ -181,11 +184,11 @@ const Main = () => {
               />
             ),
           }}
-          listeners={{
-            tabPress: async () => {
-              AudioRecorder.stopRecording();
-            },
-          }}
+          // listeners={{
+          //   tabPress: async () => {
+          //     AudioRecorder.stopRecording();
+          //   },
+          // }}
         />
         <Tab.Screen
           name="Settings"

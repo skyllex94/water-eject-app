@@ -12,7 +12,7 @@ import {
 } from "../../util/Funcs";
 import SoundTestWave from "../SoundTestWave";
 import { useContext } from "react";
-import { Context } from "../../Context";
+import { Context } from "../../../contexts/Context";
 import useRevenueCat from "../../../hooks/useRevenueCat";
 
 export default function BassTestSound1({ navigation }) {

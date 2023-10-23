@@ -8,23 +8,20 @@ import {
 } from "react-native";
 import { Audio } from "expo-av";
 
-import lowFreq from "../assets/icons/lowfreqIcon.png";
-import medFreq from "../assets/icons/medfreqIcon.png";
-import highFreq from "../assets/icons/highfreqIcon.png";
-import xtHighFreq from "../assets/icons/xthighfreqIcon.png";
-import { buttonsColor } from "../styles/ColorsUI";
-import { Context } from "./Context";
+import lowFreq from "../../assets/icons/lowfreqIcon.png";
+import medFreq from "../../assets/icons/medfreqIcon.png";
+import highFreq from "../../assets/icons/highfreqIcon.png";
+import xtHighFreq from "../../assets/icons/xthighfreqIcon.png";
+import { buttonsColor } from "../../constants/ColorsUI";
+import { Context } from "../../contexts/Context";
 import { useContext, useEffect } from "react";
 
-// Decibel Metering Imports to be stopped when switching tabs
-import { stopDecibelMeter } from "./util/Funcs";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { defaultVisualizerParams } from "../../constants/Constants";
 
 export default function Frequencies({ navigation }) {
   const { currSound, setCurrSound, setVisualizerParams, sound, setSound } =
     useContext(Context);
-
-  const defaultVisualizerParams = { speed: 500, frequency: 3, amplitude: 10 };
 
   useEffect(() => {
     playAudioInSilentMode();
@@ -43,8 +40,8 @@ export default function Frequencies({ navigation }) {
       if (!sound.isEnabled120) {
         if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
-          require(`../assets/frequencies/120hz_cut.mp3`),
-          { isLooping: true, shouldPlay: true }
+          require(`../../assets/frequencies/120hz_cut.mp3`),
+          { isLooping: true }
         );
 
         // Start or switch to current sound
@@ -69,7 +66,7 @@ export default function Frequencies({ navigation }) {
       if (!sound.isEnabled160) {
         if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
-          require(`../assets/frequencies/160hz_cut.mp3`),
+          require(`../../assets/frequencies/160hz_cut.mp3`),
           { isLooping: true }
         );
         setCurrSound(sound);
@@ -92,7 +89,7 @@ export default function Frequencies({ navigation }) {
       if (!sound.isEnabled300) {
         if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
-          require(`../assets/frequencies/300hz_cut.mp3`),
+          require(`../../assets/frequencies/300hz_cut.mp3`),
           { isLooping: true }
         );
         setCurrSound(sound);
@@ -115,7 +112,7 @@ export default function Frequencies({ navigation }) {
       if (!sound.isEnabled500) {
         if (currSound) currSound.unloadAsync() || undefined;
         const { sound } = await Audio.Sound.createAsync(
-          require(`../assets/frequencies/500hz_cut.mp3`),
+          require(`../../assets/frequencies/500hz_cut.mp3`),
           { isLooping: true }
         );
         setCurrSound(sound);
