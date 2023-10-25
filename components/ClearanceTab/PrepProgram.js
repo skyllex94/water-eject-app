@@ -34,7 +34,7 @@ export default function PrepProgram({ navigation }) {
     setCurrStatus,
   } = useContext(PlayerContext);
 
-  const totalTime = 5; // 8 * 60 + 1 in seconds
+  const totalTime = 8 * 60 + 1; // 8 * 60 + 1 in seconds
 
   const prepRefCounter = useRef();
   const prepRefWaveformCounter = useRef();
@@ -45,7 +45,7 @@ export default function PrepProgram({ navigation }) {
       setMinutesPrep((prev) => prev + 1);
       setSecondsPrep(0);
     }
-    if (!sound.isEnabledPrep || (minutesPrep === 0 && secondsPrep === 5)) {
+    if (!sound.isEnabledPrep || (minutesPrep === 8 && secondsPrep === 1)) {
       setMinutesPrep(0);
       setSecondsPrep(0);
       setWaveformTimePrep(0);
@@ -69,7 +69,7 @@ export default function PrepProgram({ navigation }) {
         if (currSound) currSound.unloadAsync() || undefined;
         await navigation.navigate("PlayingProgramPrep");
         const { sound } = await Audio.Sound.createAsync(
-          require(`../../assets/soundtests/in-phase-guitar.mp3`),
+          require(`../../assets/programs/prep.mp3`),
           { isLooping: false }
         );
 
@@ -105,7 +105,7 @@ export default function PrepProgram({ navigation }) {
         className={`${
           sound.isEnabledPrep ? `bg-[${activeColor}]` : `bg-[${bgColor}]`
         } h-[125px] w-[95%] mx-[10px] p-[10px] rounded-2xl mt-4`}
-        onPress={isProMember ? enablePrepFreq : enablePrepFreq} // TO BE CHANGED BACK - openPurchaseModal
+        onPress={isProMember ? enablePrepFreq : openPurchaseModal}
       >
         <View
           className={`${

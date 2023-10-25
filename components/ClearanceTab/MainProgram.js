@@ -33,7 +33,7 @@ export default function MainProgram({ navigation }) {
     setCurrStatus,
   } = useContext(PlayerContext);
 
-  const totalWaveformTime = 5; // 16 * 60 + 27;
+  const totalWaveformTime = 16 * 60 + 27; // 16 * 60 + 27 in seconds;
 
   const mainRefCounter = useRef();
   const mainWaveformRefCounter = useRef();
@@ -45,7 +45,7 @@ export default function MainProgram({ navigation }) {
       setSecondsMain(0);
     }
 
-    if (!sound.isEnabledMain || (minutesMain === 0 && secondsMain === 5)) {
+    if (!sound.isEnabledMain || (minutesMain === 16 && secondsMain === 27)) {
       setMinutesMain(0);
       setSecondsMain(0);
       setWaveformTimeMain(0);
@@ -68,7 +68,7 @@ export default function MainProgram({ navigation }) {
         if (currSound) currSound.unloadAsync() || undefined;
         await navigation.navigate("PlayingProgramMain");
         const { sound, status } = await Audio.Sound.createAsync(
-          require(`../../assets/soundtests/off-phase-guitar.mp3`),
+          require(`../../assets/programs/main.mp3`),
           { isLooping: false, progressUpdateIntervalMillis: 1000 },
           (status) => {
             // TODO: Try to get this to sync with the timer
@@ -107,7 +107,7 @@ export default function MainProgram({ navigation }) {
         className={`${
           sound.isEnabledMain ? `bg-[${activeColor}]` : `bg-[${bgColor}]`
         } h-[125px] w-[95%] mx-[10px] p-[10px] rounded-2xl mt-4`}
-        onPress={isProMember ? enableMainFreq : enableMainFreq} // CHANGE BACK - openPurchaseModal
+        onPress={isProMember ? enableMainFreq : openPurchaseModal}
       >
         <View
           className={`${

@@ -105,7 +105,7 @@ export default function OverallTestSong2() {
 
           <View className="flex-row justify-between">
             <Text className="pt-2 ml-3 font-bold text-white">
-              GoldLink - Zulu Screams
+              Overall Test 2 - Zulu
             </Text>
             <Text className="pt-2 mr-3 font-bold text-white">
               {minsGL}:{secsGL < 10 && "0"}

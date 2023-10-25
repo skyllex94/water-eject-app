@@ -9,7 +9,6 @@ import { FontAwesome5 } from "@expo/vector-icons";
 const DecibelControls = ({
   startDecibelMetering,
   stopDecibelMetering,
-  isOnMetering,
   navigation,
 }) => {
   const { isProMember } = useRevenueCat();
@@ -27,11 +26,7 @@ const DecibelControls = ({
         >
           <View className="flex-1 justify-center my-4">
             <View className="flex-row items-center mx-4">
-              <View
-                className={` ${
-                  isOnMetering ? "bg-[#87e5fa] " : "bg-[#05103A]"
-                }  w-12 h-12 mr-2 items-center justify-center rounded-xl`}
-              >
+              <View className="bg-[#05103A] w-12 h-12 mr-2 items-center justify-center rounded-xl">
                 {isProMember ? (
                   <Image className="w-10 h-10" source={highFreq} />
                 ) : (

@@ -105,7 +105,7 @@ export default function OverallTestSong1() {
 
           <View className="flex-row justify-between">
             <Text className="pt-2 ml-3 font-bold text-white">
-              JK - Baby What You Wanna Do
+              Overall Test 1 - JK
             </Text>
             <Text className="pt-2 mr-3 font-bold text-white">
               {minutes}:{seconds < 10 && "0"}

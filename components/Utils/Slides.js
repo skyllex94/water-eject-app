@@ -1,7 +1,7 @@
 export default [
   {
     id: 1,
-    title: `Welcome to our ${"\n"} Water Clearance App`,
+    title: `Welcome to WaterDrop`,
     description:
       "Our trialled and tested frequencies will help you remove the stuck water inside your speakers so you can have clear and crisp sound once again.",
     image: require("../../assets/images/slides/slide_1.png"),

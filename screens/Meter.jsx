@@ -1,7 +1,7 @@
 import { Text, SafeAreaView, Alert, View, ScrollView } from "react-native";
 import { Audio } from "expo-av";
 import DecibelDisplay from "../components/MeterTab/DecibelDisplay";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DecibelControls from "../components/MeterTab/DecibelControls";
 import DecibelInfo from "../components/MeterTab/DecibelInfo";
 
@@ -10,7 +10,6 @@ import Paywall from "./Paywall";
 
 // Decibel Level imports
 import { AudioRecorder, AudioUtils } from "react-native-audio";
-import { Context } from "../contexts/Context";
 let audioPath = AudioUtils.CachesDirectoryPath + "/test.aac";
 
 // React Native Navigator - Stack Navigator initializer
@@ -40,14 +39,11 @@ export default function Meter() {
 function MeterTab({ navigation }) {
   // Decibel State UI
   const [currDecibels, setCurrDecibels] = useState(30);
-  const [isOnMetering, setIsOnMetering] = useState(false);
 
   // Metering Options
   const [sampleRate, setSampleRate] = useState(22050);
   const [audioQuality, setAudioQuality] = useState("Low");
   const [audioEncodingBitRate, setAudioEncodingBitRate] = useState("32");
-
-  const { currSound, setSound } = useContext(Context);
 
   useEffect(() => {
     askForMicPermission();
@@ -104,7 +100,6 @@ function MeterTab({ navigation }) {
         <DecibelControls
           startDecibelMetering={startDecibelMetering}
           stopDecibelMetering={stopDecibelMetering}
-          isOnMetering={isOnMetering}
           navigation={navigation}
         />
       </ScrollView>

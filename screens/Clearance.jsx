@@ -89,18 +89,20 @@ export default function WaterClearance() {
 }
 
 function WaterClearanceTab({ navigation }) {
-  // async function clearAsyncStorage() {
-  //   try {
-  //     await AsyncStorage.removeItem("@isAppFirstLaunched");
-  //   } catch (err) {
-  //     console.log("RemoveItem from Async Storage Error.", err);
-  //   }
-  // }
+  async function clearAsyncStorage() {
+    try {
+      await AsyncStorage.removeItem("@isAppFirstLaunched");
+    } catch (err) {
+      console.log("RemoveItem from Async Storage Error.", err);
+    }
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-[#05103A]">
       <View>
-        <Text className="text-white text-center text-xl">Water Clearance</Text>
+        <Text className="text-white text-center text-xl">
+          WaterDrop Clearance
+        </Text>
         {/*
         <TouchableOpacity
           onPress={clearAsyncStorage}
@@ -108,7 +110,8 @@ function WaterClearanceTab({ navigation }) {
         >
           <Text className="text-white">Clear</Text>
         </TouchableOpacity>
-      */}
+        */}
+
         <SoundVisualizer />
       </View>
       <ScrollView>
