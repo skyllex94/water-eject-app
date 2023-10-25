@@ -14,7 +14,7 @@ import {
 
 import { line, curveBasis } from "d3";
 import { useContext } from "react";
-import { Context } from "../contexts/Context";
+import { Context } from "../../contexts/Context";
 
 const dimens = Dimensions.get("screen");
 const width = dimens.width; // width of the animation

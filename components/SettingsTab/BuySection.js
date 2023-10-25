@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import useRevenueCat from "../../hooks/useRevenueCat";
-import { openPurchaseModal } from "../util/Funcs";
+import { openPurchaseModal } from "../Utils/Funcs";
 
 export default function BuySection({ navigation }) {
   const { isProMember } = useRevenueCat();

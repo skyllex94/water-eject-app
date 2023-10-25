@@ -8,7 +8,7 @@ import {
   startTimer,
   stopTimer,
   stopWaveformTimer,
-} from "../../util/Funcs";
+} from "../../Utils/Funcs";
 import SoundTestWave from "../SoundTestWave";
 import { Context } from "../../../contexts/Context";
 

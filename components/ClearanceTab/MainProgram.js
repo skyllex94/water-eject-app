@@ -10,7 +10,7 @@ import {
   buttonsColor,
   iconActiveColor,
 } from "../../constants/ColorsUI";
-import { startTimer, stopTimer, stopWaveformTimer } from "../util/Funcs";
+import { startTimer, stopTimer, stopWaveformTimer } from "../Utils/Funcs";
 import useRevenueCat from "../../hooks/useRevenueCat";
 import SoundCloudWave from "./SoundCloudWave";
 import { PlayerContext } from "../../contexts/PlayerContext";

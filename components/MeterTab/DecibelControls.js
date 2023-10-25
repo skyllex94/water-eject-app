@@ -3,14 +3,13 @@ import { SafeAreaView, View, TouchableOpacity, Text } from "react-native";
 
 import highFreq from "../../assets/icons/dec_icon.png";
 import useRevenueCat from "../../hooks/useRevenueCat";
-import { openPurchaseModal } from "../util/Funcs";
+import { openPurchaseModal } from "../Utils/Funcs";
 import { FontAwesome5 } from "@expo/vector-icons";
 
 const DecibelControls = ({
   startDecibelMetering,
   stopDecibelMetering,
   isOnMetering,
-  setIsOnMetering,
   navigation,
 }) => {
   const { isProMember } = useRevenueCat();

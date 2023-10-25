@@ -7,7 +7,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 
 import { Context } from "../../contexts/Context";
 import useRevenueCat from "../../hooks/useRevenueCat";
-import { openPurchaseModal, resetVisualizer } from "../util/Funcs";
+import { openPurchaseModal, resetVisualizer } from "../Utils/Funcs";
 
 export default function ImagingTest({ navigation }) {
   const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =

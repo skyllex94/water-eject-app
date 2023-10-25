@@ -6,7 +6,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Context } from "../../contexts/Context";
 import useRevenueCat from "../../hooks/useRevenueCat";
-import { openPurchaseModal, resetVisualizer } from "../util/Funcs";
+import { openPurchaseModal, resetVisualizer } from "../Utils/Funcs";
 
 export default function SpeakersTest({ navigation }) {
   // Test sound states

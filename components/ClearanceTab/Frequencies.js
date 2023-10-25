@@ -19,6 +19,8 @@ import { useContext, useEffect } from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { defaultVisualizerParams } from "../../constants/Constants";
 
+import * as StoreReview from "expo-store-review";
+
 export default function Frequencies({ navigation }) {
   const { currSound, setCurrSound, setVisualizerParams, sound, setSound } =
     useContext(Context);
@@ -75,6 +77,9 @@ export default function Frequencies({ navigation }) {
         setVisualizerParams({ speed: 105, frequency: 8, amplitude: 155 });
       } else {
         currSound.unloadAsync() || undefined;
+        setTimeout(() => {
+          StoreReview.requestReview();
+        }, 3000);
         setVisualizerParams(defaultVisualizerParams);
       }
     }

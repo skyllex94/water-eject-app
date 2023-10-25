@@ -22,7 +22,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { DefaultTheme } from "@react-navigation/native";
-import * as StoreReview from "expo-store-review"; // TODO: Integrate the rating popup
 
 // Removing Warning Messages
 import { LogBox } from "react-native";
@@ -44,7 +43,6 @@ export default function App() {
 
   useEffect(() => {
     checkIfAppWasLaunched();
-    // StoreReview.requestReview();
   }, []);
 
   const checkIfAppWasLaunched = async () => {
@@ -91,7 +89,7 @@ const Loading = () => (
 const Main = () => {
   // UI for any sound playing
   const [sound, setSound] = useState({});
-  // Currently playing frequency or program sound
+  // Audio playing from any sound
   const [currSound, setCurrSound] = useState();
 
   // Sound Visualizer State
@@ -138,11 +136,11 @@ const Main = () => {
               />
             ),
           }}
-          // listeners={{
-          //   tabPress: async () => {
-          //     AudioRecorder.stopRecording(); // TODO
-          //   },
-          // }}
+          listeners={{
+            tabPress: async () => {
+              AudioRecorder.stopRecording();
+            },
+          }}
         />
         <Tab.Screen
           name="Meter"
@@ -161,11 +159,12 @@ const Main = () => {
               />
             ),
           }}
-          listeners={
-            {
-              // TODO: Put a listener to shut down any playing sound when switching to the dB Meter
-            }
-          }
+          listeners={{
+            tabPress: async () => {
+              setSound({});
+              currSound.unloadAsync() || undefined;
+            },
+          }}
         />
         <Tab.Screen
           name="Sound Tests"
@@ -184,11 +183,11 @@ const Main = () => {
               />
             ),
           }}
-          // listeners={{
-          //   tabPress: async () => {
-          //     AudioRecorder.stopRecording();
-          //   },
-          // }}
+          listeners={{
+            tabPress: async () => {
+              AudioRecorder.stopRecording();
+            },
+          }}
         />
         <Tab.Screen
           name="Settings"

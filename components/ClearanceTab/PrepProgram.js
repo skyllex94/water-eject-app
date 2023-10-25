@@ -11,7 +11,7 @@ import {
 
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Context } from "../../contexts/Context";
-import { startTimer, stopTimer, stopWaveformTimer } from "../util/Funcs";
+import { startTimer, stopTimer, stopWaveformTimer } from "../Utils/Funcs";
 import useRevenueCat from "../../hooks/useRevenueCat";
 import SoundCloudWave from "./SoundCloudWave";
 import { PlayerContext } from "../../contexts/PlayerContext";
