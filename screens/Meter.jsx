@@ -1,4 +1,4 @@
-import { Text, SafeAreaView, Alert, View, ScrollView } from "react-native";
+import { Text, SafeAreaView, Alert, ScrollView } from "react-native";
 import { Audio } from "expo-av";
 import DecibelDisplay from "../components/MeterTab/DecibelDisplay";
 import { useEffect, useState } from "react";

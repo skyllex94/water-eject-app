@@ -63,35 +63,35 @@ export default function PrepProgram({ navigation }) {
     setSound((state) => ({ ...!state, isEnabledPrep: !sound.isEnabledPrep }));
 
     await playPrep();
+  }
 
-    async function playPrep() {
-      if (!sound.isEnabledPrep) {
-        if (currSound) currSound.unloadAsync() || undefined;
-        await navigation.navigate("PlayingProgramPrep");
-        const { sound } = await Audio.Sound.createAsync(
-          require(`../../assets/programs/prep.mp3`),
-          { isLooping: false }
-        );
+  async function playPrep() {
+    if (!sound.isEnabledPrep) {
+      if (currSound) currSound.unloadAsync() || undefined;
+      await navigation.navigate("PlayingProgramPrep");
+      const { sound } = await Audio.Sound.createAsync(
+        require(`../../assets/programs/prep.mp3`),
+        { isLooping: false }
+      );
 
-        setCurrSound(sound);
-        // Update Status bar UI to playing the current program
-        setCurrStatus({ status: "playing" });
+      setCurrSound(sound);
+      // Update Status bar UI to playing the current program
+      setCurrStatus({ status: "playing" });
 
-        // Set Visualizer Preset Params
-        setVisualizerParams({ speed: 75, frequency: 18, amplitude: 200 });
+      // Set Visualizer Preset Params
+      setVisualizerParams({ speed: 75, frequency: 18, amplitude: 200 });
 
-        // Start the audio timer state
-        startTimer(prepRefCounter, setSecondsPrep);
-        startTimer(prepRefWaveformCounter, setWaveformTimePrep);
+      // Start the audio timer state
+      startTimer(prepRefCounter, setSecondsPrep);
+      startTimer(prepRefWaveformCounter, setWaveformTimePrep);
 
-        sound.playAsync();
-      } else {
-        currSound.unloadAsync() || undefined;
-        setVisualizerParams(defaultVisualizerParams);
-        stopTimer(prepRefCounter, setSecondsPrep, setMinutesPrep);
-        stopWaveformTimer(prepRefWaveformCounter, setWaveformTimePrep);
-        setCurrStatus({ status: "not-playing" });
-      }
+      sound.playAsync();
+    } else {
+      currSound.unloadAsync() || undefined;
+      setVisualizerParams(defaultVisualizerParams);
+      stopTimer(prepRefCounter, setSecondsPrep, setMinutesPrep);
+      stopWaveformTimer(prepRefWaveformCounter, setWaveformTimePrep);
+      setCurrStatus({ status: "not-playing" });
     }
   }
 
@@ -129,7 +129,8 @@ export default function PrepProgram({ navigation }) {
             <SoundCloudWave
               currentTime={waveformTimePrep}
               totalTime={totalTime}
-              waveform={"https://w1.sndcdn.com/PP3Eb34ToNki_m.png"}
+              waveform={"https://w1.sndcdn.com/cWHNerOLlkUq_m.png"}
+              // https://w1.sndcdn.com/PP3Eb34ToNki_m.png
             />
           </View>
         </View>

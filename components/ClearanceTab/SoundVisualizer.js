@@ -18,7 +18,7 @@ import { Context } from "../../contexts/Context";
 
 const dimens = Dimensions.get("screen");
 const width = dimens.width; // width of the animation
-const verticalShiftConst = 40; // height of the wave
+const verticalShiftConst = 50; // height of the wave
 const height = 100; // can stay as such
 const horizontalShift = (dimens.width - width) / 2;
 

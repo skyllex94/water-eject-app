@@ -20,6 +20,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { defaultVisualizerParams } from "../../constants/Constants";
 
 import * as StoreReview from "expo-store-review";
+import RNTone from "react-native-tone";
 
 export default function Frequencies({ navigation }) {
   const { currSound, setCurrSound, setVisualizerParams, sound, setSound } =
@@ -33,102 +34,110 @@ export default function Frequencies({ navigation }) {
     return await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
   }
 
+  async function playSound(sound) {
+    sound.playAsync();
+  }
+
   async function isEnabled120hz() {
     setSound((state) => ({ ...!state, isEnabled120: !sound.isEnabled120 }));
+    unloadSound();
 
-    await startFrequency120();
+    startFrequency120();
+  }
 
-    async function startFrequency120() {
-      if (!sound.isEnabled120) {
-        if (currSound) currSound.unloadAsync() || undefined;
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/frequencies/lowesthz.mp3"),
-          { isLooping: true }
-        );
+  async function startFrequency120() {
+    if (!sound.isEnabled120) {
+      const { sound } = await Audio.Sound.createAsync(
+        require(`../../assets/frequencies/lowesthz.mp3`),
+        { isLooping: true }
+      );
 
-        // Start or switch to current sound
-        setCurrSound(sound);
+      // Start or switch to current sound
+      setCurrSound(sound);
 
-        await sound.playAsync();
-        // Sound Visualizer paramethers change
-        setVisualizerParams({ speed: 125, frequency: 5, amplitude: 105 });
-      } else {
-        currSound.unloadAsync() || undefined;
-        setVisualizerParams(defaultVisualizerParams);
-      }
+      // Sound Visualizer paramethers change
+      setVisualizerParams({ speed: 125, frequency: 5, amplitude: 105 });
+
+      playSound(sound);
+    } else {
+      unloadSound();
+      setVisualizerParams(defaultVisualizerParams);
     }
   }
 
   async function isEnabled160hz() {
     setSound((state) => ({ ...!state, isEnabled160: !sound.isEnabled160 }));
+    unloadSound();
 
-    await startFrequency160();
+    startFrequency160();
+  }
 
-    async function startFrequency160() {
-      if (!sound.isEnabled160) {
-        if (currSound) currSound.unloadAsync() || undefined;
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/frequencies/lowhz.mp3"),
-          { isLooping: true }
-        );
-        setCurrSound(sound);
+  async function startFrequency160() {
+    if (!sound.isEnabled160) {
+      const { sound } = await Audio.Sound.createAsync(
+        require("../../assets/frequencies/lowhz.mp3"),
+        { isLooping: true }
+      );
+      setCurrSound(sound);
 
-        await sound.playAsync();
-        setVisualizerParams({ speed: 105, frequency: 8, amplitude: 155 });
-      } else {
-        currSound.unloadAsync() || undefined;
-        setTimeout(() => {
-          StoreReview.requestReview();
-        }, 3000);
-        setVisualizerParams(defaultVisualizerParams);
-      }
+      setVisualizerParams({ speed: 105, frequency: 8, amplitude: 155 });
+      playSound(sound);
+    } else {
+      unloadSound();
+      setTimeout(() => {
+        StoreReview.requestReview();
+      }, 3000);
+      setVisualizerParams(defaultVisualizerParams);
     }
   }
 
   async function isEnabled300hz() {
     setSound((state) => ({ ...!state, isEnabled300: !sound.isEnabled300 }));
+    unloadSound();
+    startFrequency300();
+  }
 
-    await startFrequency300();
+  async function startFrequency300() {
+    if (!sound.isEnabled300) {
+      const { sound } = await Audio.Sound.createAsync(
+        require("../../assets/frequencies/mediumhz.mp3"),
+        { isLooping: true }
+      );
+      setCurrSound(sound);
+      setVisualizerParams({ speed: 85, frequency: 12, amplitude: 175 });
 
-    async function startFrequency300() {
-      if (!sound.isEnabled300) {
-        if (currSound) currSound.unloadAsync() || undefined;
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/frequencies/mediumhz.mp3"),
-          { isLooping: true }
-        );
-        setCurrSound(sound);
-
-        await sound.playAsync();
-        setVisualizerParams({ speed: 85, frequency: 12, amplitude: 175 });
-      } else {
-        currSound.unloadAsync() || undefined;
-        setVisualizerParams(defaultVisualizerParams);
-      }
+      playSound(sound);
+    } else {
+      unloadSound();
+      setVisualizerParams(defaultVisualizerParams);
     }
   }
 
   async function enable500Hz() {
     setSound((state) => ({ ...!state, isEnabled500: !sound.isEnabled500 }));
+    unloadSound();
 
     await startFrequency500();
+  }
 
-    async function startFrequency500() {
-      if (!sound.isEnabled500) {
-        if (currSound) currSound.unloadAsync() || undefined;
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/frequencies/highhz.mp3"),
-          { isLooping: true }
-        );
-        setCurrSound(sound);
+  async function startFrequency500() {
+    if (!sound.isEnabled500) {
+      const { sound } = await Audio.Sound.createAsync(
+        require("../../assets/frequencies/highhz.mp3"),
+        { isLooping: true }
+      );
+      setCurrSound(sound);
+      setVisualizerParams({ speed: 75, frequency: 17, amplitude: 200 });
 
-        await sound.playAsync();
-        setVisualizerParams({ speed: 75, frequency: 17, amplitude: 200 });
-      } else {
-        currSound.unloadAsync() || undefined;
-        setVisualizerParams({ speed: 500, frequency: 2, amplitude: 15 });
-      }
+      playSound(sound);
+    } else {
+      unloadSound();
+      setVisualizerParams(defaultVisualizerParams);
     }
+  }
+
+  async function unloadSound() {
+    if (currSound) currSound.unloadAsync() || undefined;
   }
 
   return (
@@ -147,7 +156,7 @@ export default function Frequencies({ navigation }) {
 
         <View className="flex-row justify-center">
           <TouchableOpacity
-            onPress={isEnabled120hz}
+            onPress={playPapa}
             style={sound.isEnabled120 ? styles.freqBtnActive : styles.freqBtn}
           >
             <View style={styles.freqIconText}>

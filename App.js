@@ -61,6 +61,11 @@ export default function App() {
     <Loading />
   ) : (
     <NavigationContainer theme={navTheme}>
+      <StatusBar
+        animated={true}
+        backgroundColor="#61dafb"
+        barStyle="light-content"
+      />
       <Stack.Navigator>
         {isAppFirstLaunched === true && (
           <Stack.Screen
@@ -96,7 +101,7 @@ const Main = () => {
   const [visualizerParams, setVisualizerParams] = useState({
     speed: 500,
     frequency: 3,
-    amplitude: 5,
+    amplitude: 25,
   });
 
   const Tab = createBottomTabNavigator();
@@ -113,11 +118,7 @@ const Main = () => {
       }}
     >
       <ToastManager />
-      <StatusBar
-        animated={true}
-        backgroundColor="#61dafb"
-        barStyle="light-content"
-      />
+
       <Tab.Navigator>
         <Tab.Screen
           name="Water Eject"
@@ -136,11 +137,11 @@ const Main = () => {
               />
             ),
           }}
-          listeners={{
-            tabPress: async () => {
-              AudioRecorder.stopRecording();
-            },
-          }}
+          // listeners={{
+          //   tabPress: async () => {
+          //     AudioRecorder.stopRecording();
+          //   },
+          // }}
         />
         <Tab.Screen
           name="Meter"
@@ -159,12 +160,12 @@ const Main = () => {
               />
             ),
           }}
-          listeners={{
-            tabPress: async () => {
-              setSound({});
-              currSound.unloadAsync() || undefined;
-            },
-          }}
+          // listeners={{
+          //   tabPress: async () => {
+          //     setSound({});
+          //     currSound.unloadAsync() || undefined;
+          //   },
+          // }}
         />
         <Tab.Screen
           name="Sound Tests"
@@ -183,11 +184,11 @@ const Main = () => {
               />
             ),
           }}
-          listeners={{
-            tabPress: async () => {
-              AudioRecorder.stopRecording();
-            },
-          }}
+          // listeners={{
+          //   tabPress: async () => {
+          //     AudioRecorder.stopRecording();
+          //   },
+          // }}
         />
         <Tab.Screen
           name="Settings"

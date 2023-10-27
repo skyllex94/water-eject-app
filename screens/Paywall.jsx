@@ -180,10 +180,10 @@ export default function Paywall({ navigation }) {
             className="items-center px-10 py-5 bg-[#E5962D] mx-10 rounded-full"
           >
             <Text className="text-white text-md text-center font-bold">
-              Free trial for 3 days...
+              Weekly Plan - Popular
             </Text>
             <Text className="text-white">
-              {currentOffering?.weekly?.product.priceString} / weekly after
+              {currentOffering?.weekly?.product.priceString} / per week
             </Text>
           </TouchableOpacity>
 
@@ -192,7 +192,7 @@ export default function Paywall({ navigation }) {
             className="items-center px-10 py-5 border-2 border-[#E5962D] mx-10 mt-3 rounded-full"
           >
             <Text className="text-white text-md text-center font-bold">
-              Or a montly plan
+              Or a Monthly Plan
             </Text>
             <Text className="text-white">
               {currentOffering?.monthly?.product.priceString} / per month

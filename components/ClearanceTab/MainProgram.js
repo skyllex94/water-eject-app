@@ -62,38 +62,38 @@ export default function MainProgram({ navigation }) {
   async function enableMainFreq() {
     setSound((state) => ({ ...!state, isEnabledMain: !sound.isEnabledMain }));
     await playMain();
+  }
 
-    async function playMain() {
-      if (!sound.isEnabledMain) {
-        if (currSound) currSound.unloadAsync() || undefined;
-        await navigation.navigate("PlayingProgramMain");
-        const { sound, status } = await Audio.Sound.createAsync(
-          require(`../../assets/programs/main.mp3`),
-          { isLooping: false, progressUpdateIntervalMillis: 1000 },
-          (status) => {
-            // TODO: Try to get this to sync with the timer
-            // return  setSecondsMain(status.positionMillis)
-          }
-        );
+  async function playMain() {
+    if (!sound.isEnabledMain) {
+      if (currSound) currSound.unloadAsync() || undefined;
+      await navigation.navigate("PlayingProgramMain");
+      const { sound, status } = await Audio.Sound.createAsync(
+        require(`../../assets/programs/main.mp3`),
+        { isLooping: false, progressUpdateIntervalMillis: 1000 },
+        (status) => {
+          // TODO: Try to get this to sync with the timer
+          // return  setSecondsMain(status.positionMillis)
+        }
+      );
 
-        setCurrSound(sound);
+      setCurrSound(sound);
 
-        // Update Status bar UI to playing the current program
-        setCurrStatus({ status: "playing" });
+      // Update Status bar UI to playing the current program
+      setCurrStatus({ status: "playing" });
 
-        setVisualizerParams({ speed: 75, frequency: 22, amplitude: 200 });
+      setVisualizerParams({ speed: 75, frequency: 22, amplitude: 200 });
 
-        startTimer(mainRefCounter, setSecondsMain);
-        startTimer(mainWaveformRefCounter, setWaveformTimeMain);
+      startTimer(mainRefCounter, setSecondsMain);
+      startTimer(mainWaveformRefCounter, setWaveformTimeMain);
 
-        sound.playAsync();
-      } else {
-        currSound.unloadAsync() || undefined;
-        setVisualizerParams(defaultVisualizerParams);
-        stopTimer(mainRefCounter, setSecondsMain, setMinutesMain);
-        stopWaveformTimer(mainWaveformRefCounter, setWaveformTimeMain);
-        setCurrStatus({ status: "not-playing" });
-      }
+      sound.playAsync();
+    } else {
+      currSound.unloadAsync() || undefined;
+      setVisualizerParams(defaultVisualizerParams);
+      stopTimer(mainRefCounter, setSecondsMain, setMinutesMain);
+      stopWaveformTimer(mainWaveformRefCounter, setWaveformTimeMain);
+      setCurrStatus({ status: "not-playing" });
     }
   }
 
