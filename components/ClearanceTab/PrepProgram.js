@@ -1,5 +1,5 @@
-import React, { useRef, useEffect, useContext } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import React, { useRef, useEffect, useContext, useState } from "react";
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { Audio } from "expo-av";
 
 import {
@@ -22,6 +22,7 @@ export default function PrepProgram({ navigation }) {
 
   const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
     useContext(Context);
+  const [loadingSound, setLoadingSound] = useState(false);
 
   const {
     secondsPrep,
@@ -60,6 +61,7 @@ export default function PrepProgram({ navigation }) {
   }, [secondsPrep, waveformTimePrep, sound.isEnabledPrep]);
 
   async function enablePrepFreq() {
+    setLoadingSound(true);
     setSound((state) => ({ ...!state, isEnabledPrep: !sound.isEnabledPrep }));
 
     await playPrep();
@@ -93,6 +95,7 @@ export default function PrepProgram({ navigation }) {
       stopWaveformTimer(prepRefWaveformCounter, setWaveformTimePrep);
       setCurrStatus({ status: "not-playing" });
     }
+    setLoadingSound(false);
   }
 
   function openPurchaseModal() {
@@ -119,11 +122,15 @@ export default function PrepProgram({ navigation }) {
                 : `bg-[${buttonsColor}]`
             } items-center w-[50px] p-[10px] rounded-xl`}
           >
-            <Icon
-              name={sound.isEnabledPrep ? "stop" : "play"}
-              size={30}
-              color="white"
-            />
+            {loadingSound ? (
+              <ActivityIndicator />
+            ) : (
+              <Icon
+                name={sound.isEnabledPrep ? "stop" : "play"}
+                size={30}
+                color="white"
+              />
+            )}
           </View>
           <View className="w-[82%]">
             <SoundCloudWave
@@ -137,7 +144,7 @@ export default function PrepProgram({ navigation }) {
 
         <View className="flex-row pt-[10px] items-center justify-between">
           <Text className="text-white ml-2 font-bold">
-            Speakers Prep Program
+            1. Preparation Program
           </Text>
           <Text className="text-white mr-2 font-bold">
             {minutesPrep}:{secondsPrep < 10 && "0"}

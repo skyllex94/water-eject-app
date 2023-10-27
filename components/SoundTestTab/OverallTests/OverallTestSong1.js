@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { Audio } from "expo-av";
 
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -15,6 +15,8 @@ import { Context } from "../../../contexts/Context";
 export default function OverallTestSong1() {
   const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
     useContext(Context);
+
+  const [loadingSound, setLoadingSound] = useState(false);
 
   // JK States and Refs
   const [seconds, setSeconds] = useState(0);
@@ -39,34 +41,36 @@ export default function OverallTestSong1() {
   }, [seconds, waveformTime, sound.isEnabledJKSong]);
 
   async function enableJKSong() {
+    setLoadingSound(true);
     setSound((state) => ({
       ...!state,
       isEnabledJKSong: !sound.isEnabledJKSong,
     }));
 
-    await playSong();
+    playSong();
+  }
 
-    async function playSong() {
-      if (!sound.isEnabledJKSong) {
-        if (currSound) currSound.unloadAsync() || undefined;
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../../assets/soundtests/jk-whoisjk-baby-what-u-wanna-do.mp3")
-        );
+  async function playSong() {
+    if (!sound.isEnabledJKSong) {
+      if (currSound) currSound.unloadAsync() || undefined;
+      const { sound } = await Audio.Sound.createAsync(
+        require("../../../assets/soundtests/jk-whoisjk-baby-what-u-wanna-do.mp3")
+      );
 
-        resetVisualizer(setVisualizerParams);
-        setCurrSound(sound);
+      resetVisualizer(setVisualizerParams);
+      setCurrSound(sound);
 
-        // Start the audio timer state
-        startTimer(refCounter, setSeconds);
-        startTimer(refWaveFormCounter, setWaveformTime);
+      // Start the audio timer state
+      startTimer(refCounter, setSeconds);
+      startTimer(refWaveFormCounter, setWaveformTime);
 
-        sound.playAsync();
-      } else {
-        currSound.unloadAsync() || undefined;
-        stopTimer(refCounter, setSeconds, setMinutes);
-        stopWaveformTimer(refWaveFormCounter, setWaveformTime);
-      }
+      sound.playAsync();
+    } else {
+      currSound.unloadAsync() || undefined;
+      stopTimer(refCounter, setSeconds, setMinutes);
+      stopWaveformTimer(refWaveFormCounter, setWaveformTime);
     }
+    setLoadingSound(false);
   }
 
   return (
@@ -90,11 +94,15 @@ export default function OverallTestSong1() {
                 sound.isEnabledJKSong ? "bg-[#87e5fa]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 ml-3 mt-1 rounded-xl`}
             >
-              <Icon
-                name={sound.isEnabledJKSong ? "stop" : "play"}
-                size={30}
-                color="white"
-              />
+              {loadingSound ? (
+                <ActivityIndicator />
+              ) : (
+                <Icon
+                  name={sound.isEnabledJKSong ? "stop" : "play"}
+                  size={30}
+                  color="white"
+                />
+              )}
             </View>
             <SoundTestWave
               currentTime={waveformTime}

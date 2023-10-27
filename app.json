@@ -4,7 +4,7 @@
     "slug": "water-eject-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon_large.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -14,6 +14,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
+      "buildNumber": "2",
       "bundleIdentifier": "com.kkanchev94.waterejectapp",
       "infoPlist": {
         "NSMicrophoneUsageDescription": "This app uses the microphone to determine current decibel amount."

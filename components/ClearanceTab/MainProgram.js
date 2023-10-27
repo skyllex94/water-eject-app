@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useRef } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { Context } from "../../contexts/Context";
 
 import { Audio } from "expo-av";
@@ -19,6 +19,7 @@ import { defaultVisualizerParams } from "../../constants/Constants";
 export default function MainProgram({ navigation }) {
   const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
     useContext(Context);
+  const [loadingSound, setLoadingSound] = useState(false);
 
   const { isProMember } = useRevenueCat();
 
@@ -60,6 +61,7 @@ export default function MainProgram({ navigation }) {
   }, [secondsMain, waveformTimeMain, sound.isEnabledMain]);
 
   async function enableMainFreq() {
+    setLoadingSound(true);
     setSound((state) => ({ ...!state, isEnabledMain: !sound.isEnabledMain }));
     await playMain();
   }
@@ -95,6 +97,7 @@ export default function MainProgram({ navigation }) {
       stopWaveformTimer(mainWaveformRefCounter, setWaveformTimeMain);
       setCurrStatus({ status: "not-playing" });
     }
+    setLoadingSound(false);
   }
 
   function openPurchaseModal() {
@@ -107,7 +110,7 @@ export default function MainProgram({ navigation }) {
         className={`${
           sound.isEnabledMain ? `bg-[${activeColor}]` : `bg-[${bgColor}]`
         } h-[125px] w-[95%] mx-[10px] p-[10px] rounded-2xl mt-4`}
-        onPress={isProMember ? enableMainFreq : openPurchaseModal}
+        onPress={isProMember ? enableMainFreq : enableMainFreq}
       >
         <View
           className={`${
@@ -121,11 +124,15 @@ export default function MainProgram({ navigation }) {
                 : `bg-[${buttonsColor}]`
             } items-center w-[50px] p-[10px] rounded-xl`}
           >
-            <Icon
-              name={sound.isEnabledMain ? "stop" : "play"}
-              size={30}
-              color="white"
-            />
+            {loadingSound ? (
+              <ActivityIndicator />
+            ) : (
+              <Icon
+                name={sound.isEnabledMain ? "stop" : "play"}
+                size={30}
+                color="white"
+              />
+            )}
           </View>
 
           <View className="w-[82%]">
@@ -139,7 +146,7 @@ export default function MainProgram({ navigation }) {
 
         <View className="flex-row pt-[10px] items-center justify-between">
           <Text className="text-white ml-2 font-bold">
-            Water Clearance Program
+            2. Water Clearance Program
           </Text>
           <Text className="text-white mr-2 font-bold">
             {minutesMain}:{secondsMain < 10 && "0"}

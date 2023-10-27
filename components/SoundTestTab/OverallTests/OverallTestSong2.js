@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { Audio } from "expo-av";
 
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -15,6 +15,8 @@ import { Context } from "../../../contexts/Context";
 export default function OverallTestSong2() {
   const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
     useContext(Context);
+
+  const [loadingSound, setLoadingSound] = useState(false);
 
   // GoldLink States and Refs
   const [secsGL, setSecsGL] = useState(0);
@@ -38,33 +40,35 @@ export default function OverallTestSong2() {
   }, [secsGL, waveTimeGL, sound.isEnabledGoldLinkSong]);
 
   async function enableGoldLinkSong() {
+    setLoadingSound(true);
     setSound((state) => ({
       ...!state,
       isEnabledGoldLinkSong: !sound.isEnabledGoldLinkSong,
     }));
 
-    await playSong();
+    playSong();
+  }
 
-    async function playSong() {
-      if (!sound.isEnabledGoldLinkSong) {
-        if (currSound) currSound.unloadAsync() || undefined;
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../../assets/soundtests/goldlink.mp3")
-        );
+  async function playSong() {
+    if (!sound.isEnabledGoldLinkSong) {
+      if (currSound) currSound.pauseAsync() || undefined;
+      const { sound } = await Audio.Sound.createAsync(
+        require("../../../assets/soundtests/goldlink.mp3")
+      );
 
-        resetVisualizer(setVisualizerParams);
-        setCurrSound(sound);
-        await sound.playAsync();
+      resetVisualizer(setVisualizerParams);
+      setCurrSound(sound);
+      sound.playAsync();
 
-        // Start the audio timer state
-        startTimer(refCounterGoldLink, setSecsGL);
-        startTimer(refWaveformCounterGoldLink, setWaveTimeGL);
-      } else {
-        currSound.unloadAsync() || undefined;
-        stopTimer(refCounterGoldLink, setSecsGL, setMinsGL);
-        stopWaveformTimer(refWaveformCounterGoldLink, setWaveTimeGL);
-      }
+      // Start the audio timer state
+      startTimer(refCounterGoldLink, setSecsGL);
+      startTimer(refWaveformCounterGoldLink, setWaveTimeGL);
+    } else {
+      currSound.pauseAsync() || undefined;
+      stopTimer(refCounterGoldLink, setSecsGL, setMinsGL);
+      stopWaveformTimer(refWaveformCounterGoldLink, setWaveTimeGL);
     }
+    setLoadingSound(false);
   }
 
   return (
@@ -90,11 +94,15 @@ export default function OverallTestSong2() {
                 sound.isEnabledGoldLinkSong ? "bg-[#87e5fa]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 ml-3 mt-1 rounded-xl`}
             >
-              <Icon
-                name={sound.isEnabledGoldLinkSong ? "stop" : "play"}
-                size={30}
-                color="white"
-              />
+              {loadingSound ? (
+                <ActivityIndicator />
+              ) : (
+                <Icon
+                  name={sound.isEnabledGoldLinkSong ? "stop" : "play"}
+                  size={30}
+                  color="white"
+                />
+              )}
             </View>
             <SoundTestWave
               currentTime={waveTimeGL}

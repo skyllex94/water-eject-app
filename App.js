@@ -137,11 +137,11 @@ const Main = () => {
               />
             ),
           }}
-          // listeners={{
-          //   tabPress: async () => {
-          //     AudioRecorder.stopRecording();
-          //   },
-          // }}
+          listeners={{
+            tabPress: async () => {
+              AudioRecorder.stopRecording();
+            },
+          }}
         />
         <Tab.Screen
           name="Meter"
@@ -160,12 +160,12 @@ const Main = () => {
               />
             ),
           }}
-          // listeners={{
-          //   tabPress: async () => {
-          //     setSound({});
-          //     currSound.unloadAsync() || undefined;
-          //   },
-          // }}
+          listeners={{
+            tabPress: async () => {
+              setSound({});
+              currSound.unloadAsync() || undefined;
+            },
+          }}
         />
         <Tab.Screen
           name="Sound Tests"
@@ -184,11 +184,11 @@ const Main = () => {
               />
             ),
           }}
-          // listeners={{
-          //   tabPress: async () => {
-          //     AudioRecorder.stopRecording();
-          //   },
-          // }}
+          listeners={{
+            tabPress: async () => {
+              AudioRecorder.stopRecording();
+            },
+          }}
         />
         <Tab.Screen
           name="Settings"

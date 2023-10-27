@@ -15,6 +15,9 @@ web-build/
 /assets/images/slides
 /assets/images/clearance
 /.VSCodeCounter
+setup-env.txt
+
+# Everything is the assets folder must be removed when building
 
 # macOS
 .DS_Store

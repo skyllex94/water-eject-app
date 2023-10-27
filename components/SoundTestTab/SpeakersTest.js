@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import React, { useContext, useState } from "react";
+import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Audio } from "expo-av";
 
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -17,29 +17,29 @@ export default function SpeakersTest({ navigation }) {
   async function enableFrontSpeaker() {
     setSound((state) => ({ ...!state, isEnabledFront: !sound.isEnabledFront }));
 
-    await playSpeaker();
+    playSpeaker();
+  }
 
-    async function playSpeaker() {
-      if (!sound.isEnabledFront) {
-        if (currSound) currSound.unloadAsync() || undefined;
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/soundtests/right-speaker.mp3"),
-          {
-            isLooping: true,
-          }
-        );
+  async function playSpeaker() {
+    if (!sound.isEnabledFront) {
+      if (currSound) currSound.unloadAsync() || undefined;
+      const { sound } = await Audio.Sound.createAsync(
+        require("../../assets/soundtests/right-speaker.mp3"),
+        {
+          isLooping: true,
+        }
+      );
 
-        resetVisualizer(setVisualizerParams);
-        setCurrSound(sound);
-        await sound.playAsync();
-      } else currSound.unloadAsync() || undefined;
-    }
+      resetVisualizer(setVisualizerParams);
+      setCurrSound(sound);
+      await sound.playAsync();
+    } else currSound.unloadAsync() || undefined;
   }
 
   async function enableBackSpeaker() {
     setSound((state) => ({ ...!state, isEnabledBack: !sound.isEnabledBack }));
 
-    await playSpeaker();
+    playSpeaker();
 
     async function playSpeaker() {
       if (!sound.isEnabledBack) {

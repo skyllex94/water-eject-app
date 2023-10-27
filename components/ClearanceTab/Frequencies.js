@@ -20,7 +20,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { defaultVisualizerParams } from "../../constants/Constants";
 
 import * as StoreReview from "expo-store-review";
-import RNTone from "react-native-tone";
+import { AudioRecorder } from "react-native-audio";
 
 export default function Frequencies({ navigation }) {
   const { currSound, setCurrSound, setVisualizerParams, sound, setSound } =
@@ -117,7 +117,7 @@ export default function Frequencies({ navigation }) {
     setSound((state) => ({ ...!state, isEnabled500: !sound.isEnabled500 }));
     unloadSound();
 
-    await startFrequency500();
+    startFrequency500();
   }
 
   async function startFrequency500() {
@@ -156,7 +156,7 @@ export default function Frequencies({ navigation }) {
 
         <View className="flex-row justify-center">
           <TouchableOpacity
-            onPress={playPapa}
+            onPress={isEnabled120hz}
             style={sound.isEnabled120 ? styles.freqBtnActive : styles.freqBtn}
           >
             <View style={styles.freqIconText}>

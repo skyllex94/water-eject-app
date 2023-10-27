@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { Audio } from "expo-av";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -19,6 +19,7 @@ export default function BassTestSound1({ navigation }) {
   const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
     useContext(Context);
   const { isProMember } = useRevenueCat();
+  const [loadingSound, setLoadingSound] = useState(false);
 
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
@@ -41,33 +42,35 @@ export default function BassTestSound1({ navigation }) {
   }, [seconds, waveformTime, sound.isEnabledUsedTo]);
 
   async function enableUsedToTest() {
+    setLoadingSound(true);
     setSound((state) => ({
       ...!state,
       isEnabledUsedTo: !sound.isEnabledUsedTo,
     }));
 
-    await playSong();
+    playSong();
+  }
 
-    async function playSong() {
-      if (!sound.isEnabledUsedTo) {
-        if (currSound) currSound.unloadAsync() || undefined;
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../../assets/soundtests/used-to.mp3")
-        );
+  async function playSong() {
+    if (!sound.isEnabledUsedTo) {
+      if (currSound) currSound.unloadAsync() || undefined;
+      const { sound } = await Audio.Sound.createAsync(
+        require("../../../assets/soundtests/used-to.mp3")
+      );
 
-        resetVisualizer(setVisualizerParams);
-        setCurrSound(sound);
-        await sound.playAsync();
+      resetVisualizer(setVisualizerParams);
+      setCurrSound(sound);
+      sound.playAsync();
 
-        // Start the audio timer state
-        startTimer(refCounter, setSeconds);
-        startTimer(refWaveFormCounter, setWaveformTime);
-      } else {
-        currSound.unloadAsync() || undefined;
-        stopTimer(refCounter, setSeconds, setMinutes);
-        stopWaveformTimer(refWaveFormCounter, setWaveformTime);
-      }
+      // Start the audio timer state
+      startTimer(refCounter, setSeconds);
+      startTimer(refWaveFormCounter, setWaveformTime);
+    } else {
+      currSound.unloadAsync() || undefined;
+      stopTimer(refCounter, setSeconds, setMinutes);
+      stopWaveformTimer(refWaveFormCounter, setWaveformTime);
     }
+    setLoadingSound(false);
   }
 
   return (
@@ -77,7 +80,7 @@ export default function BassTestSound1({ navigation }) {
           sound.isEnabledUsedTo ? "w-[95%] bg-[#4AD0EE] rounded-xl" : "w-[95%]"
         } `}
         onPress={
-          isProMember ? enableUsedToTest : () => openPurchaseModal(navigation)
+          isProMember ? enableUsedToTest : () => navigation.navigate("Paywall")
         }
       >
         <View
@@ -93,11 +96,15 @@ export default function BassTestSound1({ navigation }) {
                 sound.isEnabledUsedTo ? "bg-[#87e5fa]" : "bg-[#101C43]"
               } items-center justify-center w-12 h-12 ml-3 mt-1 rounded-xl`}
             >
-              <Icon
-                name={sound.isEnabledUsedTo ? "stop" : "play"}
-                size={30}
-                color="white"
-              />
+              {loadingSound ? (
+                <ActivityIndicator />
+              ) : (
+                <Icon
+                  name={sound.isEnabledUsedTo ? "stop" : "play"}
+                  size={30}
+                  color="white"
+                />
+              )}
             </View>
             <SoundTestWave
               currentTime={waveformTime}
