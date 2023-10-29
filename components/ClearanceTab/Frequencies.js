@@ -20,15 +20,14 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { defaultVisualizerParams } from "../../constants/Constants";
 
 import * as StoreReview from "expo-store-review";
-import { AudioRecorder } from "react-native-audio";
 
 export default function Frequencies({ navigation }) {
   const { currSound, setCurrSound, setVisualizerParams, sound, setSound } =
     useContext(Context);
 
-  useEffect(() => {
-    playAudioInSilentMode();
-  }, []);
+  // useEffect(() => {
+  //   playAudioInSilentMode();
+  // }, []);
 
   async function playAudioInSilentMode() {
     return await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
@@ -133,6 +132,12 @@ export default function Frequencies({ navigation }) {
     } else {
       unloadSound();
       setVisualizerParams(defaultVisualizerParams);
+    }
+
+    if (currSound !== null) {
+      await currSound.getStatusAsync().then((response) => {
+        console.log("response:", response);
+      });
     }
   }
 

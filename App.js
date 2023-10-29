@@ -22,6 +22,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { DefaultTheme } from "@react-navigation/native";
+import SystemSetting from "react-native-system-setting";
 
 // Removing Warning Messages
 import { LogBox } from "react-native";
@@ -119,7 +120,7 @@ const Main = () => {
     >
       <ToastManager />
 
-      <Tab.Navigator>
+      <Tab.Navigator screenOptions={{ lazy: true }}>
         <Tab.Screen
           name="Water Eject"
           component={WaterClearance}
@@ -139,7 +140,13 @@ const Main = () => {
           }}
           listeners={{
             tabPress: async () => {
-              AudioRecorder.stopRecording();
+              await AudioRecorder.stopRecording();
+
+              SystemSetting.getVolume().then((volume) => {
+                console.log("Current volume in CLEARANCE " + volume);
+
+                console.log("currSound:", currSound);
+              });
             },
           }}
         />
@@ -161,9 +168,13 @@ const Main = () => {
             ),
           }}
           listeners={{
-            tabPress: async () => {
-              setSound({});
-              currSound.unloadAsync() || undefined;
+            tabPress: () => {
+              SystemSetting.getVolume().then((volume) => {
+                console.log("Current volume is in METER " + volume);
+              });
+
+              // setSound({});
+              // currSound.unloadAsync() || undefined;
             },
           }}
         />

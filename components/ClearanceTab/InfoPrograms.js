@@ -33,7 +33,7 @@ export default function InfoPrograms({ navigation }) {
       </Text>
 
       <Text className="text-white font-extralight my-2">
-        The first 8-minutes "Speaker Prep Program" is meant to prepare your
+        The first 8-minutes "Preparation Program" is meant to prepare your
         speakers. It uses booming sounds in order to drive the water droplets
         further out of the mesh of the speakers. The rumbling sound is a low
         level vibration which will drive forward the majority of the water

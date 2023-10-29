@@ -128,9 +128,9 @@ export default function Paywall({ navigation }) {
                     Access to all Pro Features
                   </Text>
                   <Text className="text-white text-sm font-extralight">
-                    Access to our 2 dedicated frequency programs (8 and 16
-                    minutes) for ultimate results and clear speakers sound.
-                    Played them once and see the results from them.
+                    Access to our 2 frequency programs (8 and 16 minutes) for
+                    ultimate results and clear speakers sound. Played them once
+                    and see the results.
                   </Text>
                 </View>
               </View>
@@ -145,9 +145,8 @@ export default function Paywall({ navigation }) {
                   </Text>
                   <Text className="text-white text-sm font-extralight">
                     Included 15+ sound tests: Bass Accuracy for checking bass
-                    improvement, polarity tests for in and out of phase sound
-                    quality, speaker isolation for individual speaker test and
-                    sterio imaging test.
+                    improvement, polarity tests, speaker isolation for
+                    individual speaker test and sterio imaging test.
                   </Text>
                 </View>
               </View>
