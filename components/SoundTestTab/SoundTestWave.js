@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { useEffect } from "react";
-import { TouchableOpacity } from "react-native";
-
+import { TouchableOpacity, useWindowDimensions } from "react-native";
 import SoundCloudWaveform from "react-native-soundcloud-waveform";
 
 export default function SoundTestWave({
@@ -12,6 +10,7 @@ export default function SoundTestWave({
   height,
 }) {
   const [time, setTime] = useState(243);
+  const width = useWindowDimensions();
 
   return (
     <TouchableOpacity disabled={true}>
@@ -19,7 +18,7 @@ export default function SoundTestWave({
         onPress={enableSound}
         waveformUrl={waveform}
         height={height ?? 25}
-        width={320} // TODO: find out a way to make it dynamic value
+        width={width.width - 100}
         inactive="#E5E4E2"
         inactiveInverse="white"
         active="#277a8c"

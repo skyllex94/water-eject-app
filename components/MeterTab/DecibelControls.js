@@ -3,15 +3,18 @@ import { SafeAreaView, View, TouchableOpacity, Text } from "react-native";
 
 import highFreq from "../../assets/icons/dec_icon.png";
 import useRevenueCat from "../../hooks/useRevenueCat";
-import { openPurchaseModal } from "../Utils/Funcs";
+import {
+  openPurchaseModal,
+  startDBMetering,
+  stopDBMetering,
+} from "../Utils/Funcs";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { useContext } from "react";
+import { Context } from "../../contexts/Context";
 
-const DecibelControls = ({
-  startDecibelMetering,
-  stopDecibelMetering,
-  navigation,
-}) => {
+const DecibelControls = ({ navigation, setCurrDecibels }) => {
   const { isProMember } = useRevenueCat();
+  const { recording, setRecording } = useContext(Context);
 
   return (
     <SafeAreaView>
@@ -20,7 +23,7 @@ const DecibelControls = ({
           className={`bg-[#101C43] justify-center h-20 w-3/4 rounded-xl`}
           onPress={
             isProMember
-              ? () => startDecibelMetering()
+              ? () => startDBMetering(setRecording, setCurrDecibels)
               : () => openPurchaseModal(navigation)
           }
         >
@@ -41,7 +44,7 @@ const DecibelControls = ({
         </TouchableOpacity>
         <TouchableOpacity
           className="bg-[#101C43] justify-center h-20 w-1/4 ml-4 rounded-xl"
-          onPress={() => stopDecibelMetering()}
+          onPress={() => stopDBMetering(recording, setRecording)}
         >
           <Text className="text-white text-center text-xl">Stop</Text>
         </TouchableOpacity>

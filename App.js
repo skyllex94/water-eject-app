@@ -97,6 +97,8 @@ const Main = () => {
   const [sound, setSound] = useState({});
   // Audio playing from any sound
   const [currSound, setCurrSound] = useState();
+  // Decibel metering state
+  const [recording, setRecording] = useState();
 
   // Sound Visualizer State
   const [visualizerParams, setVisualizerParams] = useState({
@@ -116,6 +118,8 @@ const Main = () => {
         setCurrSound,
         visualizerParams,
         setVisualizerParams,
+        recording,
+        setRecording,
       }}
     >
       <ToastManager />
@@ -138,17 +142,17 @@ const Main = () => {
               />
             ),
           }}
-          listeners={{
-            tabPress: async () => {
-              await AudioRecorder.stopRecording();
+          // listeners={{
+          //   tabPress: async () => {
+          //     await AudioRecorder.stopRecording();
 
-              SystemSetting.getVolume().then((volume) => {
-                console.log("Current volume in CLEARANCE " + volume);
+          //     SystemSetting.getVolume().then((volume) => {
+          //       console.log("Current volume in CLEARANCE " + volume);
 
-                console.log("currSound:", currSound);
-              });
-            },
-          }}
+          //       console.log("currSound:", currSound);
+          //     });
+          //   },
+          // }}
         />
         <Tab.Screen
           name="Meter"
@@ -167,16 +171,16 @@ const Main = () => {
               />
             ),
           }}
-          listeners={{
-            tabPress: () => {
-              SystemSetting.getVolume().then((volume) => {
-                console.log("Current volume is in METER " + volume);
-              });
+          // listeners={{
+          //   tabPress: () => {
+          //     SystemSetting.getVolume().then((volume) => {
+          //       console.log("Current volume is in METER " + volume);
+          //     });
 
-              // setSound({});
-              // currSound.unloadAsync() || undefined;
-            },
-          }}
+          //     // setSound({});
+          //     // currSound.unloadAsync() || undefined;
+          //   },
+          // }}
         />
         <Tab.Screen
           name="Sound Tests"

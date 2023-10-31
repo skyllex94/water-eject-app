@@ -11,7 +11,12 @@ import {
 
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Context } from "../../contexts/Context";
-import { startTimer, stopTimer, stopWaveformTimer } from "../Utils/Funcs";
+import {
+  startTimer,
+  stopDBMetering,
+  stopTimer,
+  stopWaveformTimer,
+} from "../Utils/Funcs";
 import useRevenueCat from "../../hooks/useRevenueCat";
 import SoundCloudWave from "./SoundCloudWave";
 import { PlayerContext } from "../../contexts/PlayerContext";
@@ -20,8 +25,15 @@ import { defaultVisualizerParams } from "../../constants/Constants";
 export default function PrepProgram({ navigation }) {
   const { isProMember } = useRevenueCat();
 
-  const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
-    useContext(Context);
+  const {
+    sound,
+    setSound,
+    currSound,
+    setCurrSound,
+    setVisualizerParams,
+    recording,
+    setRecording,
+  } = useContext(Context);
   const [loadingSound, setLoadingSound] = useState(false);
 
   const {
@@ -63,6 +75,7 @@ export default function PrepProgram({ navigation }) {
   async function enablePrepFreq() {
     setLoadingSound(true);
     setSound((state) => ({ ...!state, isEnabledPrep: !sound.isEnabledPrep }));
+    stopDBMetering(recording, setRecording);
 
     await playPrep();
   }

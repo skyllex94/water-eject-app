@@ -112,7 +112,7 @@ const DecibelDisplay = ({ currDecibels }) => {
         size={260}
         width={18}
         rotation={240}
-        fill={currDecibels}
+        fill={currDecibels || 30}
         lineCap="round"
         arcSweepAngle={240}
         backgroundWidth={10}
@@ -121,7 +121,7 @@ const DecibelDisplay = ({ currDecibels }) => {
       />
 
       <Text className="text-white text-xl font-extrabold absolute z-20">
-        {currDecibels} dB
+        {Math.abs(currDecibels) || 30} dB
       </Text>
       <Text className="text-[#D9DDDC] text-sm absolute left-30 bottom-40 z-20">
         Min:{" "}

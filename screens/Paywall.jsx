@@ -144,9 +144,9 @@ export default function Paywall({ navigation }) {
                     Get All of Our Test Sounds
                   </Text>
                   <Text className="text-white text-sm font-extralight">
-                    Included 15+ sound tests: Bass Accuracy for checking bass
-                    improvement, polarity tests, speaker isolation for
-                    individual speaker test and sterio imaging test.
+                    Included 15+ Sound Tests: Bass Accuracy Test, Polarity
+                    Tests, Speaker Isolation for individual speaker test and
+                    Sterio Imaging Test.
                   </Text>
                 </View>
               </View>

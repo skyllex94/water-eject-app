@@ -10,15 +10,27 @@ import {
   buttonsColor,
   iconActiveColor,
 } from "../../constants/ColorsUI";
-import { startTimer, stopTimer, stopWaveformTimer } from "../Utils/Funcs";
+import {
+  startTimer,
+  stopDBMetering,
+  stopTimer,
+  stopWaveformTimer,
+} from "../Utils/Funcs";
 import useRevenueCat from "../../hooks/useRevenueCat";
 import SoundCloudWave from "./SoundCloudWave";
 import { PlayerContext } from "../../contexts/PlayerContext";
 import { defaultVisualizerParams } from "../../constants/Constants";
 
 export default function MainProgram({ navigation }) {
-  const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
-    useContext(Context);
+  const {
+    sound,
+    setSound,
+    currSound,
+    setCurrSound,
+    setVisualizerParams,
+    recording,
+    setRecording,
+  } = useContext(Context);
   const [loadingSound, setLoadingSound] = useState(false);
 
   const { isProMember } = useRevenueCat();
@@ -63,6 +75,7 @@ export default function MainProgram({ navigation }) {
   async function enableMainFreq() {
     setLoadingSound(true);
     setSound((state) => ({ ...!state, isEnabledMain: !sound.isEnabledMain }));
+    stopDBMetering(recording, setRecording);
     await playMain();
   }
 

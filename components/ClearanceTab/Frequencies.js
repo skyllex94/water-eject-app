@@ -14,18 +14,26 @@ import highFreq from "../../assets/icons/highfreqIcon.png";
 import xtHighFreq from "../../assets/icons/xthighfreqIcon.png";
 import { buttonsColor } from "../../constants/ColorsUI";
 import { Context } from "../../contexts/Context";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
 import { FontAwesome5 } from "@expo/vector-icons";
 import { defaultVisualizerParams } from "../../constants/Constants";
 
 import * as StoreReview from "expo-store-review";
+import { stopDBMetering } from "../Utils/Funcs";
 
 export default function Frequencies({ navigation }) {
-  const { currSound, setCurrSound, setVisualizerParams, sound, setSound } =
-    useContext(Context);
+  const {
+    currSound,
+    setCurrSound,
+    setVisualizerParams,
+    sound,
+    setSound,
+    recording,
+    setRecording,
+  } = useContext(Context);
 
-  // useEffect(() => {
+  // useEffect(async () => {
   //   playAudioInSilentMode();
   // }, []);
 
@@ -39,6 +47,7 @@ export default function Frequencies({ navigation }) {
 
   async function isEnabled120hz() {
     setSound((state) => ({ ...!state, isEnabled120: !sound.isEnabled120 }));
+    stopDBMetering(recording, setRecording);
     unloadSound();
 
     startFrequency120();
@@ -66,6 +75,7 @@ export default function Frequencies({ navigation }) {
 
   async function isEnabled160hz() {
     setSound((state) => ({ ...!state, isEnabled160: !sound.isEnabled160 }));
+    if (recording) stopDBMetering(recording, setRecording);
     unloadSound();
 
     startFrequency160();
@@ -92,6 +102,7 @@ export default function Frequencies({ navigation }) {
 
   async function isEnabled300hz() {
     setSound((state) => ({ ...!state, isEnabled300: !sound.isEnabled300 }));
+    stopDBMetering(recording, setRecording);
     unloadSound();
     startFrequency300();
   }
@@ -114,6 +125,7 @@ export default function Frequencies({ navigation }) {
 
   async function enable500Hz() {
     setSound((state) => ({ ...!state, isEnabled500: !sound.isEnabled500 }));
+    stopDBMetering(recording, setRecording);
     unloadSound();
 
     startFrequency500();
@@ -132,12 +144,6 @@ export default function Frequencies({ navigation }) {
     } else {
       unloadSound();
       setVisualizerParams(defaultVisualizerParams);
-    }
-
-    if (currSound !== null) {
-      await currSound.getStatusAsync().then((response) => {
-        console.log("response:", response);
-      });
     }
   }
 

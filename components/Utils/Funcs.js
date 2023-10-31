@@ -1,3 +1,4 @@
+import { Audio } from "expo-av";
 import { AudioRecorder } from "react-native-audio";
 
 export function startTimer(counterRef, setSeconds) {
@@ -25,4 +26,36 @@ export function resetVisualizer(setVisualizerParams) {
 
 export async function stopDecibelMeter() {
   await AudioRecorder.stopRecording();
+}
+
+export async function startDBMetering(setRecording, setCurrDecibels) {
+  try {
+    await Audio.setAudioModeAsync({
+      allowsRecordingIOS: true,
+      playsInSilentModeIOS: true,
+    });
+
+    console.log("Starting recording..");
+    const { recording } = await Audio.Recording.createAsync(
+      Audio.RecordingOptionsPresets.HIGH_QUALITY,
+      (data) => {
+        setCurrDecibels((state) => {
+          if (data.metering) return Math.round(data.metering) + 80;
+          else return state;
+        });
+      }
+    );
+
+    setRecording(recording);
+  } catch (err) {
+    console.error("Failed to start recording", err);
+  }
+}
+
+export async function stopDBMetering(recording, setRecording) {
+  if (recording) {
+    setRecording(undefined);
+    recording.stopAndUnloadAsync();
+    Audio.setAudioModeAsync({ allowsRecordingIOS: false });
+  }
 }
