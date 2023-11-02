@@ -6,17 +6,28 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Context } from "../../contexts/Context";
 import useRevenueCat from "../../hooks/useRevenueCat";
-import { openPurchaseModal, resetVisualizer } from "../Utils/Funcs";
+import {
+  openPurchaseModal,
+  resetVisualizer,
+  stopDBMetering,
+} from "../Utils/Funcs";
 
 export default function SpeakersTest({ navigation }) {
   // Test sound states
-  const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
-    useContext(Context);
+  const {
+    sound,
+    setSound,
+    currSound,
+    setCurrSound,
+    setVisualizerParams,
+    recording,
+    setRecording,
+  } = useContext(Context);
   const { isProMember } = useRevenueCat();
 
   async function enableFrontSpeaker() {
     setSound((state) => ({ ...!state, isEnabledFront: !sound.isEnabledFront }));
-
+    stopDBMetering(recording, setRecording);
     playSpeaker();
   }
 
@@ -38,7 +49,7 @@ export default function SpeakersTest({ navigation }) {
 
   async function enableBackSpeaker() {
     setSound((state) => ({ ...!state, isEnabledBack: !sound.isEnabledBack }));
-
+    stopDBMetering(recording, setRecording);
     playSpeaker();
 
     async function playSpeaker() {
@@ -60,7 +71,7 @@ export default function SpeakersTest({ navigation }) {
 
   async function enableBothSpeakers() {
     setSound((state) => ({ ...!state, isEnabledBoth: !sound.isEnabledBoth }));
-
+    stopDBMetering(recording, setRecording);
     await playSpeaker();
 
     async function playSpeaker() {

@@ -6,11 +6,22 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Context } from "../../contexts/Context";
 import useRevenueCat from "../../hooks/useRevenueCat";
-import { openPurchaseModal, resetVisualizer } from "../Utils/Funcs";
+import {
+  openPurchaseModal,
+  resetVisualizer,
+  stopDBMetering,
+} from "../Utils/Funcs";
 
 export default function PolarityTest({ navigation }) {
-  const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
-    useContext(Context);
+  const {
+    sound,
+    setSound,
+    currSound,
+    setCurrSound,
+    setVisualizerParams,
+    recording,
+    setRecording,
+  } = useContext(Context);
   const { isProMember } = useRevenueCat();
 
   async function enableInPhaseRumble() {
@@ -18,7 +29,7 @@ export default function PolarityTest({ navigation }) {
       ...!state,
       isEnabledInPhaseRumble: !sound.isEnabledInPhaseRumble,
     }));
-
+    stopDBMetering(recording, setRecording);
     await playPolarity();
 
     async function playPolarity() {
@@ -43,7 +54,7 @@ export default function PolarityTest({ navigation }) {
       ...!state,
       isEnabledOffPhaseRumble: !sound.isEnabledOffPhaseRumble,
     }));
-
+    stopDBMetering(recording, setRecording);
     await playPolarity();
 
     async function playPolarity() {
@@ -68,7 +79,7 @@ export default function PolarityTest({ navigation }) {
       ...!state,
       isEnabled75hzInPhase: !sound.isEnabled75hzInPhase,
     }));
-
+    stopDBMetering(recording, setRecording);
     await playPolarity();
 
     async function playPolarity() {
@@ -93,7 +104,7 @@ export default function PolarityTest({ navigation }) {
       ...!state,
       isEnabled75hzOffPhase: !sound.isEnabled75hzOffPhase,
     }));
-
+    stopDBMetering(recording, setRecording);
     await playPolarity();
 
     async function playPolarity() {
@@ -118,8 +129,8 @@ export default function PolarityTest({ navigation }) {
       ...!state,
       isEnabledGuitarInPhase: !sound.isEnabledGuitarInPhase,
     }));
-
-    await playPolarity();
+    stopDBMetering(recording, setRecording);
+    playPolarity();
 
     async function playPolarity() {
       if (!sound.isEnabledGuitarInPhase) {
@@ -143,8 +154,8 @@ export default function PolarityTest({ navigation }) {
       ...!state,
       isEnabledGuitarOffPhase: !sound.isEnabledGuitarOffPhase,
     }));
-
-    await playPolarity();
+    stopDBMetering(recording, setRecording);
+    playPolarity();
 
     async function playPolarity() {
       if (!sound.isEnabledGuitarOffPhase) {

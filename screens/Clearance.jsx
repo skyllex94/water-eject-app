@@ -1,4 +1,4 @@
-import { SafeAreaView, ScrollView, View } from "react-native";
+import { SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
 import { useState } from "react";
 import Frequencies from "../components/ClearanceTab/Frequencies";
 import Programs from "../components/ClearanceTab/Programs";
@@ -14,7 +14,6 @@ import { PlayerContext } from "../contexts/PlayerContext";
 
 import PlayingProgramPrep from "../components/ClearanceTab/PlayingProgramPrep";
 import PlayingProgramMain from "../components/ClearanceTab/PlayingProgramMain";
-import { TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function WaterClearance() {
@@ -104,14 +103,13 @@ function WaterClearanceTab({ navigation }) {
           WaterDrop Clearance
         </Text>
         {/*
-        <TouchableOpacity
-          onPress={clearAsyncStorage}
-          className="text-white text-center text-xl"
-        >
-          <Text className="text-white">Clear</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={clearAsyncStorage}
+            className="text-white text-center text-xl"
+          >
+            <Text className="text-white">Clear</Text>
+          </TouchableOpacity>
         */}
-
         <SoundVisualizer />
       </View>
       <ScrollView>

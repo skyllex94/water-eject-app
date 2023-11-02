@@ -7,16 +7,27 @@ import { FontAwesome5 } from "@expo/vector-icons";
 
 import { Context } from "../../contexts/Context";
 import useRevenueCat from "../../hooks/useRevenueCat";
-import { openPurchaseModal, resetVisualizer } from "../Utils/Funcs";
+import {
+  openPurchaseModal,
+  resetVisualizer,
+  stopDBMetering,
+} from "../Utils/Funcs";
 
 export default function ImagingTest({ navigation }) {
-  const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
-    useContext(Context);
+  const {
+    sound,
+    setSound,
+    currSound,
+    setCurrSound,
+    setVisualizerParams,
+    recording,
+    setRecording,
+  } = useContext(Context);
   const { isProMember } = useRevenueCat();
 
   async function enableOverTest() {
     setSound((state) => ({ ...!state, isEnabledOver: !sound.isEnabledOver }));
-
+    stopDBMetering(recording, setRecording);
     await playTest();
 
     async function playTest() {
@@ -41,7 +52,7 @@ export default function ImagingTest({ navigation }) {
       ...!state,
       isEnabledLateral: !sound.isEnabledLateral,
     }));
-
+    stopDBMetering(recording, setRecording);
     await playTest();
 
     async function playTest() {
@@ -66,7 +77,7 @@ export default function ImagingTest({ navigation }) {
       ...!state,
       isEnabledBehind: !sound.isEnabledBehind,
     }));
-
+    stopDBMetering(recording, setRecording);
     await playTest();
 
     async function playTest() {

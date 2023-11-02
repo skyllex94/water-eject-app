@@ -6,6 +6,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import {
   resetVisualizer,
   startTimer,
+  stopDBMetering,
   stopTimer,
   stopWaveformTimer,
 } from "../../Utils/Funcs";
@@ -13,8 +14,15 @@ import SoundTestWave from "../SoundTestWave";
 import { Context } from "../../../contexts/Context";
 
 export default function OverallTestSong2() {
-  const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
-    useContext(Context);
+  const {
+    sound,
+    setSound,
+    currSound,
+    setCurrSound,
+    setVisualizerParams,
+    recording,
+    setRecording,
+  } = useContext(Context);
 
   const [loadingSound, setLoadingSound] = useState(false);
 
@@ -45,6 +53,7 @@ export default function OverallTestSong2() {
       ...!state,
       isEnabledGoldLinkSong: !sound.isEnabledGoldLinkSong,
     }));
+    stopDBMetering(recording, setRecording);
 
     playSong();
   }

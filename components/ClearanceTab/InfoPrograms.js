@@ -12,7 +12,7 @@ export default function InfoPrograms({ navigation }) {
   const [loadedGif, setLoadedGif] = useState(false);
 
   return (
-    <View className="bg-[#142251] flex-1 p-5 ">
+    <View className="bg-[#142251] flex-1 p-5">
       <View className="flex-row items-center justify-between mb-4">
         <Text className="text-xl text-white my-3">
           Dedicated Frequency Programs
@@ -64,7 +64,7 @@ export default function InfoPrograms({ navigation }) {
 
           <Text className="text-white font-light mx-2">
             Play both programs once, one after the other white placing your
-            phone display down, and increase the volume to about 80-90%.
+            phone display down, and increase the volume to about 90-100%.
           </Text>
         </View>
       )}

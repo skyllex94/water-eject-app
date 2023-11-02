@@ -35,7 +35,6 @@ export async function startDBMetering(setRecording, setCurrDecibels) {
       playsInSilentModeIOS: true,
     });
 
-    console.log("Starting recording..");
     const { recording } = await Audio.Recording.createAsync(
       Audio.RecordingOptionsPresets.HIGH_QUALITY,
       (data) => {

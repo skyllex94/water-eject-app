@@ -142,17 +142,6 @@ const Main = () => {
               />
             ),
           }}
-          // listeners={{
-          //   tabPress: async () => {
-          //     await AudioRecorder.stopRecording();
-
-          //     SystemSetting.getVolume().then((volume) => {
-          //       console.log("Current volume in CLEARANCE " + volume);
-
-          //       console.log("currSound:", currSound);
-          //     });
-          //   },
-          // }}
         />
         <Tab.Screen
           name="Meter"
@@ -198,11 +187,6 @@ const Main = () => {
                 size={size}
               />
             ),
-          }}
-          listeners={{
-            tabPress: async () => {
-              AudioRecorder.stopRecording();
-            },
           }}
         />
         <Tab.Screen

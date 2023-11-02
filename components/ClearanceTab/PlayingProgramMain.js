@@ -46,7 +46,7 @@ export default function PlayingProgramMain({ navigation }) {
           Place your phone display down as the program is playing.
         </Text>
         <Text className="text-center text-white font-extralight">
-          Have your volume level between 80% and 95%.
+          Have your volume level between 90% and 100%.
         </Text>
 
         <Image

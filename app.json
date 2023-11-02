@@ -2,7 +2,7 @@
   "expo": {
     "name": "WaterDrop",
     "slug": "water-eject-app",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon_large.png",
     "userInterfaceStyle": "light",
@@ -14,7 +14,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "2",
+      "buildNumber": "3",
       "bundleIdentifier": "com.kkanchev94.waterejectapp",
       "infoPlist": {
         "NSMicrophoneUsageDescription": "This app uses the microphone to determine current decibel amount."

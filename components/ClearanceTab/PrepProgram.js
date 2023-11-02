@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useContext, useState } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { Audio } from "expo-av";
+import { activateKeepAwakeAsync, deactivateKeepAwake } from "expo-keep-awake";
 
 import {
   bgColor,
@@ -47,7 +48,7 @@ export default function PrepProgram({ navigation }) {
     setCurrStatus,
   } = useContext(PlayerContext);
 
-  const totalTime = 8 * 60 + 1; // 8 * 60 + 1 in seconds
+  const totalTime = 481; // 8 * 60 + 1 in seconds
 
   const prepRefCounter = useRef();
   const prepRefWaveformCounter = useRef();
@@ -101,12 +102,14 @@ export default function PrepProgram({ navigation }) {
       startTimer(prepRefWaveformCounter, setWaveformTimePrep);
 
       sound.playAsync();
+      activateKeepAwakeAsync();
     } else {
       currSound.unloadAsync() || undefined;
       setVisualizerParams(defaultVisualizerParams);
       stopTimer(prepRefCounter, setSecondsPrep, setMinutesPrep);
       stopWaveformTimer(prepRefWaveformCounter, setWaveformTimePrep);
       setCurrStatus({ status: "not-playing" });
+      deactivateKeepAwake();
     }
     setLoadingSound(false);
   }

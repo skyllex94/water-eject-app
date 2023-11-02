@@ -1,6 +1,6 @@
 import { Text, SafeAreaView, Alert, ScrollView } from "react-native";
 import DecibelDisplay from "../components/MeterTab/DecibelDisplay";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DecibelControls from "../components/MeterTab/DecibelControls";
 import DecibelInfo from "../components/MeterTab/DecibelInfo";
 
@@ -8,7 +8,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Paywall from "./Paywall";
 
 // Decibel Level imports
-import { Context } from "../contexts/Context";
 import { Audio } from "expo-av";
 
 // React Native Navigator - Stack Navigator initializer
@@ -43,8 +42,6 @@ function MeterTab({ navigation }) {
   const [sampleRate, setSampleRate] = useState(22050);
   const [audioQuality, setAudioQuality] = useState("Low");
   const [audioEncodingBitRate, setAudioEncodingBitRate] = useState("32");
-
-  const { recording, setRecording } = useContext(Context);
 
   useEffect(() => {
     askForMicPermission();

@@ -7,6 +7,7 @@ import {
   openPurchaseModal,
   resetVisualizer,
   startTimer,
+  stopDBMetering,
   stopTimer,
   stopWaveformTimer,
 } from "../../Utils/Funcs";
@@ -16,8 +17,15 @@ import { Context } from "../../../contexts/Context";
 import useRevenueCat from "../../../hooks/useRevenueCat";
 
 export default function BassTestSound1({ navigation }) {
-  const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
-    useContext(Context);
+  const {
+    sound,
+    setSound,
+    currSound,
+    setCurrSound,
+    setVisualizerParams,
+    recording,
+    setRecording,
+  } = useContext(Context);
   const { isProMember } = useRevenueCat();
   const [loadingSound, setLoadingSound] = useState(false);
 
@@ -47,7 +55,7 @@ export default function BassTestSound1({ navigation }) {
       ...!state,
       isEnabledUsedTo: !sound.isEnabledUsedTo,
     }));
-
+    stopDBMetering(recording, setRecording);
     playSong();
   }
 

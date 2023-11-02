@@ -125,7 +125,7 @@ const DecibelDisplay = ({ currDecibels }) => {
       </Text>
       <Text className="text-[#D9DDDC] text-sm absolute left-30 bottom-40 z-20">
         Min:{" "}
-        {currDecibels < minDecibels
+        {Math.abs(currDecibels) < minDecibels
           ? setMinDecibels(currDecibels)
           : minDecibels}{" "}
         dB | Max:{" "}

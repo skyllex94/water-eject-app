@@ -7,6 +7,7 @@ import {
   openPurchaseModal,
   resetVisualizer,
   startTimer,
+  stopDBMetering,
   stopTimer,
   stopWaveformTimer,
 } from "../../Utils/Funcs";
@@ -16,8 +17,15 @@ import { Context } from "../../../contexts/Context";
 import useRevenueCat from "../../../hooks/useRevenueCat";
 
 export default function BassTestSound2({ navigation }) {
-  const { sound, setSound, currSound, setCurrSound, setVisualizerParams } =
-    useContext(Context);
+  const {
+    sound,
+    setSound,
+    currSound,
+    setCurrSound,
+    setVisualizerParams,
+    recording,
+    setRecording,
+  } = useContext(Context);
   const { isProMember } = useRevenueCat();
   const [loadingSound, setLoadingSound] = useState();
 
@@ -43,12 +51,11 @@ export default function BassTestSound2({ navigation }) {
 
   async function enable151RumBass() {
     setLoadingSound(true);
-    console.log("setLoadingSound:", setLoadingSound);
     setSound((state) => ({
       ...!state,
       isEnabled151Rum: !sound.isEnabled151Rum,
     }));
-
+    stopDBMetering(recording, setRecording);
     playSong();
   }
   async function playSong() {
@@ -58,7 +65,6 @@ export default function BassTestSound2({ navigation }) {
         require("../../../assets/soundtests/151-rum.mp3")
       );
 
-      console.log("sound:", sound);
       resetVisualizer(setVisualizerParams);
       setCurrSound(sound);
       sound.playAsync();

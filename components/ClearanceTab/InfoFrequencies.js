@@ -1,5 +1,5 @@
 import { Text, View, TouchableOpacity, Image } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { AntDesign } from "@expo/vector-icons";
 
 export default function InfoFrequencies({ navigation }) {

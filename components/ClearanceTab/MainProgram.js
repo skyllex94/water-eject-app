@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { Context } from "../../contexts/Context";
+import { activateKeepAwakeAsync, deactivateKeepAwake } from "expo-keep-awake";
 
 import { Audio } from "expo-av";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -46,7 +47,7 @@ export default function MainProgram({ navigation }) {
     setCurrStatus,
   } = useContext(PlayerContext);
 
-  const totalWaveformTime = 16 * 60 + 27; // 16 * 60 + 27 in seconds;
+  const totalWaveformTime = 987; // 16 * 60 + 27 in seconds;
 
   const mainRefCounter = useRef();
   const mainWaveformRefCounter = useRef();
@@ -103,12 +104,14 @@ export default function MainProgram({ navigation }) {
       startTimer(mainWaveformRefCounter, setWaveformTimeMain);
 
       sound.playAsync();
+      activateKeepAwakeAsync();
     } else {
       currSound.unloadAsync() || undefined;
       setVisualizerParams(defaultVisualizerParams);
       stopTimer(mainRefCounter, setSecondsMain, setMinutesMain);
       stopWaveformTimer(mainWaveformRefCounter, setWaveformTimeMain);
       setCurrStatus({ status: "not-playing" });
+      deactivateKeepAwake();
     }
     setLoadingSound(false);
   }
@@ -123,7 +126,7 @@ export default function MainProgram({ navigation }) {
         className={`${
           sound.isEnabledMain ? `bg-[${activeColor}]` : `bg-[${bgColor}]`
         } h-[125px] w-[95%] mx-[10px] p-[10px] rounded-2xl mt-4`}
-        onPress={isProMember ? enableMainFreq : enableMainFreq}
+        onPress={isProMember ? enableMainFreq : openPurchaseModal}
       >
         <View
           className={`${

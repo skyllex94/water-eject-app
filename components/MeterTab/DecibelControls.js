@@ -1,5 +1,6 @@
 import { Image } from "react-native";
 import { SafeAreaView, View, TouchableOpacity, Text } from "react-native";
+import { Audio } from "expo-av";
 
 import highFreq from "../../assets/icons/dec_icon.png";
 import useRevenueCat from "../../hooks/useRevenueCat";
@@ -14,7 +15,13 @@ import { Context } from "../../contexts/Context";
 
 const DecibelControls = ({ navigation, setCurrDecibels }) => {
   const { isProMember } = useRevenueCat();
-  const { recording, setRecording } = useContext(Context);
+  const { currSound, setSound, recording, setRecording } = useContext(Context);
+
+  async function startDBLevel() {
+    setSound({});
+    if (currSound) currSound.unloadAsync() || undefined;
+    startDBMetering(setRecording, setCurrDecibels);
+  }
 
   return (
     <SafeAreaView>
@@ -22,9 +29,7 @@ const DecibelControls = ({ navigation, setCurrDecibels }) => {
         <TouchableOpacity
           className={`bg-[#101C43] justify-center h-20 w-3/4 rounded-xl`}
           onPress={
-            isProMember
-              ? () => startDBMetering(setRecording, setCurrDecibels)
-              : () => openPurchaseModal(navigation)
+            isProMember ? startDBLevel : () => openPurchaseModal(navigation)
           }
         >
           <View className="flex-1 justify-center my-4">
