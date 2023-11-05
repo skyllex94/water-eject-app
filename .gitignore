@@ -17,7 +17,7 @@ web-build/
 /.VSCodeCounter
 setup-env.txt
 
-# Everything is the assets folder must be removed when building
+# Everything in the assets folder must be removed when building
 
 # macOS
 .DS_Store

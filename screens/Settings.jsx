@@ -6,6 +6,8 @@ import AboutSection from "../components/SettingsTab/AboutSection";
 import { ScrollView } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Paywall from "./Paywall";
+import TermsOfUse from "../components/PaywallModal/TermsOfUse";
+import PrivacyPolicy from "../components/PaywallModal/PrivacyPolicy";
 
 // React Native Navigator - Stack Navigator initializer
 const Stack = createNativeStackNavigator();
@@ -27,6 +29,22 @@ export default function Settings() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="PrivacyPolicy"
+        component={PrivacyPolicy}
+        options={{
+          presentation: "card",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="TermsOfUse"
+        component={TermsOfUse}
+        options={{
+          presentation: "card",
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   );
 }
@@ -37,7 +55,7 @@ function SettingsTab({ navigation }) {
       <Text className="text-white text-center text-xl">Settings</Text>
       <ScrollView>
         <BuySection navigation={navigation} />
-        <GeneralSection />
+        <GeneralSection navigation={navigation} />
         <OurAppsSection />
         <AboutSection />
       </ScrollView>

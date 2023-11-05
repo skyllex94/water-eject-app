@@ -15,6 +15,7 @@ import { PlayerContext } from "../contexts/PlayerContext";
 import PlayingProgramPrep from "../components/ClearanceTab/PlayingProgramPrep";
 import PlayingProgramMain from "../components/ClearanceTab/PlayingProgramMain";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import TermsOfUse from "../components/PaywallModal/TermsOfUse";
 
 export default function WaterClearance() {
   // React Native Navigator - Stack Navigator initializer
@@ -76,6 +77,11 @@ export default function WaterClearance() {
         <Stack.Screen
           name="PlayingProgramMain"
           component={PlayingProgramMain}
+        />
+        <Stack.Screen
+          name="TermsOfUse"
+          component={TermsOfUse}
+          options={{ presentation: "card" }}
         />
         <Stack.Screen
           name="Paywall"

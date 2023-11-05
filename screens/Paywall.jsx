@@ -12,8 +12,26 @@ import { Entypo, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import useRevenueCat from "../hooks/useRevenueCat";
 import Purchases from "react-native-purchases";
 import Spinner from "react-native-loading-spinner-overlay/lib";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import TermsOfUse from "../components/PaywallModal/TermsOfUse";
+import PrivacyPolicy from "../components/PaywallModal/PrivacyPolicy";
 
-export default function Paywall({ navigation }) {
+export default function Paywall() {
+  const Stack = createNativeStackNavigator();
+  return (
+    <Stack.Navigator
+      initialRouteName="Paywall"
+      tabBarLabel={{ backgroundColor: "#142251" }}
+      screenOptions={{ headerShown: false }}
+    >
+      <Stack.Screen name="Paywall" component={PaywallModal} />
+      <Stack.Screen name="TermsOfUse" component={TermsOfUse} />
+      <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+    </Stack.Navigator>
+  );
+}
+
+function PaywallModal({ navigation }) {
   const { currentOffering } = useRevenueCat();
   const [paywallLoaded, setPaywallLoaded] = useState(false);
   const [purchaseSpinner, setPurchaseSpinner] = useState(false);
@@ -198,11 +216,19 @@ export default function Paywall({ navigation }) {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={handleRestorePurchase}>
-            <Text className="text-white  text-center mt-5">
-              Restore Purchase
-            </Text>
-          </TouchableOpacity>
+          <View className="flex-row items-center justify-between px-12 mt-5">
+            <TouchableOpacity
+              onPress={() => navigation.navigate("PrivacyPolicy")}
+            >
+              <Text className="text-gray-400 text-center">Privacy Policy</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleRestorePurchase}>
+              <Text className="text-gray-400 text-center">Restore</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("TermsOfUse")}>
+              <Text className="text-gray-400 text-center">Terms Of Use</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       ) : (
         <ActivityIndicator className="pt-10" size="large" />
