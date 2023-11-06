@@ -9,11 +9,11 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
-/assets/frequencies
-/assets/others
-/assets/programs
-/assets/images/slides
-/assets/images/clearance
+# /assets/frequencies
+# /assets/others
+# /assets/programs
+# /assets/images/slides
+# /assets/images/clearance
 /.VSCodeCounter
 setup-env.txt
 

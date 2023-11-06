@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Entypo, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import useRevenueCat from "../hooks/useRevenueCat";
 import Purchases from "react-native-purchases";
@@ -143,12 +144,12 @@ function PaywallModal({ navigation }) {
                 <Ionicons name="md-key" size={32} color="#E5962D" />
                 <View className="flex-1">
                   <Text className="text-white font-bold text-lg">
-                    Access to all Pro Features
+                    Access to All Pro Features
                   </Text>
                   <Text className="text-white text-sm font-extralight">
-                    Access to our 2 frequency programs (8 and 16 minutes) for
-                    ultimate results and clear speakers sound. Played them once
-                    and see the results.
+                    Access to our frequency programs and ongoing frequency
+                    development for water, dust and fine-speakers (Airpods)
+                    frequency programs.
                   </Text>
                 </View>
               </View>
@@ -163,8 +164,8 @@ function PaywallModal({ navigation }) {
                   </Text>
                   <Text className="text-white text-sm font-extralight">
                     Included 15+ Sound Tests: Bass Accuracy Test, Polarity
-                    Tests, Speaker Isolation for individual speaker test and
-                    Sterio Imaging Test.
+                    Tests, Speaker Isolation, Sterio Imaging Test and more to
+                    come.
                   </Text>
                 </View>
               </View>
@@ -172,18 +173,15 @@ function PaywallModal({ navigation }) {
 
             <View className="space-y-5 py-2">
               <View className="flex-row space-x-8 items-center">
-                <MaterialCommunityIcons
-                  name="speedometer"
-                  size={32}
-                  color="#E5962D"
-                />
+                <MaterialIcons name="update" size={32} color="#E5962D" />
                 <View className="flex-1">
                   <Text className="text-white font-bold text-lg">
-                    Decibel Sound Meter
+                    Get the Latest Updates
                   </Text>
                   <Text className="text-white text-sm font-extralight">
-                    Enjoy an accurate decibel meter so you can measure the
-                    current decibel level at any place you are.
+                    Continuously refining our frequency programs and adding
+                    additional ones on a regular basis to give better, faster
+                    and diverse results.
                   </Text>
                 </View>
               </View>
@@ -222,9 +220,15 @@ function PaywallModal({ navigation }) {
             >
               <Text className="text-gray-400 text-center">Privacy Policy</Text>
             </TouchableOpacity>
+
+            <Text className="text-gray-400">|</Text>
+
             <TouchableOpacity onPress={handleRestorePurchase}>
               <Text className="text-gray-400 text-center">Restore</Text>
             </TouchableOpacity>
+
+            <Text className="text-gray-400">|</Text>
+
             <TouchableOpacity onPress={() => navigation.navigate("TermsOfUse")}>
               <Text className="text-gray-400 text-center">Terms Of Use</Text>
             </TouchableOpacity>
