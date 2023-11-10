@@ -55,10 +55,12 @@ export default function OnBoarding({ navigation }) {
 
       <Indicator data={slides} scrollX={scrollX} />
 
-      <NextButton
-        slideForward={slideForward}
-        percentage={(currSlide + 1) * (100 / slides.length)}
-      />
+      {currSlide !== 5 && (
+        <NextButton
+          slideForward={slideForward}
+          percentage={(currSlide + 1) * (100 / slides.length)}
+        />
+      )}
     </SafeAreaView>
   );
 }

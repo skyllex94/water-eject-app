@@ -22,8 +22,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { DefaultTheme } from "@react-navigation/native";
-import SystemSetting from "react-native-system-setting";
-
 // Removing Warning Messages
 import { LogBox } from "react-native";
 LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message

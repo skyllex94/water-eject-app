@@ -3,14 +3,14 @@ export default [
     id: 1,
     title: `Welcome to WaterDrop`,
     description:
-      "Our trialled and tested frequencies will help you remove the stuck water inside your speakers so you can have clear and crisp sound once again.",
+      "Our tested frequencies will help remove stuck water inside your speakers, ear speaker or earbugs so you can have clear and crisp sound again.",
     image: require("../../assets/images/slides/slide_1.png"),
   },
   {
     id: 2,
     title: "Free and Dedicated Frequecies",
     description:
-      "Not only do you get absolutely FREE frequencies and tests to work with, but you have our dedicated alternating frequency programs which will efficiently remove the water droplets inside the speakers.",
+      "Not only do you get FREE frequencies and tests to work with, but you have our dedicated alternating frequency programs which will efficiently remove the water droplets inside the speakers.",
     image: require("../../assets/images/slides/slide_2.png"),
   },
   {
@@ -26,5 +26,11 @@ export default [
     description:
       "Quickly compare your speakers before and after using our frequencies to see the noticeable changes. The tests range from overall tests, to speaker isolation tests, as well as checking bass accuracy, polarity and more.",
     image: require("../../assets/images/slides/slide_4.png"),
+  },
+  {
+    id: 5,
+    title: "Start Free Premium Trial",
+    description:
+      "Access to our frequency programs and ongoing frequency development for water, dust and fine-speakers (Airpods) frequency programs.",
   },
 ];
