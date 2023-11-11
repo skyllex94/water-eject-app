@@ -108,14 +108,14 @@ function WaterClearanceTab({ navigation }) {
         <Text className="text-white text-center text-xl">
           WaterDrop Clearance
         </Text>
-        {/*
-          <TouchableOpacity
-            onPress={clearAsyncStorage}
-            className="text-white text-center text-xl"
-          >
-            <Text className="text-white">Clear</Text>
-          </TouchableOpacity>
-        */}
+
+        <TouchableOpacity
+          onPress={clearAsyncStorage}
+          className="text-white text-center text-xl"
+        >
+          <Text className="text-white">Clear</Text>
+        </TouchableOpacity>
+
         <SoundVisualizer />
       </View>
       <ScrollView>

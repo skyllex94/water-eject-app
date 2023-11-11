@@ -1,4 +1,4 @@
-import { FlatList, SafeAreaView, Animated } from "react-native";
+import { FlatList, SafeAreaView, Animated, View } from "react-native";
 import React, { useRef, useState } from "react";
 import slides from "../components/Utils/Slides";
 import OnBoardingItem from "../components/OnBoardingSlides/OnBoardingItem";
@@ -6,6 +6,9 @@ import Indicator from "../components/OnBoardingSlides/Indicator";
 import NextButton from "../components/OnBoardingSlides/NextButton";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Purchases from "react-native-purchases";
+import useRevenueCat from "../hooks/useRevenueCat";
+import Spinner from "react-native-loading-spinner-overlay";
 
 export default function OnBoarding({ navigation }) {
   const [currSlide, setCurrSlide] = useState(0);
@@ -16,6 +19,30 @@ export default function OnBoarding({ navigation }) {
     setCurrSlide(viewableItems[0].index);
   }).current;
 
+  const { currentOffering } = useRevenueCat();
+  const [purchaseSpinner, setPurchaseSpinner] = useState(false);
+  const [purchasedPlan, setPurchasedPlan] = useState(false);
+
+  async function handleWeeklyPurchase() {
+    setPurchaseSpinner(true);
+    if (!currentOffering?.weekly) {
+      setPurchaseSpinner(false);
+      return;
+    }
+
+    try {
+      const purchaserInfo = await Purchases.purchasePackage(
+        currentOffering.weekly
+      );
+      if (purchaserInfo.customerInfo.entitlements.active.pro) {
+        await AsyncStorage.setItem("@isAppFirstLaunched", "false");
+      }
+    } catch (e) {
+      if (!e.userCancelled) setPurchaseSpinner(false);
+    }
+    setPurchaseSpinner(false);
+  }
+
   const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
 
   const slideForward = async () => {
@@ -25,8 +52,10 @@ export default function OnBoarding({ navigation }) {
     // store the value in async storage, and navigate to the App
     else {
       try {
-        await AsyncStorage.setItem("@isAppFirstLaunched", "false");
-        navigation.replace("MainApp");
+        await handleWeeklyPurchase();
+        const value = await AsyncStorage.getItem("@isAppFirstLaunched");
+        console.log("value:", value);
+        if (value !== null) navigation.replace("MainApp");
       } catch (err) {
         console.log("Error @setItem:", err);
       }
@@ -35,13 +64,17 @@ export default function OnBoarding({ navigation }) {
 
   return (
     <SafeAreaView className="flex-1 items-center justify-center">
+      <Spinner visible={purchaseSpinner} />
+
       <FlatList
         data={slides}
         horizontal
         showsHorizontalScrollIndicator={false}
         pagingEnabled
         bounces={false}
-        renderItem={({ item }) => <OnBoardingItem item={item} />}
+        renderItem={({ item }) => (
+          <OnBoardingItem item={item} navigation={navigation} />
+        )}
         keyExtractor={(item) => item.id}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { x: scrollX } } }],
@@ -53,14 +86,15 @@ export default function OnBoarding({ navigation }) {
         ref={slidesRef}
       />
 
-      <Indicator data={slides} scrollX={scrollX} />
+      <View className="items-center">
+        <Indicator data={slides} scrollX={scrollX} />
 
-      {currSlide !== 5 && (
         <NextButton
           slideForward={slideForward}
           percentage={(currSlide + 1) * (100 / slides.length)}
+          currSlide={currSlide}
         />
-      )}
+      </View>
     </SafeAreaView>
   );
 }

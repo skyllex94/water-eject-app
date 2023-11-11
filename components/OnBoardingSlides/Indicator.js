@@ -5,7 +5,7 @@ export default function Indicator({ data, scrollX }) {
   const { width } = useWindowDimensions();
 
   return (
-    <View className="flex-row h-[64px]">
+    <View className="flex-row h-10">
       {data.map((_, i) => {
         const inputRange = [(i - 1) * width, i * width, (i + 1) * width];
         const dotWidth = scrollX.interpolate({
@@ -22,7 +22,7 @@ export default function Indicator({ data, scrollX }) {
 
         return (
           <Animated.View
-            className={`bg-[#8995ba] h-[10px] rounded-xl mx-[8px]`}
+            className={`bg-[#526fc6] h-[10px] rounded-xl mx-[8px]`}
             style={[{ width: dotWidth, opacity }]}
             key={i.toString()}
           />
