@@ -10,7 +10,6 @@ import React from "react";
 import {
   AntDesign,
   Entypo,
-  Ionicons,
   MaterialCommunityIcons,
   MaterialIcons,
 } from "@expo/vector-icons";
@@ -55,15 +54,19 @@ export default function OnBoardingItem({ item, navigation }) {
 
             <View className="space-y-5 py-2">
               <View className="flex-row space-x-8 items-center">
-                <Ionicons name="md-key" size={32} color="#E5962D" />
+                <MaterialCommunityIcons
+                  name="speaker-wireless"
+                  size={32}
+                  color="#E5962D"
+                />
                 <View className="flex-1">
                   <Text className="text-white font-bold text-lg">
-                    Access to All Pro Features
+                    Fix Phone and Earbuds Speakers
                   </Text>
                   <Text className="text-white text-sm font-extralight">
                     Access to our frequency programs and ongoing frequency
-                    development for water, dust and fine-speakers (Airpods)
-                    frequency programs.
+                    development for ejecting the water out of your iPhone and
+                    AirPods.
                   </Text>
                 </View>
               </View>

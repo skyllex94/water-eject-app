@@ -21,7 +21,6 @@ export default function OnBoarding({ navigation }) {
 
   const { currentOffering } = useRevenueCat();
   const [purchaseSpinner, setPurchaseSpinner] = useState(false);
-  const [purchasedPlan, setPurchasedPlan] = useState(false);
 
   async function handleWeeklyPurchase() {
     setPurchaseSpinner(true);
