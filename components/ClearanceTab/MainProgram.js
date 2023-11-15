@@ -124,20 +124,22 @@ export default function MainProgram({ navigation }) {
     <View className="items-center justify-center">
       <TouchableOpacity
         className={`${
-          sound.isEnabledMain ? `bg-[${activeColor}]` : `bg-[${bgColor}]`
-        } h-[125px] w-[95%] mx-[10px] p-[10px] rounded-2xl mt-4`}
+          sound.isEnabledMain ? `bg-[${activeColor}]` : `bg-[${buttonsColor}]`
+        } h-[125px] w-[95%] mx-[10px] p-[10px] rounded-2xl mt-3`}
         onPress={isProMember ? enableMainFreq : openPurchaseModal}
       >
         <View
           className={`${
-            sound.isEnabledMain ? `bg-[${iconActiveColor}]` : `bg-[${bgColor}]`
+            sound.isEnabledMain
+              ? `bg-[${iconActiveColor}]`
+              : `bg-[${buttonsColor}]`
           } flex-row items-center justify-between p-3 rounded-xl`}
         >
           <View
             className={`${
               sound.isEnabledMain
                 ? `bg-[${iconActiveColor}]`
-                : `bg-[${buttonsColor}]`
+                : `bg-[${bgColor}]`
             } items-center w-[50px] p-[10px] rounded-xl`}
           >
             {loadingSound ? (
@@ -151,7 +153,7 @@ export default function MainProgram({ navigation }) {
             )}
           </View>
 
-          <View className="w-[82%]">
+          <View className="w-[95%]">
             <SoundCloudWave
               currentTime={waveformTimeMain}
               totalTime={totalWaveformTime}

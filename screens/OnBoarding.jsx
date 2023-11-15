@@ -53,7 +53,6 @@ export default function OnBoarding({ navigation }) {
       try {
         await handleWeeklyPurchase();
         const value = await AsyncStorage.getItem("@isAppFirstLaunched");
-        console.log("value:", value);
         if (value !== null) navigation.replace("MainApp");
       } catch (err) {
         console.log("Error @setItem:", err);

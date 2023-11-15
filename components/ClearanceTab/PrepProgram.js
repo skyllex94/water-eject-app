@@ -122,20 +122,22 @@ export default function PrepProgram({ navigation }) {
     <TouchableOpacity>
       <TouchableOpacity
         className={`${
-          sound.isEnabledPrep ? `bg-[${activeColor}]` : `bg-[${bgColor}]`
-        } h-[125px] w-[95%] mx-[10px] p-[10px] rounded-2xl mt-4`}
+          sound.isEnabledPrep ? `bg-[${activeColor}]` : `bg-[${buttonsColor}]`
+        } h-[125px] w-[95%] mx-[10px] p-[10px] rounded-2xl mt-4 `}
         onPress={isProMember ? enablePrepFreq : openPurchaseModal}
       >
         <View
           className={`${
-            sound.isEnabledPrep ? `bg-[${iconActiveColor}]` : `bg-[${bgColor}]`
+            sound.isEnabledPrep
+              ? `bg-[${iconActiveColor}]`
+              : `bg-[${buttonsColor}]`
           } flex-row items-center justify-between p-3 rounded-xl`}
         >
           <View
             className={`${
               sound.isEnabledPrep
                 ? `bg-[${iconActiveColor}]`
-                : `bg-[${buttonsColor}]`
+                : `bg-[${bgColor}]`
             } items-center w-[50px] p-[10px] rounded-xl`}
           >
             {loadingSound ? (
@@ -148,7 +150,7 @@ export default function PrepProgram({ navigation }) {
               />
             )}
           </View>
-          <View className="w-[82%]">
+          <View className="w-[95%]">
             <SoundCloudWave
               currentTime={waveformTimePrep}
               totalTime={totalTime}
