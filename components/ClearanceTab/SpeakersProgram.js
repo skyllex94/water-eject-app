@@ -12,11 +12,11 @@ export default function SpeakersProgram({ navigation }) {
             <Image
               resizeMode="contain"
               className="rounded-md h-[35px]"
-              source={require("../../assets/images/clearance/icon_iphone_speaker.png")}
+              source={require("../../assets/images/clearance/speaker.png")}
             />
           </View>
 
-          <Text className="text-white">Phone Speaker Clearance </Text>
+          <Text className="text-white">Speaker Clearance</Text>
         </View>
 
         <TouchableOpacity

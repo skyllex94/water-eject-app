@@ -141,7 +141,9 @@ export default function SpeakersTest({ navigation }) {
               />
             </View>
 
-            <Text className="text-white text-center mt-3">Front Speaker</Text>
+            <Text className="text-white text-center mt-3">
+              Ear Phone Speaker
+            </Text>
           </View>
         </TouchableOpacity>
 
@@ -201,7 +203,7 @@ export default function SpeakersTest({ navigation }) {
               />
             </View>
 
-            <Text className="text-white text-center mt-3">Back Speaker</Text>
+            <Text className="text-white text-center mt-3">Bottom Speaker</Text>
           </View>
         </TouchableOpacity>
       </View>
