@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import MainProgram from "./MainProgram";
+import PodsProgram from "./PodsProgram";
 import { FontAwesome5 } from "@expo/vector-icons";
 
 export default function AirPodsProgram({ navigation }) {
@@ -26,7 +26,7 @@ export default function AirPodsProgram({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <MainProgram navigation={navigation} />
+      <PodsProgram navigation={navigation} />
     </View>
   );
 }

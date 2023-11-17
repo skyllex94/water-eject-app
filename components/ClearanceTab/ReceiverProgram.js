@@ -1,7 +1,6 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import MainProgram from "./MainProgram";
-import PrepProgram from "./PrepProgram";
 import { FontAwesome5 } from "@expo/vector-icons";
+import EarProgram from "./EarProgram";
 
 export default function ReceiverProgram({ navigation }) {
   return (
@@ -16,7 +15,7 @@ export default function ReceiverProgram({ navigation }) {
             />
           </View>
 
-          <Text className="text-white">Ear Speaker Clearance</Text>
+          <Text className="text-white">Earpiece Clearance</Text>
         </View>
 
         <TouchableOpacity
@@ -27,7 +26,7 @@ export default function ReceiverProgram({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <MainProgram navigation={navigation} />
+      <EarProgram navigation={navigation} />
     </View>
   );
 }

@@ -198,7 +198,8 @@ function PaywallModal({ navigation }) {
               Weekly Plan - Popular
             </Text>
             <Text className="text-white">
-              {currentOffering?.weekly?.product.priceString} / per week
+              3 days FREE, then {currentOffering?.weekly?.product.priceString}
+              /per week
             </Text>
           </TouchableOpacity>
 
@@ -210,7 +211,8 @@ function PaywallModal({ navigation }) {
               Or a Monthly Plan
             </Text>
             <Text className="text-white">
-              {currentOffering?.monthly?.product.priceString} / per month
+              3 days FREE, then {currentOffering?.monthly?.product.priceString}
+              /per month
             </Text>
           </TouchableOpacity>
 

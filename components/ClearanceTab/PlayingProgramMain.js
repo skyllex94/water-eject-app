@@ -96,7 +96,9 @@ export default function PlayingProgramMain({ navigation }) {
           </View>
         </View>
 
-        <MainProgram navigation={navigation} />
+        <View className="items-center justify-center w-[90%]">
+          <MainProgram navigation={navigation} />
+        </View>
       </View>
     </SafeAreaView>
   );

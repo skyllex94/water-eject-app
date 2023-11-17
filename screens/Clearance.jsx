@@ -14,6 +14,8 @@ import { PlayerContext } from "../contexts/PlayerContext";
 
 import PlayingProgramPrep from "../components/ClearanceTab/PlayingProgramPrep";
 import PlayingProgramMain from "../components/ClearanceTab/PlayingProgramMain";
+import PlayingProgramEar from "../components/ClearanceTab/PlayingProgramEar";
+import PlayingProgramAirpods from "../components/ClearanceTab/PlayingProgramAirpods";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TermsOfUse from "../components/PaywallModal/TermsOfUse";
 
@@ -30,6 +32,16 @@ export default function WaterClearance() {
   const [secondsMain, setSecondsMain] = useState(0);
   const [minutesMain, setMinutesMain] = useState(0);
   const [waveformTimeMain, setWaveformTimeMain] = useState(0);
+
+  // Earpiece Program Player States
+  const [secondsEar, setSecondsEar] = useState(0);
+  const [minutesEar, setMinutesEar] = useState(0);
+  const [waveformTimeEar, setWaveformTimeEar] = useState(0);
+
+  // Airpods Program Player States
+  const [secondsAirpods, setSecondsAirpods] = useState(0);
+  const [minutesAirpods, setMinutesAirpods] = useState(0);
+  const [waveformTimeAirpods, setWaveformTimeAidpods] = useState(0);
 
   const [currStatus, setCurrStatus] = useState({ status: "-" });
 
@@ -49,6 +61,20 @@ export default function WaterClearance() {
         setMinutesMain,
         waveformTimeMain,
         setWaveformTimeMain,
+
+        secondsEar,
+        setSecondsEar,
+        minutesEar,
+        setMinutesEar,
+        waveformTimeEar,
+        setWaveformTimeEar,
+
+        secondsAirpods,
+        setSecondsAirpods,
+        minutesAirpods,
+        setMinutesAirpods,
+        waveformTimeAirpods,
+        setWaveformTimeAidpods,
 
         currStatus,
         setCurrStatus,
@@ -77,6 +103,11 @@ export default function WaterClearance() {
         <Stack.Screen
           name="PlayingProgramMain"
           component={PlayingProgramMain}
+        />
+        <Stack.Screen name="PlayingProgramEar" component={PlayingProgramEar} />
+        <Stack.Screen
+          name="PlayingProgramAirpods"
+          component={PlayingProgramAirpods}
         />
         <Stack.Screen
           name="TermsOfUse"

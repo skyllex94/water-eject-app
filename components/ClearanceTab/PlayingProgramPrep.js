@@ -102,7 +102,9 @@ export default function PlayingProgramPrep({ navigation }) {
           </View>
         </View>
 
-        <PrepProgram navigation={navigation} />
+        <View className="items-center justify-center w-[89%]">
+          <PrepProgram navigation={navigation} />
+        </View>
       </View>
     </SafeAreaView>
   );

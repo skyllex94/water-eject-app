@@ -9,15 +9,15 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
-# /assets/frequencies
-# /assets/others
-# /assets/programs
-# /assets/images/slides
-# /assets/images/clearance
+/assets/frequencies
+/assets/others
+/assets/programs
+/assets/images/slides
+/assets/images/clearance
 /.VSCodeCounter
 setup-env.txt
 
-# Everything in the assets folder must be removed when building
+# Everything in the assets folder must be removed or commented out when building
 
 # macOS
 .DS_Store
