@@ -128,9 +128,7 @@ export default function EarProgram({ navigation }) {
     <TouchableOpacity>
       <TouchableOpacity
         className={`${
-          sound.isEnabledAirpods
-            ? `bg-[${activeColor}]`
-            : `bg-[${buttonsColor}]`
+          sound.isEnabledAirpods ? `bg-[${activeColor}]` : `bg-[${bgColor}]`
         } h-[125px] w-[95%] mx-[10px] p-[10px] rounded-2xl mt-4 `}
         onPress={isProMember ? enableAirpods : openPurchaseModal}
       >
@@ -138,14 +136,14 @@ export default function EarProgram({ navigation }) {
           className={`${
             sound.isEnabledAirpods
               ? `bg-[${iconActiveColor}]`
-              : `bg-[${buttonsColor}]`
+              : `bg-[${bgColor}]`
           } flex-row items-center justify-between p-3 rounded-xl`}
         >
           <View
             className={`${
               sound.isEnabledAirpods
                 ? `bg-[${iconActiveColor}]`
-                : `bg-[${bgColor}]`
+                : `bg-[${buttonsColor}]`
             } items-center w-[50px] p-[10px] rounded-xl`}
           >
             {loadingSound ? (

@@ -119,55 +119,53 @@ export default function EarProgram({ navigation }) {
   }
 
   return (
-    <TouchableOpacity>
-      <TouchableOpacity
+    <TouchableOpacity
+      className={`${
+        sound.isEnabledEar ? `bg-[${activeColor}]` : `bg-[${bgColor}]`
+      } h-[125px] w-[95%] mx-[10px] p-[10px] rounded-2xl mt-4`}
+      onPress={isProMember ? enableEarFreq : openPurchaseModal}
+    >
+      <View
         className={`${
-          sound.isEnabledEar ? `bg-[${activeColor}]` : `bg-[${buttonsColor}]`
-        } h-[125px] w-[95%] mx-[10px] p-[10px] rounded-2xl mt-4 `}
-        onPress={isProMember ? enableEarFreq : openPurchaseModal}
+          sound.isEnabledEar ? `bg-[${iconActiveColor}]` : `bg-[${bgColor}]`
+        } flex-row items-center justify-between p-3 rounded-xl`}
       >
         <View
           className={`${
             sound.isEnabledEar
               ? `bg-[${iconActiveColor}]`
               : `bg-[${buttonsColor}]`
-          } flex-row items-center justify-between p-3 rounded-xl`}
+          } items-center w-[50px] p-[10px] rounded-xl`}
         >
-          <View
-            className={`${
-              sound.isEnabledEar ? `bg-[${iconActiveColor}]` : `bg-[${bgColor}]`
-            } items-center w-[50px] p-[10px] rounded-xl`}
-          >
-            {loadingSound ? (
-              <ActivityIndicator />
-            ) : (
-              <Icon
-                name={sound.isEnabledEar ? "stop" : "play"}
-                size={30}
-                color="white"
-              />
-            )}
-          </View>
-          <View className="w-[95%]">
-            <SoundCloudWave
-              currentTime={waveformTimeEar}
-              totalTime={totalTime}
-              waveform={"https://w1.sndcdn.com/cWHNerOLlkUq_m.png"}
-              // https://w1.sndcdn.com/PP3Eb34ToNki_m.png
+          {loadingSound ? (
+            <ActivityIndicator />
+          ) : (
+            <Icon
+              name={sound.isEnabledEar ? "stop" : "play"}
+              size={30}
+              color="white"
             />
-          </View>
+          )}
         </View>
+        <View className="w-[95%]">
+          <SoundCloudWave
+            currentTime={waveformTimeEar}
+            totalTime={totalTime}
+            waveform={"https://w1.sndcdn.com/cWHNerOLlkUq_m.png"}
+            // https://w1.sndcdn.com/PP3Eb34ToNki_m.png
+          />
+        </View>
+      </View>
 
-        <View className="flex-row pt-[10px] items-center justify-between">
-          <Text className="text-white ml-2 font-bold">
-            Booming Earpiece Program
-          </Text>
-          <Text className="text-white mr-2 font-bold">
-            {minutesEar}:{secondsEar < 10 && "0"}
-            {secondsEar} / 4:41
-          </Text>
-        </View>
-      </TouchableOpacity>
+      <View className="flex-row pt-[10px] items-center justify-between">
+        <Text className="text-white ml-2 font-bold">
+          Booming Earpiece Program
+        </Text>
+        <Text className="text-white mr-2 font-bold">
+          {minutesEar}:{secondsEar < 10 && "0"}
+          {secondsEar} / 4:41
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 }

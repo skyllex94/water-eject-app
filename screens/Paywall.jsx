@@ -25,7 +25,7 @@ export default function Paywall() {
       tabBarLabel={{ backgroundColor: "#142251" }}
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name="Paywall" component={PaywallModal} />
+      <Stack.Screen name="PaywallModal" component={PaywallModal} />
       <Stack.Screen name="TermsOfUse" component={TermsOfUse} />
       <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
     </Stack.Navigator>

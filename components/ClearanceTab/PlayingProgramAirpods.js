@@ -44,8 +44,8 @@ export default function PlayingProgramEar({ navigation }) {
           </Text>
 
           <Text className="text-center text-white font-extralight">
-            Place your AirPods naturally on a flat surface with the speakers
-            facing down.
+            Connect your AirPods to your phone and place them on a flat surface
+            with the speakers facing down.
           </Text>
           <Text className="text-center text-white font-extralight">
             Have your volume level between 90% and 100%.

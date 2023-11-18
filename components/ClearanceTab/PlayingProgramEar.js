@@ -6,15 +6,12 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import PrepProgram from "../../components/ClearanceTab/PrepProgram";
 import { bgColor } from "../../constants/ColorsUI";
 import { useContext, useEffect } from "react";
 import { PlayerContext } from "../../contexts/PlayerContext";
 import SystemSetting from "react-native-system-setting";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-
-import * as StoreReview from "expo-store-review";
 import EarProgram from "./EarProgram";
 
 export default function PlayingProgramEar({ navigation }) {
@@ -23,10 +20,6 @@ export default function PlayingProgramEar({ navigation }) {
 
   // Update volume percentage amount
   useEffect(() => {
-    setTimeout(() => {
-      StoreReview.requestReview();
-    }, 35000);
-
     setInterval(() => {
       SystemSetting.getVolume().then((currentVolume) =>
         setCurrVolume(currentVolume)
@@ -53,7 +46,7 @@ export default function PlayingProgramEar({ navigation }) {
           Place your phone display down as the program is playing.
         </Text>
         <Text className="text-center text-white font-extralight">
-          Have your volume level between 90% and 100%.
+          Have your volume level between 80% and 90%.
         </Text>
 
         <Image
@@ -103,7 +96,7 @@ export default function PlayingProgramEar({ navigation }) {
           </View>
         </View>
 
-        <View className="items-center justify-center w-[89%]">
+        <View className="items-center justify-center w-[97%]">
           <EarProgram navigation={navigation} />
         </View>
       </View>

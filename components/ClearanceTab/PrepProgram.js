@@ -84,11 +84,15 @@ export default function PrepProgram({ navigation }) {
   async function playPrep() {
     if (!sound.isEnabledPrep) {
       if (currSound) currSound.unloadAsync() || undefined;
+      console.log("HERE AM I");
       await navigation.navigate("PlayingProgramPrep");
-      const { sound } = await Audio.Sound.createAsync(
+      const { sound, status } = await Audio.Sound.createAsync(
         require(`../../assets/programs/prep.mp3`),
         { isLooping: false }
       );
+
+      // Start here: try to get the current time in milliseconds
+      console.log(status);
 
       setCurrSound(sound);
       // Update Status bar UI to playing the current program
@@ -122,22 +126,20 @@ export default function PrepProgram({ navigation }) {
     <TouchableOpacity>
       <TouchableOpacity
         className={`${
-          sound.isEnabledPrep ? `bg-[${activeColor}]` : `bg-[${buttonsColor}]`
+          sound.isEnabledPrep ? `bg-[${activeColor}]` : `bg-[${bgColor}]`
         } h-[125px] w-[95%] mx-[10px] p-[10px] rounded-2xl mt-4 `}
         onPress={isProMember ? enablePrepFreq : openPurchaseModal}
       >
         <View
           className={`${
-            sound.isEnabledPrep
-              ? `bg-[${iconActiveColor}]`
-              : `bg-[${buttonsColor}]`
+            sound.isEnabledPrep ? `bg-[${iconActiveColor}]` : `bg-[${bgColor}]`
           } flex-row items-center justify-between p-3 rounded-xl`}
         >
           <View
             className={`${
               sound.isEnabledPrep
                 ? `bg-[${iconActiveColor}]`
-                : `bg-[${bgColor}]`
+                : `bg-[${buttonsColor}]`
             } items-center w-[50px] p-[10px] rounded-xl`}
           >
             {loadingSound ? (
