@@ -164,7 +164,7 @@ function PaywallModal({ navigation }) {
                   </Text>
                   <Text className="text-white text-sm font-extralight">
                     Included 15+ Sound Tests: Bass Accuracy Test, Polarity
-                    Tests, Speaker Isolation, Sterio Imaging Test and more to
+                    Tests, Speaker Isolation, Stereo Imaging Test and more to
                     come.
                   </Text>
                 </View>

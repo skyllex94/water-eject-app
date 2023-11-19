@@ -13,7 +13,7 @@ export default function SoundCloudWave({ currentTime, totalTime, waveform }) {
         onPress={() => enableFreq}
         waveformUrl={waveform}
         height={25}
-        width={width.width - 140}
+        width={width.width - 130}
         inactive="#E5E4E2"
         inactiveInverse="white"
         active="#277a8c"

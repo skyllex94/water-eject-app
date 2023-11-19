@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { Context } from "../../contexts/Context";
 import { activateKeepAwakeAsync, deactivateKeepAwake } from "expo-keep-awake";
@@ -11,12 +11,7 @@ import {
   buttonsColor,
   iconActiveColor,
 } from "../../constants/ColorsUI";
-import {
-  startTimer,
-  stopDBMetering,
-  stopTimer,
-  stopWaveformTimer,
-} from "../Utils/Funcs";
+import { stopDBMetering } from "../Utils/Funcs";
 import useRevenueCat from "../../hooks/useRevenueCat";
 import SoundCloudWave from "./SoundCloudWave";
 import { PlayerContext } from "../../contexts/PlayerContext";
@@ -33,45 +28,12 @@ export default function MainProgram({ navigation }) {
     setRecording,
   } = useContext(Context);
   const [loadingSound, setLoadingSound] = useState(false);
-
   const { isProMember } = useRevenueCat();
 
-  const {
-    secondsMain,
-    setSecondsMain,
-    minutesMain,
-    setMinutesMain,
-    waveformTimeMain,
-    setWaveformTimeMain,
-    currStatus,
-    setCurrStatus,
-  } = useContext(PlayerContext);
+  const { currTimeMain, setCurrTimeMain, setCurrStatus } =
+    useContext(PlayerContext);
 
-  const totalWaveformTime = 987; // 16 * 60 + 27 in seconds;
-
-  const mainRefCounter = useRef();
-  const mainWaveformRefCounter = useRef();
-
-  // Incrementing minutes for audio timers
-  useEffect(() => {
-    if (secondsMain > 59) {
-      setMinutesMain((prev) => prev + 1);
-      setSecondsMain(0);
-    }
-
-    if (!sound.isEnabledMain || (minutesMain === 16 && secondsMain === 27)) {
-      setMinutesMain(0);
-      setSecondsMain(0);
-      setWaveformTimeMain(0);
-      setVisualizerParams(defaultVisualizerParams);
-      stopTimer(mainRefCounter, setSecondsMain, setMinutesMain);
-      stopWaveformTimer(mainWaveformRefCounter, setWaveformTimeMain);
-      setSound((state) => ({ ...state, isEnabledMain: false }));
-
-      if (currStatus.status === "playing")
-        setCurrStatus({ status: "finished" });
-    }
-  }, [secondsMain, waveformTimeMain, sound.isEnabledMain]);
+  const totalTime = 16 * 60 + 27;
 
   async function enableMainFreq() {
     setLoadingSound(true);
@@ -84,40 +46,31 @@ export default function MainProgram({ navigation }) {
     if (!sound.isEnabledMain) {
       if (currSound) currSound.unloadAsync() || undefined;
       await navigation.navigate("PlayingProgramMain");
-      const { sound, status } = await Audio.Sound.createAsync(
+      const { sound } = await Audio.Sound.createAsync(
         require(`../../assets/programs/main.mp3`),
         { isLooping: false, progressUpdateIntervalMillis: 1000 },
         (status) => {
-          // TODO: Try to get this to sync with the timer
-          // return  setSecondsMain(status.positionMillis)
+          if (!isNaN(status.durationMillis)) {
+            setCurrTimeMain(Math.floor(status.positionMillis / 1000));
+          }
         }
       );
 
       setCurrSound(sound);
-
       // Update Status bar UI to playing the current program
       setCurrStatus({ status: "playing" });
-
       setVisualizerParams({ speed: 75, frequency: 22, amplitude: 200 });
-
-      startTimer(mainRefCounter, setSecondsMain);
-      startTimer(mainWaveformRefCounter, setWaveformTimeMain);
 
       sound.playAsync();
       activateKeepAwakeAsync();
     } else {
       currSound.unloadAsync() || undefined;
+      setCurrTimeMain(0);
       setVisualizerParams(defaultVisualizerParams);
-      stopTimer(mainRefCounter, setSecondsMain, setMinutesMain);
-      stopWaveformTimer(mainWaveformRefCounter, setWaveformTimeMain);
       setCurrStatus({ status: "not-playing" });
       deactivateKeepAwake();
     }
     setLoadingSound(false);
-  }
-
-  function openPurchaseModal() {
-    navigation.navigate("Paywall");
   }
 
   return (
@@ -126,7 +79,9 @@ export default function MainProgram({ navigation }) {
         className={`${
           sound.isEnabledMain ? `bg-[${activeColor}]` : `bg-[${bgColor}]`
         } h-[125px] w-[95%] mx-[10px] p-[10px] rounded-2xl mt-3`}
-        onPress={isProMember ? enableMainFreq : openPurchaseModal}
+        onPress={
+          isProMember ? enableMainFreq : () => navigation.navigate("Paywall")
+        }
       >
         <View
           className={`${
@@ -153,8 +108,8 @@ export default function MainProgram({ navigation }) {
 
           <View className="w-[95%]">
             <SoundCloudWave
-              currentTime={waveformTimeMain}
-              totalTime={totalWaveformTime}
+              currentTime={currTimeMain}
+              totalTime={totalTime}
               waveform={"https://w1.sndcdn.com/XwA2iPEIVF8z_m.png"}
             />
           </View>
@@ -165,8 +120,10 @@ export default function MainProgram({ navigation }) {
             2. Water Clearance Program
           </Text>
           <Text className="text-white mr-2 font-bold">
-            {minutesMain}:{secondsMain < 10 && "0"}
-            {secondsMain} / 16:27
+            {Math.floor(currTimeMain / 60)}:{currTimeMain % 60 < 10 && "0"}
+            {currTimeMain % 60} / {Math.floor(totalTime / 60)}:
+            {totalTime % 60 < 10 && "0"}
+            {totalTime % 60}
           </Text>
         </View>
       </TouchableOpacity>

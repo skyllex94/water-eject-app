@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { Audio } from "expo-av";
 import { activateKeepAwakeAsync, deactivateKeepAwake } from "expo-keep-awake";
@@ -12,12 +12,7 @@ import {
 
 import Icon from "react-native-vector-icons/FontAwesome";
 import { Context } from "../../contexts/Context";
-import {
-  startTimer,
-  stopDBMetering,
-  stopTimer,
-  stopWaveformTimer,
-} from "../Utils/Funcs";
+import { stopDBMetering } from "../Utils/Funcs";
 import useRevenueCat from "../../hooks/useRevenueCat";
 import SoundCloudWave from "./SoundCloudWave";
 import { PlayerContext } from "../../contexts/PlayerContext";
@@ -37,43 +32,12 @@ export default function EarProgram({ navigation }) {
   } = useContext(Context);
   const [loadingSound, setLoadingSound] = useState(false);
 
-  const {
-    secondsEar,
-    setSecondsEar,
-    minutesEar,
-    setMinutesEar,
-    waveformTimeEar,
-    setWaveformTimeEar,
-    currStatus,
-    setCurrStatus,
-  } = useContext(PlayerContext);
+  const { currTimeEar, setCurrTimeEar, setCurrStatus } =
+    useContext(PlayerContext);
 
-  const totalTime = 4 * 60 + 41; // 8 * 60 + 1 in seconds
+  const totalTime = 4 * 60 + 41;
 
-  const prepRefCounter = useRef();
-  const prepRefWaveformCounter = useRef();
-
-  // Incrementing minutes for audio timers
-  useEffect(() => {
-    if (secondsEar > 59) {
-      setMinutesEar((prev) => prev + 1);
-      setSecondsEar(0);
-    }
-    if (!sound.isEnabledEar || (minutesEar === 4 && secondsEar === 41)) {
-      setMinutesEar(0);
-      setSecondsEar(0);
-      setWaveformTimeEar(0);
-      setVisualizerParams(defaultVisualizerParams);
-      stopTimer(prepRefCounter, setSecondsEar, setMinutesEar);
-      stopWaveformTimer(prepRefWaveformCounter, setWaveformTimeEar);
-      setSound((state) => ({ ...state, isEnabledEar: false }));
-
-      if (currStatus.status === "playing")
-        setCurrStatus({ status: "finished" });
-    }
-  }, [secondsEar, waveformTimeEar, sound.isEnabledEar]);
-
-  async function enableEarFreq() {
+  async function enableProgram() {
     setLoadingSound(true);
     setSound((state) => ({ ...!state, isEnabledEar: !sound.isEnabledEar }));
     stopDBMetering(recording, setRecording);
@@ -87,7 +51,12 @@ export default function EarProgram({ navigation }) {
       await navigation.navigate("PlayingProgramEar");
       const { sound } = await Audio.Sound.createAsync(
         require(`../../assets/programs/ear.mp3`),
-        { isLooping: false }
+        { isLooping: false, progressUpdateIntervalMillis: 1000 },
+        (status) => {
+          if (!isNaN(status.durationMillis)) {
+            setCurrTimeEar(Math.floor(status.positionMillis / 1000));
+          }
+        }
       );
 
       setCurrSound(sound);
@@ -97,25 +66,16 @@ export default function EarProgram({ navigation }) {
       // Set Visualizer Preset Params
       setVisualizerParams({ speed: 75, frequency: 18, amplitude: 200 });
 
-      // Start the audio timer state
-      startTimer(prepRefCounter, setSecondsEar);
-      startTimer(prepRefWaveformCounter, setWaveformTimeEar);
-
       sound.playAsync();
       activateKeepAwakeAsync();
     } else {
       currSound.unloadAsync() || undefined;
+      setCurrTimeEar(0);
       setVisualizerParams(defaultVisualizerParams);
-      stopTimer(prepRefCounter, setSecondsEar, setMinutesEar);
-      stopWaveformTimer(prepRefWaveformCounter, setWaveformTimeEar);
       setCurrStatus({ status: "not-playing" });
       deactivateKeepAwake();
     }
     setLoadingSound(false);
-  }
-
-  function openPurchaseModal() {
-    navigation.navigate("Paywall");
   }
 
   return (
@@ -123,7 +83,9 @@ export default function EarProgram({ navigation }) {
       className={`${
         sound.isEnabledEar ? `bg-[${activeColor}]` : `bg-[${bgColor}]`
       } h-[125px] w-[95%] mx-[10px] p-[10px] rounded-2xl mt-4`}
-      onPress={isProMember ? enableEarFreq : openPurchaseModal}
+      onPress={
+        isProMember ? enableProgram : () => navigation.navigate("Paywall")
+      }
     >
       <View
         className={`${
@@ -149,10 +111,9 @@ export default function EarProgram({ navigation }) {
         </View>
         <View className="w-[95%]">
           <SoundCloudWave
-            currentTime={waveformTimeEar}
+            currentTime={currTimeEar}
             totalTime={totalTime}
             waveform={"https://w1.sndcdn.com/cWHNerOLlkUq_m.png"}
-            // https://w1.sndcdn.com/PP3Eb34ToNki_m.png
           />
         </View>
       </View>
@@ -162,8 +123,10 @@ export default function EarProgram({ navigation }) {
           Booming Earpiece Program
         </Text>
         <Text className="text-white mr-2 font-bold">
-          {minutesEar}:{secondsEar < 10 && "0"}
-          {secondsEar} / 4:41
+          {Math.floor(currTimeEar / 60)}:{currTimeEar % 60 < 10 && "0"}
+          {currTimeEar % 60} / {Math.floor(totalTime / 60)}:
+          {totalTime % 60 < 10 && "0"}
+          {totalTime % 60}
         </Text>
       </View>
     </TouchableOpacity>

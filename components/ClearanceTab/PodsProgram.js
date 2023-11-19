@@ -23,7 +23,7 @@ import SoundCloudWave from "./SoundCloudWave";
 import { PlayerContext } from "../../contexts/PlayerContext";
 import { defaultVisualizerParams } from "../../constants/Constants";
 
-export default function EarProgram({ navigation }) {
+export default function PodsProgram({ navigation }) {
   const { isProMember } = useRevenueCat();
 
   const {
@@ -37,44 +37,10 @@ export default function EarProgram({ navigation }) {
   } = useContext(Context);
   const [loadingSound, setLoadingSound] = useState(false);
 
-  const {
-    secondsAirpods,
-    setSecondsAirpods,
-    minutesAirpods,
-    setMinutesAirpods,
-    waveformTimeAirpods,
-    setWaveformTimeAidpods,
-    currStatus,
-    setCurrStatus,
-  } = useContext(PlayerContext);
+  const { currTimePods, setCurrTimePods, setCurrStatus } =
+    useContext(PlayerContext);
 
-  const totalTime = 5 * 60 + 12; // 8 * 60 + 1 in seconds
-
-  const prepRefCounter = useRef();
-  const prepRefWaveformCounter = useRef();
-
-  // Incrementing minutes for audio timers
-  useEffect(() => {
-    if (secondsAirpods > 59) {
-      setMinutesAirpods((prev) => prev + 1);
-      setSecondsAirpods(0);
-    }
-    if (
-      !sound.isEnabledAirpods ||
-      (minutesAirpods === 5 && secondsAirpods === 12)
-    ) {
-      setMinutesAirpods(0);
-      setSecondsAirpods(0);
-      setWaveformTimeAidpods(0);
-      setVisualizerParams(defaultVisualizerParams);
-      stopTimer(prepRefCounter, setSecondsAirpods, setMinutesAirpods);
-      stopWaveformTimer(prepRefWaveformCounter, setWaveformTimeAidpods);
-      setSound((state) => ({ ...state, isEnabledAirpods: false }));
-
-      if (currStatus.status === "playing")
-        setCurrStatus({ status: "finished" });
-    }
-  }, [secondsAirpods, waveformTimeAirpods, sound.isEnabledAirpods]);
+  const totalTime = 5 * 60 + 12;
 
   async function enableAirpods() {
     setLoadingSound(true);
@@ -93,7 +59,12 @@ export default function EarProgram({ navigation }) {
       await navigation.navigate("PlayingProgramAirpods");
       const { sound } = await Audio.Sound.createAsync(
         require(`../../assets/programs/airpods.mp3`),
-        { isLooping: false }
+        { isLooping: false, progressUpdateIntervalMillis: 1000 },
+        (status) => {
+          if (!isNaN(status.durationMillis)) {
+            setCurrTimePods(Math.floor(status.positionMillis / 1000));
+          }
+        }
       );
 
       setCurrSound(sound);
@@ -103,25 +74,16 @@ export default function EarProgram({ navigation }) {
       // Set Visualizer Preset Params
       setVisualizerParams({ speed: 75, frequency: 18, amplitude: 200 });
 
-      // Start the audio timer state
-      startTimer(prepRefCounter, setSecondsAirpods);
-      startTimer(prepRefWaveformCounter, setWaveformTimeAidpods);
-
       sound.playAsync();
       activateKeepAwakeAsync();
     } else {
       currSound.unloadAsync() || undefined;
       setVisualizerParams(defaultVisualizerParams);
-      stopTimer(prepRefCounter, setSecondsAirpods, setMinutesAirpods);
-      stopWaveformTimer(prepRefWaveformCounter, setWaveformTimeAidpods);
+      setCurrTimePods(0);
       setCurrStatus({ status: "not-playing" });
       deactivateKeepAwake();
     }
     setLoadingSound(false);
-  }
-
-  function openPurchaseModal() {
-    navigation.navigate("Paywall");
   }
 
   return (
@@ -130,7 +92,9 @@ export default function EarProgram({ navigation }) {
         className={`${
           sound.isEnabledAirpods ? `bg-[${activeColor}]` : `bg-[${bgColor}]`
         } h-[125px] w-[95%] mx-[10px] p-[10px] rounded-2xl mt-4 `}
-        onPress={isProMember ? enableAirpods : openPurchaseModal}
+        onPress={
+          isProMember ? enableAirpods : () => navigation.navigate("Paywall")
+        }
       >
         <View
           className={`${
@@ -158,10 +122,9 @@ export default function EarProgram({ navigation }) {
           </View>
           <View className="w-[95%]">
             <SoundCloudWave
-              currentTime={waveformTimeAirpods}
+              currentTime={currTimePods}
               totalTime={totalTime}
               waveform={"https://w1.sndcdn.com/cWHNerOLlkUq_m.png"}
-              // https://w1.sndcdn.com/PP3Eb34ToNki_m.png
             />
           </View>
         </View>
@@ -171,8 +134,10 @@ export default function EarProgram({ navigation }) {
             Dedicated Airpods Program
           </Text>
           <Text className="text-white mr-2 font-bold">
-            {minutesAirpods}:{secondsAirpods < 10 && "0"}
-            {secondsAirpods} / 5:12
+            {Math.floor(currTimePods / 60)}:{currTimePods % 60 < 10 && "0"}
+            {currTimePods % 60} / {Math.floor(totalTime / 60)}:
+            {totalTime % 60 < 10 && "0"}
+            {totalTime % 60}
           </Text>
         </View>
       </TouchableOpacity>

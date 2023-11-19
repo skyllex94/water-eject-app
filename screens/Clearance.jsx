@@ -1,5 +1,5 @@
 import { SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Frequencies from "../components/ClearanceTab/Frequencies";
 import Programs from "../components/ClearanceTab/Programs";
 
@@ -23,58 +23,29 @@ export default function WaterClearance() {
   // React Native Navigator - Stack Navigator initializer
   const Stack = createNativeStackNavigator();
 
-  // Prep Program Player States
-  const [secondsPrep, setSecondsPrep] = useState(0);
-  const [minutesPrep, setMinutesPrep] = useState(0);
-  const [waveformTimePrep, setWaveformTimePrep] = useState(0);
+  // Programs Player States
+  const [currTimePrep, setCurrTimePrep] = useState(0);
+  const [currTimeMain, setCurrTimeMain] = useState(0);
+  const [currTimeEar, setCurrTimeEar] = useState(0);
+  const [currTimePods, setCurrTimePods] = useState(0);
 
-  // Main Program Player States
-  const [secondsMain, setSecondsMain] = useState(0);
-  const [minutesMain, setMinutesMain] = useState(0);
-  const [waveformTimeMain, setWaveformTimeMain] = useState(0);
-
-  // Earpiece Program Player States
-  const [secondsEar, setSecondsEar] = useState(0);
-  const [minutesEar, setMinutesEar] = useState(0);
-  const [waveformTimeEar, setWaveformTimeEar] = useState(0);
-
-  // Airpods Program Player States
-  const [secondsAirpods, setSecondsAirpods] = useState(0);
-  const [minutesAirpods, setMinutesAirpods] = useState(0);
-  const [waveformTimeAirpods, setWaveformTimeAidpods] = useState(0);
-
+  // Program Current Status when playing
   const [currStatus, setCurrStatus] = useState({ status: "-" });
 
   return (
     <PlayerContext.Provider
       value={{
-        secondsPrep,
-        setSecondsPrep,
-        minutesPrep,
-        setMinutesPrep,
-        waveformTimePrep,
-        setWaveformTimePrep,
+        currTimePrep,
+        setCurrTimePrep,
 
-        secondsMain,
-        setSecondsMain,
-        minutesMain,
-        setMinutesMain,
-        waveformTimeMain,
-        setWaveformTimeMain,
+        currTimeMain,
+        setCurrTimeMain,
 
-        secondsEar,
-        setSecondsEar,
-        minutesEar,
-        setMinutesEar,
-        waveformTimeEar,
-        setWaveformTimeEar,
+        currTimeEar,
+        setCurrTimeEar,
 
-        secondsAirpods,
-        setSecondsAirpods,
-        minutesAirpods,
-        setMinutesAirpods,
-        waveformTimeAirpods,
-        setWaveformTimeAidpods,
+        currTimePods,
+        setCurrTimePods,
 
         currStatus,
         setCurrStatus,
