@@ -9,6 +9,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Purchases from "react-native-purchases";
 import useRevenueCat from "../hooks/useRevenueCat";
 import Spinner from "react-native-loading-spinner-overlay";
+import * as StoreReview from "expo-store-review";
 
 export default function OnBoarding({ navigation }) {
   const [currSlide, setCurrSlide] = useState(0);
@@ -47,13 +48,16 @@ export default function OnBoarding({ navigation }) {
   const slideForward = async () => {
     if (currSlide < slides.length - 1)
       slidesRef.current.scrollToIndex({ index: currSlide + 1 });
-    // If there's no more slides, complete the OnBoarding screen,
+    // If no more slides, complete the OnBoarding screen,
     // store the value in async storage, and navigate to the App
     else {
       try {
         await handleWeeklyPurchase();
         const value = await AsyncStorage.getItem("@isAppFirstLaunched");
-        if (value !== null) navigation.replace("MainApp");
+        if (value !== null) {
+          navigation.replace("MainApp");
+          StoreReview.requestReview();
+        }
       } catch (err) {
         console.log("Error @setItem:", err);
       }

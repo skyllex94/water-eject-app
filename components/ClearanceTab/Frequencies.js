@@ -1,27 +1,20 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Switch,
-  Image,
-} from "react-native";
+import { View, Text, TouchableOpacity, Switch, Image } from "react-native";
 import { Audio } from "expo-av";
 
-import lowFreq from "../../assets/icons/lowfreqIcon.png";
-import medFreq from "../../assets/icons/medfreqIcon.png";
-import highFreq from "../../assets/icons/highfreqIcon.png";
-import xtHighFreq from "../../assets/icons/xthighfreqIcon.png";
 import { buttonsColor } from "../../constants/ColorsUI";
 import { Context } from "../../contexts/Context";
 import { useContext } from "react";
 
 import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { defaultVisualizerParams } from "../../constants/Constants";
+import {
+  bgColor,
+  activeColor,
+  iconActiveColor,
+} from "../../constants/ColorsUI";
 
-import * as StoreReview from "expo-store-review";
 import { stopDBMetering } from "../Utils/Funcs";
-
 export default function Frequencies({ navigation }) {
   const {
     currSound,
@@ -33,114 +26,61 @@ export default function Frequencies({ navigation }) {
     setRecording,
   } = useContext(Context);
 
-  // useEffect(async () => {
-  //   playAudioInSilentMode();
-  // }, []);
+  const frequencies = [
+    {
+      name: "120 Hz",
+      objName: "isEnabled120",
+      icon: require("../../assets/icons/lowfreqIcon.png"),
+      file: require(`../../assets/frequencies/lowesthz.mp3`),
+      visualizerParams: { speed: 125, frequency: 5, amplitude: 105 },
+    },
+    {
+      name: "160 Hz",
+      objName: "isEnabled160",
+      icon: require("../../assets/icons/medfreqIcon.png"),
+      file: require(`../../assets/frequencies/lowhz.mp3`),
+      visualizerParams: { speed: 105, frequency: 8, amplitude: 155 },
+    },
+    {
+      name: "300 Hz",
+      objName: "isEnabled300",
+      icon: require("../../assets/icons/highfreqIcon.png"),
+      file: require(`../../assets/frequencies/mediumhz.mp3`),
+      visualizerParams: { speed: 85, frequency: 12, amplitude: 175 },
+    },
+    {
+      name: "500 Hz",
+      objName: "isEnabled500",
+      icon: require("../../assets/icons/xthighfreqIcon.png"),
+      file: require(`../../assets/frequencies/highhz.mp3`),
+      visualizerParams: { speed: 75, frequency: 17, amplitude: 200 },
+    },
+  ];
 
-  async function playAudioInSilentMode() {
-    return await Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
-  }
-
-  async function playSound(sound) {
-    sound.playAsync();
-  }
-
-  async function isEnabled120hz() {
-    setSound((state) => ({ ...!state, isEnabled120: !sound.isEnabled120 }));
+  async function enableCurrFreq(item) {
+    setSound((state) => ({
+      ...!state,
+      [item.objName]: !sound[item.objName],
+    }));
     stopDBMetering(recording, setRecording);
     unloadSound();
 
-    startFrequency120();
+    startFrequency(item);
   }
 
-  async function startFrequency120() {
-    if (!sound.isEnabled120) {
-      const { sound } = await Audio.Sound.createAsync(
-        require(`../../assets/frequencies/lowesthz.mp3`),
-        { isLooping: true }
-      );
+  async function startFrequency(item) {
+    if (!sound[item.objName]) {
+      const { sound } = await Audio.Sound.createAsync(item.file, {
+        isLooping: true,
+      });
 
-      // Start or switch to current sound
+      // Start the currently loaded sound
       setCurrSound(sound);
 
       // Sound Visualizer paramethers change
-      setVisualizerParams({ speed: 125, frequency: 5, amplitude: 105 });
+      setVisualizerParams(item.visualizerParams);
 
-      playSound(sound);
-    } else {
-      unloadSound();
-      setVisualizerParams(defaultVisualizerParams);
-    }
-  }
-
-  async function isEnabled160hz() {
-    setSound((state) => ({ ...!state, isEnabled160: !sound.isEnabled160 }));
-    if (recording) stopDBMetering(recording, setRecording);
-    unloadSound();
-
-    startFrequency160();
-  }
-
-  async function startFrequency160() {
-    if (!sound.isEnabled160) {
-      const { sound } = await Audio.Sound.createAsync(
-        require("../../assets/frequencies/lowhz.mp3"),
-        { isLooping: true }
-      );
-      setCurrSound(sound);
-
-      setVisualizerParams({ speed: 105, frequency: 8, amplitude: 155 });
-      playSound(sound);
-    } else {
-      unloadSound();
-      setTimeout(() => {
-        StoreReview.requestReview();
-      }, 3000);
-      setVisualizerParams(defaultVisualizerParams);
-    }
-  }
-
-  async function isEnabled300hz() {
-    setSound((state) => ({ ...!state, isEnabled300: !sound.isEnabled300 }));
-    stopDBMetering(recording, setRecording);
-    unloadSound();
-    startFrequency300();
-  }
-
-  async function startFrequency300() {
-    if (!sound.isEnabled300) {
-      const { sound } = await Audio.Sound.createAsync(
-        require("../../assets/frequencies/mediumhz.mp3"),
-        { isLooping: true }
-      );
-      setCurrSound(sound);
-      setVisualizerParams({ speed: 85, frequency: 12, amplitude: 175 });
-
-      playSound(sound);
-    } else {
-      unloadSound();
-      setVisualizerParams(defaultVisualizerParams);
-    }
-  }
-
-  async function enable500Hz() {
-    setSound((state) => ({ ...!state, isEnabled500: !sound.isEnabled500 }));
-    stopDBMetering(recording, setRecording);
-    unloadSound();
-
-    startFrequency500();
-  }
-
-  async function startFrequency500() {
-    if (!sound.isEnabled500) {
-      const { sound } = await Audio.Sound.createAsync(
-        require("../../assets/frequencies/highhz.mp3"),
-        { isLooping: true }
-      );
-      setCurrSound(sound);
-      setVisualizerParams({ speed: 75, frequency: 17, amplitude: 200 });
-
-      playSound(sound);
+      sound.playAsync();
     } else {
       unloadSound();
       setVisualizerParams(defaultVisualizerParams);
@@ -155,8 +95,12 @@ export default function Frequencies({ navigation }) {
     <View className="flex-3 justify-center">
       <View className={`bg-[${buttonsColor}] mx-3 pb-3 rounded-xl`}>
         <View className="flex-row items-center justify-between">
-          <Text className="text-white font-bold ml-4 my-5">Frequencies</Text>
-
+          <View className="flex-row items-center ml-6">
+            <MaterialCommunityIcons name="wave" size={60} color="white" />
+            <Text className="text-white font-bold ml-4 my-5">
+              Helpful Frequencies
+            </Text>
+          </View>
           <TouchableOpacity
             onPress={() => navigation.navigate("InfoFrequencies")}
             className="bg-[#05103A] items-center justify-center h-8 w-8 mr-3 rounded-md"
@@ -165,188 +109,42 @@ export default function Frequencies({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        <View className="flex-row justify-center">
-          <TouchableOpacity
-            onPress={isEnabled120hz}
-            style={sound.isEnabled120 ? styles.freqBtnActive : styles.freqBtn}
-          >
-            <View style={styles.freqIconText}>
-              <View
-                style={
-                  sound.isEnabled120 ? styles.iconWrapperOn : styles.iconWrapper
-                }
-              >
-                <Image style={styles.icon} source={lowFreq}></Image>
+        <View className="flex-row flex-wrap justify-center">
+          {frequencies.map((curr) => (
+            <TouchableOpacity
+              onPress={() => enableCurrFreq(curr)}
+              className={`justify-center rounded-2xl w-[45%] m-[7px] h-[120px] p-[10px] ${
+                sound[curr.objName] ? `bg-[${activeColor}]` : `bg-[${bgColor}]`
+              }`}
+            >
+              <View className="flex-row items-center">
+                <View
+                  className={`w-[50px] p-[10px] rounded-xl ${
+                    sound[curr.objName]
+                      ? `bg-[${iconActiveColor}]`
+                      : `bg-[${buttonsColor}]`
+                  }`}
+                >
+                  <Image className="w-[30px] h-[30px]" source={curr.icon} />
+                </View>
+                <Text className="font-bold text-white ml-[10px]">
+                  {curr.name}
+                </Text>
               </View>
-              <Text style={styles.freqText}>120 Hz</Text>
-            </View>
-            <View style={styles.freqControlText}>
-              <Text style={styles.freqOnOff}>
-                {sound.isEnabled120 ? "On" : "Off"}
-              </Text>
-              <Switch
-                trackColor={{ true: iconActiveColor }}
-                value={sound.isEnabled120}
-                onValueChange={isEnabled120hz}
-              />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={isEnabled160hz}
-            style={sound.isEnabled160 ? styles.freqBtnActive : styles.freqBtn}
-          >
-            <View style={styles.freqIconText}>
-              <View
-                style={
-                  sound.isEnabled160 ? styles.iconWrapperOn : styles.iconWrapper
-                }
-              >
-                <Image style={styles.icon} source={medFreq}></Image>
+              <View className="flex-row items-center justify-between mt-[10px]">
+                <Text className="font-bold text-white ml-[5px]">
+                  {sound[curr.objName] ? "On" : "Off"}
+                </Text>
+                <Switch
+                  trackColor={{ true: iconActiveColor }}
+                  value={sound[curr.objName]}
+                  onValueChange={() => enableCurrFreq(curr)}
+                />
               </View>
-              <Text style={styles.freqText}>160 Hz</Text>
-            </View>
-            <View style={styles.freqControlText}>
-              <Text style={styles.freqOnOff}>
-                {sound.isEnabled160 ? "On" : "Off"}
-              </Text>
-              <Switch
-                trackColor={{ true: iconActiveColor }}
-                value={sound.isEnabled160}
-                onValueChange={isEnabled160hz}
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View className="flex-row justify-center mt-4">
-          <TouchableOpacity
-            onPress={isEnabled300hz}
-            style={sound.isEnabled300 ? styles.freqBtnActive : styles.freqBtn}
-          >
-            <View style={styles.freqIconText}>
-              <View
-                style={
-                  sound.isEnabled300 ? styles.iconWrapperOn : styles.iconWrapper
-                }
-              >
-                <Image style={styles.icon} source={highFreq} />
-              </View>
-              <Text style={styles.freqText}>300 Hz</Text>
-            </View>
-            <View style={styles.freqControlText}>
-              <Text style={styles.freqOnOff}>
-                {sound.isEnabled300 ? "On" : "Off"}
-              </Text>
-              <Switch
-                trackColor={{ true: iconActiveColor }}
-                value={sound.isEnabled300}
-                onValueChange={isEnabled300hz}
-              />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={enable500Hz}
-            style={sound.isEnabled500 ? styles.freqBtnActive : styles.freqBtn}
-          >
-            <View style={styles.freqIconText}>
-              <View
-                style={
-                  sound.isEnabled500 ? styles.iconWrapperOn : styles.iconWrapper
-                }
-              >
-                <Image style={styles.icon} source={xtHighFreq} />
-              </View>
-              <Text style={styles.freqText}>500 Hz</Text>
-            </View>
-            <View style={styles.freqControlText}>
-              <Text style={styles.freqOnOff}>
-                {sound.isEnabled500 ? "On" : "Off"}
-              </Text>
-              <Switch
-                trackColor={{ true: iconActiveColor }}
-                value={sound.isEnabled500}
-                onValueChange={enable500Hz}
-              />
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          ))}
         </View>
       </View>
     </View>
   );
 }
-
-const bgColor = "#05103A";
-const iconActiveColor = "#87e5fa";
-
-const styles = StyleSheet.create({
-  main: {
-    flex: 3,
-    flexDirection: "column",
-    justifyContent: "center",
-  },
-  lowFreqOptions: {
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-  highFreqOptions: {
-    flexDirection: "row",
-    marginTop: 14,
-    justifyContent: "center",
-  },
-  freqBtn: {
-    width: "45%",
-    marginHorizontal: 7,
-    height: 120,
-    justifyContent: "center",
-    padding: 10,
-    borderRadius: 15,
-    backgroundColor: bgColor,
-  },
-  freqBtnActive: {
-    width: "45%",
-    marginHorizontal: 7,
-    height: 120,
-    padding: 10,
-    borderRadius: 15,
-    justifyContent: "center",
-    backgroundColor: "#4AD0EE",
-  },
-  freqIconText: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  iconWrapper: {
-    width: 50,
-    padding: 10,
-    borderRadius: 10,
-    backgroundColor: buttonsColor,
-  },
-  iconWrapperOn: {
-    width: 50,
-    padding: 10,
-    borderRadius: 10,
-    backgroundColor: iconActiveColor,
-  },
-  icon: {
-    width: 30,
-    height: 30,
-  },
-  freqText: {
-    color: "white",
-    marginLeft: 10,
-    fontWeight: 700,
-  },
-  freqOnOff: {
-    marginLeft: 5,
-    flexDirection: "row",
-    alignContent: "center",
-    fontWeight: 700,
-    color: "white",
-  },
-  freqControlText: {
-    marginTop: 10,
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-});

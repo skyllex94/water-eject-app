@@ -99,7 +99,7 @@ export default function PlayingProgramEar({ navigation }) {
           </View>
         </View>
 
-        <View className="items-center justify-center w-[89%]">
+        <View className="items-center justify-center w-[97%]">
           <PodsProgram navigation={navigation} />
         </View>
       </View>

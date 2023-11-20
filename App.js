@@ -24,6 +24,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { DefaultTheme } from "@react-navigation/native";
 // Removing Warning Messages
 import { LogBox } from "react-native";
+import { Audio } from "expo-av";
 LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
 LogBox.ignoreAllLogs(); // Ignore all log notifications
 
@@ -104,6 +105,10 @@ const Main = () => {
     frequency: 3,
     amplitude: 25,
   });
+
+  // Play on silent mode being active
+  if (Platform.OS === "ios")
+    Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
 
   const Tab = createBottomTabNavigator();
 

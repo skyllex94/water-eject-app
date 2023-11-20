@@ -15,7 +15,7 @@ import { stopDBMetering } from "../Utils/Funcs";
 import useRevenueCat from "../../hooks/useRevenueCat";
 import SoundCloudWave from "./SoundCloudWave";
 import { PlayerContext } from "../../contexts/PlayerContext";
-import { defaultVisualizerParams } from "../../constants/Constants";
+import { defaultVisualizerParams, programs } from "../../constants/Constants";
 
 export default function MainProgram({ navigation }) {
   const {
@@ -47,7 +47,7 @@ export default function MainProgram({ navigation }) {
       if (currSound) currSound.unloadAsync() || undefined;
       await navigation.navigate("PlayingProgramMain");
       const { sound } = await Audio.Sound.createAsync(
-        require(`../../assets/programs/main.mp3`),
+        programs.speakers[1],
         { isLooping: false, progressUpdateIntervalMillis: 1000 },
         (status) => {
           if (!isNaN(status.durationMillis)) {

@@ -14,18 +14,12 @@ import SystemSetting from "react-native-system-setting";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
-import * as StoreReview from "expo-store-review";
-
 export default function PlayingProgramPrep({ navigation }) {
   const { currStatus, setCurrStatus } = useContext(PlayerContext);
   const [currVolume, setCurrVolume] = useState(0);
 
   // Update volume percentage amount
   useEffect(() => {
-    setTimeout(() => {
-      StoreReview.requestReview();
-    }, 35000);
-
     setInterval(() => {
       SystemSetting.getVolume().then((currentVolume) =>
         setCurrVolume(currentVolume)
@@ -102,7 +96,7 @@ export default function PlayingProgramPrep({ navigation }) {
           </View>
         </View>
 
-        <View className="items-center justify-center w-[89%]">
+        <View className="items-center justify-center w-[97%]">
           <PrepProgram navigation={navigation} />
         </View>
       </View>

@@ -16,7 +16,7 @@ import { stopDBMetering } from "../Utils/Funcs";
 import useRevenueCat from "../../hooks/useRevenueCat";
 import SoundCloudWave from "./SoundCloudWave";
 import { PlayerContext } from "../../contexts/PlayerContext";
-import { defaultVisualizerParams } from "../../constants/Constants";
+import { defaultVisualizerParams, programs } from "../../constants/Constants";
 
 export default function EarProgram({ navigation }) {
   const { isProMember } = useRevenueCat();
@@ -50,7 +50,7 @@ export default function EarProgram({ navigation }) {
       if (currSound) currSound.unloadAsync() || undefined;
       await navigation.navigate("PlayingProgramEar");
       const { sound } = await Audio.Sound.createAsync(
-        require(`../../assets/programs/ear.mp3`),
+        programs.ear_speakers,
         { isLooping: false, progressUpdateIntervalMillis: 1000 },
         (status) => {
           if (!isNaN(status.durationMillis)) {
