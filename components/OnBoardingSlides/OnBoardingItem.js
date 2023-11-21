@@ -15,6 +15,7 @@ import {
 } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as StoreReview from "expo-store-review";
 
 export default function OnBoardingItem({ item, navigation }) {
   const { width } = useWindowDimensions();
@@ -28,6 +29,7 @@ export default function OnBoardingItem({ item, navigation }) {
             onPress={async () => {
               await AsyncStorage.setItem("@isAppFirstLaunched", "false");
               navigation.replace("MainApp");
+              StoreReview.requestReview();
             }}
           >
             <AntDesign name="close" size={24} color="#05103A" />

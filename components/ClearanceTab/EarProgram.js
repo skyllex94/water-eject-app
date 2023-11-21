@@ -115,7 +115,7 @@ export default function EarProgram({ navigation }) {
         </View>
         <View className="w-[95%]">
           <SoundCloudWave
-            currentTime={currTimeEar}
+            currentTime={sound.isEnabledEar ? currTimeEar : 0}
             totalTime={totalTime}
             height={65}
             waveform={"http://w1.sndcdn.com/fxguEjG4ax6B_m.png"}
@@ -128,9 +128,10 @@ export default function EarProgram({ navigation }) {
           Booming Earpiece Program
         </Text>
         <Text className="text-white mr-2 font-bold">
-          {Math.floor(currTimeEar / 60)}:{currTimeEar % 60 < 10 && "0"}
-          {currTimeEar % 60} / {Math.floor(totalTime / 60)}:
-          {totalTime % 60 < 10 && "0"}
+          {sound.isEnabledEar ? Math.floor(currTimeEar / 60) : "0"}:
+          {sound.isEnabledEar ? currTimeEar % 60 < 10 && "0" : 0}
+          {sound.isEnabledEar ? currTimeEar % 60 : 0} /{" "}
+          {Math.floor(totalTime / 60)}:{totalTime % 60 < 10 && "0"}
           {totalTime % 60}
         </Text>
       </View>

@@ -116,7 +116,7 @@ export default function PrepProgram({ navigation }) {
         </View>
         <View className="w-[95%]">
           <SoundCloudWave
-            currentTime={currTimePrep}
+            currentTime={sound.isEnabledPrep ? currTimePrep : 0}
             totalTime={totalTime}
             waveform={"https://w1.sndcdn.com/cWHNerOLlkUq_m.png"}
           />
@@ -128,9 +128,10 @@ export default function PrepProgram({ navigation }) {
           1. Preparation Program
         </Text>
         <Text className="text-white mr-2 font-bold">
-          {Math.floor(currTimePrep / 60)}:{currTimePrep % 60 < 10 && "0"}
-          {currTimePrep % 60} / {Math.floor(totalTime / 60)}:
-          {totalTime % 60 < 10 && "0"}
+          {sound.isEnabledPrep ? Math.floor(currTimePrep / 60) : "0"}:
+          {sound.isEnabledPrep ? currTimePrep % 60 < 10 && "0" : 0}
+          {sound.isEnabledPrep ? currTimePrep % 60 : 0} /{" "}
+          {Math.floor(totalTime / 60)}:{totalTime % 60 < 10 && "0"}
           {totalTime % 60}
         </Text>
       </View>

@@ -4,7 +4,12 @@ import Svg, { Circle, G } from "react-native-svg";
 import { AntDesign } from "@expo/vector-icons";
 import { Text } from "react-native";
 
-export default function NextButton({ percentage, slideForward, currSlide }) {
+export default function NextButton({
+  percentage,
+  slideForward,
+  currSlide,
+  currentOffering,
+}) {
   const size = 128;
   const strokeWidth = 2;
   const center = size / 2;
@@ -84,7 +89,8 @@ export default function NextButton({ percentage, slideForward, currSlide }) {
           currSlide === 4 ? "text-white" : "text-[#101C43]"
         }`}
       >
-        Try 3 days free, then $2.99/week
+        Try 3 days free, then {currentOffering?.weekly?.product.priceString}
+        /week
       </Text>
 
       <TouchableOpacity

@@ -22,7 +22,7 @@ export default [
   },
   {
     id: 4,
-    title: "Multiple Sound Tests",
+    title: "15+ Sound Tests",
     description:
       "Quickly compare your speakers before and after using our frequencies to see the noticeable changes. The tests range from overall tests, to speaker isolation tests, as well as checking bass accuracy, polarity and more.",
     image: require("../../assets/images/slides/slide_4.png"),

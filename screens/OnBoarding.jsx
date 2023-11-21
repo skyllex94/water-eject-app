@@ -95,6 +95,7 @@ export default function OnBoarding({ navigation }) {
           slideForward={slideForward}
           percentage={(currSlide + 1) * (100 / slides.length)}
           currSlide={currSlide}
+          currentOffering={currentOffering}
         />
       </View>
     </SafeAreaView>

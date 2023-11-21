@@ -118,7 +118,7 @@ export default function PodsProgram({ navigation }) {
         </View>
         <View className="w-[95%]">
           <SoundCloudWave
-            currentTime={currTimePods}
+            currentTime={sound.isEnabledAirpods ? currTimePods : 0}
             totalTime={totalTime}
             waveform={"https://w1.sndcdn.com/cWHNerOLlkUq_m.png"}
           />
@@ -130,9 +130,10 @@ export default function PodsProgram({ navigation }) {
           Dedicated Airpods Program
         </Text>
         <Text className="text-white mr-2 font-bold">
-          {Math.floor(currTimePods / 60)}:{currTimePods % 60 < 10 && "0"}
-          {currTimePods % 60} / {Math.floor(totalTime / 60)}:
-          {totalTime % 60 < 10 && "0"}
+          {sound.isEnabledAirpods ? Math.floor(currTimePods / 60) : "0"}:
+          {sound.isEnabledAirpods ? currTimePods % 60 < 10 && "0" : 0}
+          {sound.isEnabledAirpods ? currTimePods % 60 : 0} /{" "}
+          {Math.floor(totalTime / 60)}:{totalTime % 60 < 10 && "0"}
           {totalTime % 60}
         </Text>
       </View>
