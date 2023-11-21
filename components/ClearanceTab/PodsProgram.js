@@ -37,6 +37,15 @@ export default function PodsProgram({ navigation }) {
 
   const totalTime = 5 * 60 + 12;
 
+  async function unloadSound(sound, status) {
+    sound.unloadAsync() || undefined;
+    setSound((state) => ({ ...!state, isEnabledAirpods: false }));
+    setVisualizerParams(defaultVisualizerParams);
+    setCurrTimePods(0);
+    setCurrStatus({ status });
+    deactivateKeepAwake();
+  }
+
   async function enableAirpods() {
     setLoadingSound(true);
     setSound((state) => ({
@@ -59,6 +68,7 @@ export default function PodsProgram({ navigation }) {
           if (!isNaN(status.durationMillis)) {
             setCurrTimePods(Math.floor(status.positionMillis / 1000));
           }
+          if (status.didJustFinish) unloadSound(sound, "finished");
         }
       );
 
@@ -71,13 +81,7 @@ export default function PodsProgram({ navigation }) {
 
       sound.playAsync();
       activateKeepAwakeAsync();
-    } else {
-      currSound.unloadAsync() || undefined;
-      setVisualizerParams(defaultVisualizerParams);
-      setCurrTimePods(0);
-      setCurrStatus({ status: "not-playing" });
-      deactivateKeepAwake();
-    }
+    } else unloadSound(currSound, "not-playing");
     setLoadingSound(false);
   }
 

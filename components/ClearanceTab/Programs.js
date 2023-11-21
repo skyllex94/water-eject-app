@@ -21,13 +21,13 @@ export default function Programs({ navigation }) {
     {
       name: "Earpiece Clearance",
       icon: require("../../assets/images/clearance/receiver.png"),
-      info: "InfoPrograms",
+      info: "InfoEarpiece",
       program: [<EarProgram navigation={navigation} />],
     },
     {
       name: "AirPods Clearance",
       icon: require("../../assets/images/clearance/airpods.png"),
-      info: "InfoPrograms",
+      info: "InfoPods",
       program: [<PodsProgram navigation={navigation} />],
     },
   ];

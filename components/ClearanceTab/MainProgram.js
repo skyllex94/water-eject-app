@@ -33,7 +33,16 @@ export default function MainProgram({ navigation }) {
   const { currTimeMain, setCurrTimeMain, setCurrStatus } =
     useContext(PlayerContext);
 
-  const totalTime = 16 * 60 + 27;
+  const totalTime = 8 * 60 + 6;
+
+  async function unloadSound(sound, status) {
+    sound.unloadAsync() || undefined;
+    setSound((state) => ({ ...!state, isEnabledMain: false }));
+    setVisualizerParams(defaultVisualizerParams);
+    setCurrTimeMain(0);
+    setCurrStatus({ status });
+    deactivateKeepAwake();
+  }
 
   async function enableMainFreq() {
     setLoadingSound(true);
@@ -53,6 +62,7 @@ export default function MainProgram({ navigation }) {
           if (!isNaN(status.durationMillis)) {
             setCurrTimeMain(Math.floor(status.positionMillis / 1000));
           }
+          if (status.didJustFinish) unloadSound(sound, "finished");
         }
       );
 
@@ -63,13 +73,7 @@ export default function MainProgram({ navigation }) {
 
       sound.playAsync();
       activateKeepAwakeAsync();
-    } else {
-      currSound.unloadAsync() || undefined;
-      setCurrTimeMain(0);
-      setVisualizerParams(defaultVisualizerParams);
-      setCurrStatus({ status: "not-playing" });
-      deactivateKeepAwake();
-    }
+    } else unloadSound(currSound, "not-playing");
     setLoadingSound(false);
   }
 

@@ -36,7 +36,7 @@ export default function OnBoardingItem({ item, navigation }) {
           <View className="flex-1 justify-center">
             <View className="">
               <Text className="text-2xl text-center uppercase text-white font-bold mb-5">
-                Start your Premium Trial
+                Start Your Trial
               </Text>
 
               <Text className="text-center text-white mb-5">
@@ -112,7 +112,6 @@ export default function OnBoardingItem({ item, navigation }) {
               resizeMode="contain"
               source={item.image}
               style={[styles.image, { width: width - 50, height: 250 }]}
-              // TODO: Height could be adjusted for smaller screens Iphone 8 and below
             />
           </View>
 

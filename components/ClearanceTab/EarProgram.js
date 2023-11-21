@@ -37,6 +37,15 @@ export default function EarProgram({ navigation }) {
 
   const totalTime = 4 * 60 + 41;
 
+  async function unloadSound(sound, status) {
+    sound.unloadAsync() || undefined;
+    setSound((state) => ({ ...!state, isEnabledEar: false }));
+    setVisualizerParams(defaultVisualizerParams);
+    setCurrTimeEar(0);
+    setCurrStatus({ status });
+    deactivateKeepAwake();
+  }
+
   async function enableProgram() {
     setLoadingSound(true);
     setSound((state) => ({ ...!state, isEnabledEar: !sound.isEnabledEar }));
@@ -56,6 +65,7 @@ export default function EarProgram({ navigation }) {
           if (!isNaN(status.durationMillis)) {
             setCurrTimeEar(Math.floor(status.positionMillis / 1000));
           }
+          if (status.didJustFinish) unloadSound(sound, "finished");
         }
       );
 
@@ -68,13 +78,7 @@ export default function EarProgram({ navigation }) {
 
       sound.playAsync();
       activateKeepAwakeAsync();
-    } else {
-      currSound.unloadAsync() || undefined;
-      setCurrTimeEar(0);
-      setVisualizerParams(defaultVisualizerParams);
-      setCurrStatus({ status: "not-playing" });
-      deactivateKeepAwake();
-    }
+    } else unloadSound(currSound, "not-playing");
     setLoadingSound(false);
   }
 
@@ -113,7 +117,8 @@ export default function EarProgram({ navigation }) {
           <SoundCloudWave
             currentTime={currTimeEar}
             totalTime={totalTime}
-            waveform={"https://w1.sndcdn.com/cWHNerOLlkUq_m.png"}
+            height={65}
+            waveform={"http://w1.sndcdn.com/fxguEjG4ax6B_m.png"}
           />
         </View>
       </View>

@@ -1,5 +1,5 @@
 import { SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Frequencies from "../components/ClearanceTab/Frequencies";
 import Programs from "../components/ClearanceTab/Programs";
 
@@ -18,6 +18,8 @@ import PlayingProgramEar from "../components/ClearanceTab/PlayingProgramEar";
 import PlayingProgramAirpods from "../components/ClearanceTab/PlayingProgramAirpods";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TermsOfUse from "../components/PaywallModal/TermsOfUse";
+import InfoEarpiece from "../components/ClearanceTab/InfoEarpiece";
+import InfoPods from "../components/ClearanceTab/InfoModals/InfoPods";
 
 export default function WaterClearance() {
   // React Native Navigator - Stack Navigator initializer
@@ -64,6 +66,16 @@ export default function WaterClearance() {
           options={{ presentation: "modal" }}
         />
         <Stack.Screen
+          name="InfoEarpiece"
+          component={InfoEarpiece}
+          options={{ presentation: "modal" }}
+        />
+        <Stack.Screen
+          name="InfoPods"
+          component={InfoPods}
+          options={{ presentation: "modal" }}
+        />
+        <Stack.Screen
           name="PlayingProgramPrep"
           component={PlayingProgramPrep}
         />
@@ -106,13 +118,14 @@ function WaterClearanceTab({ navigation }) {
         <Text className="text-white text-center text-xl">
           WaterDrop Clearance
         </Text>
-
-        <TouchableOpacity
-          onPress={clearAsyncStorage}
-          className="text-white text-center text-xl"
-        >
-          <Text className="text-white">Clear</Text>
-        </TouchableOpacity>
+        {/*
+          <TouchableOpacity
+            onPress={clearAsyncStorage}
+            className="text-white text-center text-xl"
+          >
+            <Text className="text-white">Clear</Text>
+          </TouchableOpacity>
+        */}
 
         <SoundVisualizer />
       </View>

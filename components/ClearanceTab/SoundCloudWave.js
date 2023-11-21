@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { TouchableOpacity, useWindowDimensions } from "react-native";
-
 import SoundCloudWaveform from "react-native-soundcloud-waveform";
 
-export default function SoundCloudWave({ currentTime, totalTime, waveform }) {
+export default function SoundCloudWave({
+  currentTime,
+  totalTime,
+  waveform,
+  height,
+}) {
   const [time, setTime] = useState(243);
   const width = useWindowDimensions();
 
@@ -12,7 +16,7 @@ export default function SoundCloudWave({ currentTime, totalTime, waveform }) {
       <SoundCloudWaveform
         onPress={() => enableFreq}
         waveformUrl={waveform}
-        height={25}
+        height={height ?? 25}
         width={width.width - 130}
         inactive="#E5E4E2"
         inactiveInverse="white"

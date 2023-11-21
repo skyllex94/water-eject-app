@@ -118,7 +118,6 @@ export default function BassTestSound1({ navigation }) {
               currentTime={waveformTime}
               totalTime={totalTime}
               waveform={"https://w1.sndcdn.com/cWHNerOLlkUq_m.png"}
-              // "" https://w1.sndcdn.com/PP3Eb34ToNki_m.json
             />
           </View>
 

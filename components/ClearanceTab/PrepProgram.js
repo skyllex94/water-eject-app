@@ -34,13 +34,25 @@ export default function PrepProgram({ navigation }) {
   const { currTimePrep, setCurrTimePrep, setCurrStatus } =
     useContext(PlayerContext);
 
-  const totalTime = 8 * 60 + 1;
+  const totalTime = 6 * 60 + 26;
 
   async function enablePrepFreq() {
     setLoadingSound(true);
     setSound((state) => ({ ...!state, isEnabledPrep: !sound.isEnabledPrep }));
     stopDBMetering(recording, setRecording);
     await playPrep();
+  }
+
+  async function unloadSound(sound, status) {
+    sound.unloadAsync() || undefined;
+    setSound((state) => ({
+      ...!state,
+      isEnabledPrep: false,
+    }));
+    setVisualizerParams(defaultVisualizerParams);
+    setCurrTimePrep(0);
+    setCurrStatus({ status });
+    deactivateKeepAwake();
   }
 
   async function playPrep() {
@@ -54,6 +66,7 @@ export default function PrepProgram({ navigation }) {
           if (!isNaN(status.durationMillis)) {
             setCurrTimePrep(Math.floor(status.positionMillis / 1000));
           }
+          if (status.didJustFinish) unloadSound(sound, "finished");
         }
       );
 
@@ -66,13 +79,7 @@ export default function PrepProgram({ navigation }) {
 
       sound.playAsync();
       activateKeepAwakeAsync();
-    } else {
-      currSound.unloadAsync() || undefined;
-      setVisualizerParams(defaultVisualizerParams);
-      setCurrTimePrep(0);
-      setCurrStatus({ status: "not-playing" });
-      deactivateKeepAwake();
-    }
+    } else unloadSound(currSound, "not-playing");
     setLoadingSound(false);
   }
 
