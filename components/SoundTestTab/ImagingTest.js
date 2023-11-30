@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { Fragment, useContext } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Audio } from "expo-av";
 
@@ -25,80 +25,44 @@ export default function ImagingTest({ navigation }) {
   } = useContext(Context);
   const { isProMember } = useRevenueCat();
 
-  async function enableOverTest() {
-    setSound((state) => ({ ...!state, isEnabledOver: !sound.isEnabledOver }));
-    stopDBMetering(recording, setRecording);
-    await playTest();
+  const soundtests = [
+    {
+      name: "Arc Over",
+      objName: "inEnabledOver",
+      file: require("../../assets/soundtests/over.mp3"),
+    },
+    {
+      name: "Lateral",
+      objName: "inEnabledLateral",
+      file: require("../../assets/soundtests/lateral.mp3"),
+    },
+    {
+      name: "Behind",
+      objName: "inEnabledBehind",
+      file: require("../../assets/soundtests/behind.mp3"),
+    },
+  ];
 
-    async function playTest() {
-      if (!sound.isEnabledOver) {
-        if (currSound) currSound.unloadAsync() || undefined;
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/soundtests/over.mp3"),
-          {
-            isLooping: true,
-          }
-        );
-
-        resetVisualizer(setVisualizerParams);
-        setCurrSound(sound);
-        await sound.playAsync();
-      } else currSound.unloadAsync() || undefined;
-    }
-  }
-
-  async function enableLateral() {
+  async function enableSoundTest(curr) {
     setSound((state) => ({
       ...!state,
-      isEnabledLateral: !sound.isEnabledLateral,
+      [curr.objName]: !sound[curr.objName],
     }));
     stopDBMetering(recording, setRecording);
     await playTest();
 
     async function playTest() {
-      if (!sound.isEnabledLateral) {
+      if (!sound[curr.objName]) {
         if (currSound) currSound.unloadAsync() || undefined;
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/soundtests/lateral.mp3"),
-          {
-            isLooping: true,
-          }
-        );
+        const { sound } = await Audio.Sound.createAsync(curr.file, {
+          isLooping: true,
+        });
 
         resetVisualizer(setVisualizerParams);
         setCurrSound(sound);
         await sound.playAsync();
       } else currSound.unloadAsync() || undefined;
     }
-  }
-
-  async function enableBehind() {
-    setSound((state) => ({
-      ...!state,
-      isEnabledBehind: !sound.isEnabledBehind,
-    }));
-    stopDBMetering(recording, setRecording);
-    await playTest();
-
-    async function playTest() {
-      if (!sound.isEnabledBehind) {
-        if (currSound) currSound.unloadAsync() || undefined;
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/soundtests/behind.mp3"),
-          {
-            isLooping: true,
-          }
-        );
-
-        resetVisualizer(setVisualizerParams);
-        setCurrSound(sound);
-        await sound.playAsync();
-      } else currSound.unloadAsync() || undefined;
-    }
-  }
-
-  function openImagingModal() {
-    navigation.navigate("ImagingInfo");
   }
 
   return (
@@ -114,95 +78,49 @@ export default function ImagingTest({ navigation }) {
         </View>
 
         <TouchableOpacity
-          onPress={openImagingModal}
+          onPress={() => navigation.navigate("ImagingInfo")}
           className="bg-[#05103A] items-center justify-center h-8 w-8 mr-3 rounded-md"
         >
           <FontAwesome5 name="info" size={20} color="white" />
         </TouchableOpacity>
       </View>
 
-      <View className="flex-row bg-[#101C43] items-center justify-between mb-3">
-        <TouchableOpacity
-          onPress={
-            isProMember ? enableOverTest : () => openPurchaseModal(navigation)
-          }
-        >
-          <View
-            className={`${
-              sound.isEnabledOver ? "bg-[#87e5fa]" : "bg-[#05103A]"
-            } items-center justify-center w-24 p-2 ml-3 rounded-xl`}
-          >
-            <View
-              className={`${
-                sound.isEnabledOver ? "bg-[#74daf1]" : "bg-[#101C43]"
-              } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
+      <View className="flex-row bg-[#101C43] items-center justify-between mx-3 mb-4">
+        {soundtests.map((curr, idx) => (
+          <Fragment>
+            <TouchableOpacity
+              onPress={
+                isProMember
+                  ? () => enableSoundTest(curr)
+                  : () => openPurchaseModal(navigation)
+              }
             >
-              <Icon
-                name={sound.isEnabledOver ? "pause" : "play"}
-                size={30}
-                color="white"
-              />
-            </View>
+              <View
+                className={`${
+                  sound[curr.objName] ? "bg-[#87e5fa]" : "bg-[#05103A]"
+                } items-center justify-center w-24 p-2 rounded-xl`}
+              >
+                <View
+                  className={`${
+                    sound[curr.objName] ? "bg-[#74daf1]" : "bg-[#101C43]"
+                  } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
+                >
+                  <Icon
+                    name={sound[curr.objName] ? "pause" : "play"}
+                    size={30}
+                    color="white"
+                  />
+                </View>
 
-            <Text className="text-white mt-3">Arc Over</Text>
-          </View>
-        </TouchableOpacity>
+                <Text className="text-white mt-3">{curr.name}</Text>
+              </View>
+            </TouchableOpacity>
 
-        <View className="h-[75%] w-[1px] bg-[#05103A]" />
-
-        <TouchableOpacity
-          onPress={
-            isProMember ? enableLateral : () => openPurchaseModal(navigation)
-          }
-        >
-          <View
-            className={`${
-              sound.isEnabledLateral ? "bg-[#87e5fa]" : "bg-[#05103A]"
-            } items-center justify-center w-24 p-2 rounded-xl`}
-          >
-            <View
-              className={`${
-                sound.isEnabledLateral ? "bg-[#74daf1]" : "bg-[#101C43]"
-              } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
-            >
-              <Icon
-                name={sound.isEnabledLateral ? "pause" : "play"}
-                size={30}
-                color="white"
-              />
-            </View>
-
-            <Text className="text-white mt-3">Lateral</Text>
-          </View>
-        </TouchableOpacity>
-
-        <View className="h-[75%] w-[1px] bg-[#05103A]" />
-
-        <TouchableOpacity
-          onPress={
-            isProMember ? enableBehind : () => openPurchaseModal(navigation)
-          }
-        >
-          <View
-            className={`${
-              sound.isEnabledBehind ? "bg-[#87e5fa]" : "bg-[#05103A]"
-            } items-center justify-center w-24 p-2 mr-3 rounded-xl`}
-          >
-            <View
-              className={`${
-                sound.isEnabledBehind ? "bg-[#74daf1]" : "bg-[#101C43]"
-              } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
-            >
-              <Icon
-                name={sound.isEnabledBehind ? "pause" : "play"}
-                size={30}
-                color="white"
-              />
-            </View>
-
-            <Text className="text-white mt-3">Behind</Text>
-          </View>
-        </TouchableOpacity>
+            {idx !== soundtests.length - 1 && (
+              <View className="h-[75%] w-[1px] bg-[#05103A]" />
+            )}
+          </Fragment>
+        ))}
       </View>
     </View>
   );

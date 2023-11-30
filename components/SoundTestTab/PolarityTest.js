@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, Fragment } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Audio } from "expo-av";
 
@@ -24,23 +24,53 @@ export default function PolarityTest({ navigation }) {
   } = useContext(Context);
   const { isProMember } = useRevenueCat();
 
-  async function enableInPhaseRumble() {
+  const soundtests = [
+    {
+      name: "Rumble In Phase",
+      objName: "isEnabledInPhaseRumble",
+      file: require("../../assets/soundtests/in-phase-rumble.mp3"),
+    },
+    {
+      name: "75 Hz Tone In Phase",
+      objName: "isEnabled75hzInPhase",
+      file: require("../../assets/soundtests/in-phase-75hz.mp3"),
+    },
+    {
+      name: "Guitar In Phase",
+      objName: "isEnabledGuitarInPhase",
+      file: require("../../assets/soundtests/in-phase-guitar.mp3"),
+    },
+    {
+      name: "Rumble Out of Phase",
+      objName: "isEnabledOffPhaseRumble",
+      file: require("../../assets/soundtests/off-phase-rumble.mp3"),
+    },
+    {
+      name: "75 Hz Out of Phase",
+      objName: "isEnabled75hzOffPhase",
+      file: require("../../assets/soundtests/off-phase-75hz.mp3"),
+    },
+    {
+      name: "Guitar Out of Phase",
+      objName: "isEnabledGuitarOffPhase",
+      file: require("../../assets/soundtests/off-phase-guitar.mp3"),
+    },
+  ];
+
+  async function enableSoundTest(item) {
     setSound((state) => ({
       ...!state,
-      isEnabledInPhaseRumble: !sound.isEnabledInPhaseRumble,
+      [item.objName]: !sound[item.objName],
     }));
     stopDBMetering(recording, setRecording);
     await playPolarity();
 
     async function playPolarity() {
-      if (!sound.isEnabledInPhaseRumble) {
+      if (!sound[item.objName]) {
         if (currSound) currSound.unloadAsync() || undefined;
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/soundtests/in-phase-rumble.mp3"),
-          {
-            isLooping: true,
-          }
-        );
+        const { sound } = await Audio.Sound.createAsync(item.file, {
+          isLooping: true,
+        });
 
         resetVisualizer(setVisualizerParams);
         setCurrSound(sound);
@@ -48,139 +78,6 @@ export default function PolarityTest({ navigation }) {
       } else currSound.unloadAsync() || undefined;
     }
   }
-
-  async function enableOffPhaseRumble() {
-    setSound((state) => ({
-      ...!state,
-      isEnabledOffPhaseRumble: !sound.isEnabledOffPhaseRumble,
-    }));
-    stopDBMetering(recording, setRecording);
-    await playPolarity();
-
-    async function playPolarity() {
-      if (!sound.isEnabledOffPhaseRumble) {
-        if (currSound) currSound.unloadAsync() || undefined;
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/soundtests/off-phase-rumble.mp3"),
-          {
-            isLooping: true,
-          }
-        );
-
-        resetVisualizer(setVisualizerParams);
-        setCurrSound(sound);
-        await sound.playAsync();
-      } else currSound.unloadAsync() || undefined;
-    }
-  }
-
-  async function enable75hzInPhase() {
-    setSound((state) => ({
-      ...!state,
-      isEnabled75hzInPhase: !sound.isEnabled75hzInPhase,
-    }));
-    stopDBMetering(recording, setRecording);
-    await playPolarity();
-
-    async function playPolarity() {
-      if (!sound.isEnabled75hzInPhase) {
-        if (currSound) currSound.unloadAsync() || undefined;
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/soundtests/in-phase-75hz.mp3"),
-          {
-            isLooping: true,
-          }
-        );
-
-        resetVisualizer(setVisualizerParams);
-        setCurrSound(sound);
-        await sound.playAsync();
-      } else currSound.unloadAsync() || undefined;
-    }
-  }
-
-  async function enable75hzOffPhase() {
-    setSound((state) => ({
-      ...!state,
-      isEnabled75hzOffPhase: !sound.isEnabled75hzOffPhase,
-    }));
-    stopDBMetering(recording, setRecording);
-    await playPolarity();
-
-    async function playPolarity() {
-      if (!sound.isEnabled75hzOffPhase) {
-        if (currSound) currSound.unloadAsync() || undefined;
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/soundtests/off-phase-75hz.mp3"),
-          {
-            isLooping: true,
-          }
-        );
-
-        resetVisualizer(setVisualizerParams);
-        setCurrSound(sound);
-        await sound.playAsync();
-      } else currSound.unloadAsync() || undefined;
-    }
-  }
-
-  async function enabledGuitarInPhase() {
-    setSound((state) => ({
-      ...!state,
-      isEnabledGuitarInPhase: !sound.isEnabledGuitarInPhase,
-    }));
-    stopDBMetering(recording, setRecording);
-    playPolarity();
-
-    async function playPolarity() {
-      if (!sound.isEnabledGuitarInPhase) {
-        if (currSound) currSound.unloadAsync() || undefined;
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/soundtests/in-phase-guitar.mp3"),
-          {
-            isLooping: true,
-          }
-        );
-
-        resetVisualizer(setVisualizerParams);
-        setCurrSound(sound);
-        await sound.playAsync();
-      } else currSound.unloadAsync() || undefined;
-    }
-  }
-
-  async function enabledGuitarOffPhase() {
-    setSound((state) => ({
-      ...!state,
-      isEnabledGuitarOffPhase: !sound.isEnabledGuitarOffPhase,
-    }));
-    stopDBMetering(recording, setRecording);
-    playPolarity();
-
-    async function playPolarity() {
-      if (!sound.isEnabledGuitarOffPhase) {
-        if (currSound) currSound.unloadAsync() || undefined;
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/soundtests/off-phase-guitar.mp3"),
-          {
-            isLooping: true,
-          }
-        );
-
-        resetVisualizer(setVisualizerParams);
-        setCurrSound(sound);
-        await sound.playAsync();
-      } else currSound.unloadAsync() || undefined;
-    }
-  }
-
-  function openInfoModal() {
-    navigation.navigate("PolarityInfo");
-  }
-
-  // TODO - see if you can optimize the structure and make in dynamically generated
-  const testsInPhase = ["RumbleInPhase", "HzInPhase", "GuitarInPhase"];
-  const testsOutPhase = ["RumbleOutPhase", "HzOutPhase", "GuitarOutPhase"];
 
   return (
     <View
@@ -199,203 +96,50 @@ export default function PolarityTest({ navigation }) {
         </View>
 
         <TouchableOpacity
-          onPress={openInfoModal}
+          onPress={() => navigation.navigate("PolarityInfo")}
           className="bg-[#05103A] items-center justify-center h-8 w-8 mr-3 rounded-md"
         >
           <FontAwesome5 name="info" size={20} color="white" />
         </TouchableOpacity>
       </View>
 
-      <View className="in-phase-group flex-row bg-[#101C43] items-center justify-between mb-3">
-        <TouchableOpacity
-          onPress={
-            isProMember
-              ? enableInPhaseRumble
-              : () => openPurchaseModal(navigation)
-          }
-        >
-          <View
-            className={`${
-              sound.isEnabledInPhaseRumble ? "bg-[#87e5fa]" : "bg-[#05103A]"
-            } items-center justify-center w-24 p-2 ml-3 rounded-xl`}
-          >
-            <View
-              className={`${
-                sound.isEnabledInPhaseRumble ? "bg-[#74daf1]" : "bg-[#101C43]"
-              } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
+      <View className="flex-row flex-wrap bg-[#101C43] items-center justify-between mx-3 mb-3">
+        {soundtests.map((curr, idx) => (
+          <Fragment>
+            <TouchableOpacity
+              className="mb-4"
+              onPress={
+                isProMember
+                  ? () => enableSoundTest(curr)
+                  : () => openPurchaseModal(navigation)
+              }
             >
-              <Icon
-                name={sound.isEnabledInPhaseRumble ? "pause" : "play"}
-                size={30}
-                color="white"
-              />
-            </View>
+              <View
+                className={`${
+                  sound[curr.objName] ? "bg-[#87e5fa]" : "bg-[#05103A]"
+                } items-center justify-center w-24 p-2 rounded-xl`}
+              >
+                <View
+                  className={`${
+                    sound[curr.objName] ? "bg-[#74daf1]" : "bg-[#101C43]"
+                  } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
+                >
+                  <Icon
+                    name={sound[curr.objName] ? "pause" : "play"}
+                    size={30}
+                    color="white"
+                  />
+                </View>
 
-            <Text className="text-white text-center mt-3">
-              Rumble {"\n"} In Phase
-            </Text>
-          </View>
-        </TouchableOpacity>
+                <Text className="text-white text-center mt-3">{curr.name}</Text>
+              </View>
+            </TouchableOpacity>
 
-        <View className="devider h-[75%] w-[1px] bg-[#05103A]" />
-
-        <TouchableOpacity
-          onPress={
-            isProMember
-              ? enable75hzInPhase
-              : () => openPurchaseModal(navigation)
-          }
-        >
-          <View
-            className={`${
-              sound.isEnabled75hzInPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
-            } items-center justify-center w-24 p-2 rounded-xl`}
-          >
-            <View
-              className={`${
-                sound.isEnabled75hzInPhase ? "bg-[#74daf1]" : "bg-[#101C43]"
-              } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
-            >
-              <Icon
-                name={sound.isEnabled75hzInPhase ? "pause" : "play"}
-                size={30}
-                color="white"
-              />
-            </View>
-
-            <Text className="text-white text-center mt-3">
-              75 Hz Tone {"\n"} In Phase
-            </Text>
-          </View>
-        </TouchableOpacity>
-
-        <View className="devider h-[75%] w-[1px] bg-[#05103A]" />
-
-        <TouchableOpacity
-          onPress={
-            isProMember
-              ? enabledGuitarInPhase
-              : () => openPurchaseModal(navigation)
-          }
-        >
-          <View
-            className={`${
-              sound.isEnabledGuitarInPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
-            } items-center justify-center w-24 mr-3 p-2 rounded-xl`}
-          >
-            <View
-              className={`${
-                sound.isEnabledGuitarInPhase ? "bg-[#74daf1]" : "bg-[#101C43]"
-              } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
-            >
-              <Icon
-                name={sound.isEnabledGuitarInPhase ? "pause" : "play"}
-                size={30}
-                color="white"
-              />
-            </View>
-
-            <Text className="text-white text-center mt-3">
-              Guitar {"\n"} In Phase
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-
-      <View className="off-phase-group flex-row bg-[#101C43] items-center justify-between mt-2 mb-3">
-        <TouchableOpacity
-          onPress={
-            isProMember
-              ? enableOffPhaseRumble
-              : () => openPurchaseModal(navigation)
-          }
-        >
-          <View
-            className={`${
-              sound.isEnabledOffPhaseRumble ? "bg-[#87e5fa]" : "bg-[#05103A]"
-            } items-center justify-center w-24 p-2 ml-3 rounded-xl`}
-          >
-            <View
-              className={`${
-                sound.isEnabledOffPhaseRumble ? "bg-[#74daf1]" : "bg-[#101C43]"
-              } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
-            >
-              <Icon
-                name={sound.isEnabledOffPhaseRumble ? "pause" : "play"}
-                size={30}
-                color="white"
-              />
-            </View>
-
-            <Text className="text-white text-center mt-3">
-              Rumble Out of Phase
-            </Text>
-          </View>
-        </TouchableOpacity>
-
-        <View className="h-[75%] w-[1px] bg-[#05103A]" />
-
-        <TouchableOpacity
-          onPress={
-            isProMember
-              ? enable75hzOffPhase
-              : () => openPurchaseModal(navigation)
-          }
-        >
-          <View
-            className={`${
-              sound.isEnabled75hzOffPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
-            } items-center justify-center w-24 p-2 rounded-xl`}
-          >
-            <View
-              className={`${
-                sound.isEnabled75hzOffPhase ? "bg-[#74daf1]" : "bg-[#101C43]"
-              } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
-            >
-              <Icon
-                name={sound.isEnabled75hzOffPhase ? "pause" : "play"}
-                size={30}
-                color="white"
-              />
-            </View>
-
-            <Text className="text-white text-center mt-3">
-              75 Hz Out of Phase
-            </Text>
-          </View>
-        </TouchableOpacity>
-
-        <View className="h-[75%] w-[1px] bg-[#05103A]" />
-
-        <TouchableOpacity
-          onPress={
-            isProMember
-              ? enabledGuitarOffPhase
-              : () => openPurchaseModal(navigation)
-          }
-        >
-          <View
-            className={`${
-              sound.isEnabledGuitarOffPhase ? "bg-[#87e5fa]" : "bg-[#05103A]"
-            } items-center justify-center w-24 p-2 mr-3 rounded-xl`}
-          >
-            <View
-              className={`${
-                sound.isEnabledGuitarOffPhase ? "bg-[#74daf1]" : "bg-[#101C43]"
-              } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
-            >
-              <Icon
-                name={sound.isEnabledGuitarOffPhase ? "pause" : "play"}
-                size={30}
-                color="white"
-              />
-            </View>
-
-            <Text className="text-white text-center mt-3">
-              Guitar Out of Phase
-            </Text>
-          </View>
-        </TouchableOpacity>
+            {idx !== 2 && idx !== soundtests.length - 1 && (
+              <View className="devider h-[30%] w-[1px] bg-[#05103A]" />
+            )}
+          </Fragment>
+        ))}
       </View>
     </View>
   );

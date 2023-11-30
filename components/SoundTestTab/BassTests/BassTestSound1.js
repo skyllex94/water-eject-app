@@ -85,8 +85,8 @@ export default function BassTestSound1({ navigation }) {
     <TouchableOpacity className="overall-sound1 items-center">
       <TouchableOpacity
         className={`${
-          sound.isEnabledUsedTo ? "w-[95%] bg-[#4AD0EE] rounded-xl" : "w-[95%]"
-        } `}
+          sound.isEnabledUsedTo && "bg-[#4AD0EE]"
+        } w-[95%] rounded-xl`}
         onPress={
           isProMember ? enableUsedToTest : () => navigation.navigate("Paywall")
         }

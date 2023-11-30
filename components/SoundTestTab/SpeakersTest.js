@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
+import React, { Fragment, useContext } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
 import { Audio } from "expo-av";
 
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -11,6 +11,8 @@ import {
   resetVisualizer,
   stopDBMetering,
 } from "../Utils/Funcs";
+
+import { bgColor, buttonsColor } from "../../constants/ColorsUI";
 
 export default function SpeakersTest({ navigation }) {
   // Test sound states
@@ -25,21 +27,18 @@ export default function SpeakersTest({ navigation }) {
   } = useContext(Context);
   const { isProMember } = useRevenueCat();
 
-  async function enableFrontSpeaker() {
-    setSound((state) => ({ ...!state, isEnabledFront: !sound.isEnabledFront }));
+  async function enableSoundTest(item) {
+    setSound((state) => ({ ...!state, [item.objName]: !sound[item.objName] }));
     stopDBMetering(recording, setRecording);
-    playSpeaker();
+    playSound(item);
   }
 
-  async function playSpeaker() {
-    if (!sound.isEnabledFront) {
+  async function playSound(item) {
+    if (!sound[item.objName]) {
       if (currSound) currSound.unloadAsync() || undefined;
-      const { sound } = await Audio.Sound.createAsync(
-        require("../../assets/soundtests/right-speaker.mp3"),
-        {
-          isLooping: true,
-        }
-      );
+      const { sound } = await Audio.Sound.createAsync(item.file, {
+        isLooping: true,
+      });
 
       resetVisualizer(setVisualizerParams);
       setCurrSound(sound);
@@ -47,53 +46,23 @@ export default function SpeakersTest({ navigation }) {
     } else currSound.unloadAsync() || undefined;
   }
 
-  async function enableBackSpeaker() {
-    setSound((state) => ({ ...!state, isEnabledBack: !sound.isEnabledBack }));
-    stopDBMetering(recording, setRecording);
-    playSpeaker();
-
-    async function playSpeaker() {
-      if (!sound.isEnabledBack) {
-        if (currSound) currSound.unloadAsync() || undefined;
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/soundtests/left-speaker.mp3"),
-          {
-            isLooping: true,
-          }
-        );
-
-        resetVisualizer(setVisualizerParams);
-        setCurrSound(sound);
-        await sound.playAsync();
-      } else currSound.unloadAsync() || undefined;
-    }
-  }
-
-  async function enableBothSpeakers() {
-    setSound((state) => ({ ...!state, isEnabledBoth: !sound.isEnabledBoth }));
-    stopDBMetering(recording, setRecording);
-    await playSpeaker();
-
-    async function playSpeaker() {
-      if (!sound.isEnabledBoth) {
-        if (currSound) currSound.unloadAsync() || undefined;
-        const { sound } = await Audio.Sound.createAsync(
-          require("../../assets/soundtests/both-speakers.mp3"),
-          {
-            isLooping: true,
-          }
-        );
-
-        resetVisualizer(setVisualizerParams);
-        setCurrSound(sound);
-        await sound.playAsync();
-      } else currSound.unloadAsync() || undefined;
-    }
-  }
-
-  const openSpeakerIsolationInfo = () => {
-    navigation.navigate("IsolationInfo");
-  };
+  const soundtest = [
+    {
+      name: "Ear Phone Speaker",
+      objName: "isEnabledFront",
+      file: require("../../assets/soundtests/right-speaker.mp3"),
+    },
+    {
+      name: "Both Speakers",
+      objName: "isEnabledBoth",
+      file: require("../../assets/soundtests/both-speakers.mp3"),
+    },
+    {
+      name: "Bottom Speaker",
+      objName: "isEnabledBack",
+      file: require("../../assets/soundtests/left-speaker.mp3"),
+    },
+  ];
 
   return (
     <View className="bg-[#101C43] justify-center rounded-xl mx-3 mt-4">
@@ -109,103 +78,51 @@ export default function SpeakersTest({ navigation }) {
         </View>
 
         <TouchableOpacity
-          onPress={openSpeakerIsolationInfo}
-          className="bg-[#05103A] items-center justify-center h-8 w-8 mr-3 rounded-md"
+          onPress={() => navigation.navigate("IsolationInfo")}
+          className={`bg-[${bgColor}] items-center justify-center h-8 w-8 mr-3 rounded-md`}
         >
           <FontAwesome5 name="info" size={20} color="white" />
         </TouchableOpacity>
       </View>
 
-      <View className="flex-row bg-[#101C43] items-center justify-between mb-3">
-        <TouchableOpacity
-          onPress={
-            isProMember
-              ? enableFrontSpeaker
-              : () => openPurchaseModal(navigation)
-          }
-        >
-          <View
-            className={`${
-              sound.isEnabledFront ? "bg-[#87e5fa]" : "bg-[#05103A]"
-            } items-center justify-center w-24 p-2 ml-3 rounded-xl`}
-          >
-            <View
-              className={`${
-                sound.isEnabledFront ? "bg-[#74daf1]" : "bg-[#101C43]"
-              } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
+      <View
+        className={`flex-row bg-[${buttonsColor}] items-center justify-between mb-3 mx-3`}
+      >
+        {soundtest.map((curr, idx) => (
+          <Fragment>
+            <TouchableOpacity
+              onPress={
+                isProMember
+                  ? () => enableSoundTest(curr)
+                  : () => openPurchaseModal(navigation)
+              }
             >
-              <Icon
-                name={sound.isEnabledFront ? "pause" : "play"}
-                size={30}
-                color="white"
-              />
-            </View>
+              <View
+                className={`${
+                  sound[curr.objName] ? "bg-[#87e5fa]" : "bg-[#05103A]"
+                } items-center justify-center w-24 p-2 rounded-xl`}
+              >
+                <View
+                  className={`${
+                    sound[curr.objName] ? "bg-[#74daf1]" : "bg-[#101C43]"
+                  } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
+                >
+                  <Icon
+                    name={sound[curr.objName] ? "pause" : "play"}
+                    size={30}
+                    color="white"
+                  />
+                </View>
 
-            <Text className="text-white text-center mt-3">
-              Ear Phone Speaker
-            </Text>
-          </View>
-        </TouchableOpacity>
+                <Text className="text-white text-center mt-3">{curr.name}</Text>
+              </View>
+            </TouchableOpacity>
 
-        <View className="h-[75%] w-[1px] bg-[#05103A]" />
-
-        <TouchableOpacity
-          onPress={
-            isProMember
-              ? enableBothSpeakers
-              : () => openPurchaseModal(navigation)
-          }
-        >
-          <View
-            className={`${
-              sound.isEnabledBoth ? "bg-[#87e5fa]" : "bg-[#05103A]"
-            } items-center justify-center w-24 p-2 rounded-xl`}
-          >
-            <View
-              className={`${
-                sound.isEnabledBoth ? "bg-[#74daf1]" : "bg-[#101C43]"
-              } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
-            >
-              <Icon
-                name={sound.isEnabledBoth ? "pause" : "play"}
-                size={30}
-                color="white"
-              />
-            </View>
-
-            <Text className="text-white text-center mt-3">Both Speakers</Text>
-          </View>
-        </TouchableOpacity>
-
-        <View className="h-[75%] w-[1px] bg-[#05103A]" />
-
-        <TouchableOpacity
-          onPress={
-            isProMember
-              ? enableBackSpeaker
-              : () => openPurchaseModal(navigation)
-          }
-        >
-          <View
-            className={`${
-              sound.isEnabledBack ? "bg-[#87e5fa]" : "bg-[#05103A]"
-            } items-center justify-center w-24 p-2 mr-3 rounded-xl`}
-          >
-            <View
-              className={`${
-                sound.isEnabledBack ? "bg-[#74daf1]" : "bg-[#101C43]"
-              } items-center justify-center w-12 h-12 mt-1 rounded-xl`}
-            >
-              <Icon
-                name={sound.isEnabledBack ? "pause" : "play"}
-                size={30}
-                color="white"
-              />
-            </View>
-
-            <Text className="text-white text-center mt-3">Bottom Speaker</Text>
-          </View>
-        </TouchableOpacity>
+            {idx !== soundtest.length - 1 && (
+              <View className="h-[75px] w-[1px] mx-4 bg-[#05103A]" />
+            )}
+          </Fragment>
+        ))}
       </View>
     </View>
   );

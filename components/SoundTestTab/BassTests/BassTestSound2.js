@@ -84,10 +84,8 @@ export default function BassTestSound2({ navigation }) {
     <TouchableOpacity className="overall-sound2 items-center">
       <TouchableOpacity
         className={`${
-          sound.isEnabled151Rum
-            ? "w-[95%] bg-[#4AD0EE] my-3 rounded-xl"
-            : "w-[95%] my-3"
-        } `}
+          sound.isEnabled151Rum && "bg-[#4AD0EE]"
+        } w-[95%] mt-3 mb-4 rounded-xl`}
         onPress={
           isProMember ? enable151RumBass : () => openPurchaseModal(navigation)
         }
