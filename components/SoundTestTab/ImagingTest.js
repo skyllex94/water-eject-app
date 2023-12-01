@@ -87,7 +87,7 @@ export default function ImagingTest({ navigation }) {
 
       <View className="flex-row bg-[#101C43] items-center justify-between mx-3 mb-4">
         {soundtests.map((curr, idx) => (
-          <Fragment>
+          <Fragment key={idx}>
             <TouchableOpacity
               onPress={
                 isProMember

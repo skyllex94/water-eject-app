@@ -110,8 +110,9 @@ export default function Frequencies({ navigation }) {
         </View>
 
         <View className="flex-row flex-wrap justify-center">
-          {frequencies.map((curr) => (
+          {frequencies.map((curr, idx) => (
             <TouchableOpacity
+              key={idx}
               onPress={() => enableCurrFreq(curr)}
               className={`justify-center rounded-2xl w-[45%] m-[7px] h-[120px] p-[10px] ${
                 sound[curr.objName] ? `bg-[${activeColor}]` : `bg-[${bgColor}]`

@@ -89,7 +89,7 @@ export default function SpeakersTest({ navigation }) {
         className={`flex-row bg-[${buttonsColor}] items-center justify-between mb-3 mx-3`}
       >
         {soundtest.map((curr, idx) => (
-          <Fragment>
+          <Fragment key={idx}>
             <TouchableOpacity
               onPress={
                 isProMember

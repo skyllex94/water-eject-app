@@ -105,7 +105,7 @@ export default function PolarityTest({ navigation }) {
 
       <View className="flex-row flex-wrap bg-[#101C43] items-center justify-between mx-3 mb-3">
         {soundtests.map((curr, idx) => (
-          <Fragment>
+          <Fragment key={idx}>
             <TouchableOpacity
               className="mb-4"
               onPress={

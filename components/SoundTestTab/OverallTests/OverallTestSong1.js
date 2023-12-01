@@ -1,15 +1,9 @@
-import React, { useRef, useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { Audio } from "expo-av";
 
 import Icon from "react-native-vector-icons/FontAwesome";
-import {
-  resetVisualizer,
-  startTimer,
-  stopDBMetering,
-  stopTimer,
-  stopWaveformTimer,
-} from "../../Utils/Funcs";
+import { resetVisualizer, stopDBMetering } from "../../Utils/Funcs";
 import SoundTestWave from "../SoundTestWave";
 import { Context } from "../../../contexts/Context";
 
@@ -24,29 +18,9 @@ export default function OverallTestSong1() {
     setRecording,
   } = useContext(Context);
 
-  const [loadingSound, setLoadingSound] = useState(false);
-
-  // JK States and Refs
-  const [seconds, setSeconds] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-  const [waveformTime, setWaveformTime] = useState(0);
+  const [currTime, setCurrTime] = useState(0);
   const totalTimeJK = 69; // in seconds
-
-  const refCounter = useRef();
-  const refWaveFormCounter = useRef();
-
-  // Incrementing minutes for audio timers
-  useEffect(() => {
-    if (seconds > 59) {
-      setMinutes((prev) => prev + 1);
-      setSeconds(0);
-    }
-    if (!sound.isEnabledJKSong || (minutes === 1 && seconds === 9)) {
-      stopTimer(refCounter, setSeconds, setMinutes);
-      stopWaveformTimer(refWaveFormCounter, setWaveformTime);
-      setSound((state) => ({ ...state, isEnabledJKSong: false }));
-    }
-  }, [seconds, waveformTime, sound.isEnabledJKSong]);
+  const [loadingSound, setLoadingSound] = useState(false);
 
   async function enableJKSong() {
     setLoadingSound(true);
@@ -59,26 +33,33 @@ export default function OverallTestSong1() {
     playSong();
   }
 
+  async function unloadSound(sound) {
+    sound.unloadAsync() || undefined;
+    setSound((state) => ({ ...!state, isEnabledJKSong: false }));
+    setCurrTime(0);
+  }
+
   async function playSong() {
     if (!sound.isEnabledJKSong) {
       if (currSound) currSound.unloadAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
-        require("../../../assets/soundtests/jk-whoisjk-baby-what-u-wanna-do.mp3")
+        require("../../../assets/soundtests/jk-whoisjk-baby-what-u-wanna-do.mp3"),
+        {
+          isLooping: false,
+          progressUpdateIntervalMillis: 1000,
+        },
+        (status) => {
+          if (!isNaN(status.durationMillis))
+            setCurrTime(Math.floor(status.positionMillis / 1000));
+          if (status.didJustFinish) unloadSound(sound);
+        }
       );
 
-      resetVisualizer(setVisualizerParams);
       setCurrSound(sound);
-
-      // Start the audio timer state
-      startTimer(refCounter, setSeconds);
-      startTimer(refWaveFormCounter, setWaveformTime);
-
+      resetVisualizer(setVisualizerParams);
       sound.playAsync();
-    } else {
-      currSound.unloadAsync() || undefined;
-      stopTimer(refCounter, setSeconds, setMinutes);
-      stopWaveformTimer(refWaveFormCounter, setWaveformTime);
-    }
+    } else unloadSound(currSound);
+
     setLoadingSound(false);
   }
 
@@ -91,11 +72,9 @@ export default function OverallTestSong1() {
         onPress={enableJKSong}
       >
         <View
-          className={`${
-            sound.isEnabledJKSong
-              ? "bg-[#87E5FA] justify-between py-2 rounded-xl border-white"
-              : "bg-[#05103A] justify-between py-2 rounded-xl border-white"
-          }  `}
+          className={`justify-between py-2 rounded-xl border-white ${
+            sound.isEnabledJKSong ? "bg-[#87E5FA]" : "bg-[#05103A]"
+          }`}
         >
           <View className="flex-row h-14">
             <View
@@ -114,7 +93,7 @@ export default function OverallTestSong1() {
               )}
             </View>
             <SoundTestWave
-              currentTime={waveformTime}
+              currentTime={sound.isEnabledJKSong ? currTime : 0}
               totalTime={totalTimeJK}
               waveform={"https://w1.sndcdn.com/cWHNerOLlkUq_m.png"}
             />
@@ -125,8 +104,11 @@ export default function OverallTestSong1() {
               Overall Test 1 - JK
             </Text>
             <Text className="pt-2 mr-3 font-bold text-white">
-              {minutes}:{seconds < 10 && "0"}
-              {seconds} / 1:09
+              {sound.isEnabledJKSong ? Math.floor(currTime / 60) : "0"}:
+              {sound.isEnabledJKSong ? currTime % 60 < 10 && "0" : 0}
+              {sound.isEnabledJKSong ? currTime % 60 : 0} /{" "}
+              {Math.floor(totalTimeJK / 60)}:{totalTimeJK % 60 < 10 && "0"}
+              {totalTimeJK % 60}
             </Text>
           </View>
         </View>

@@ -1,15 +1,9 @@
-import React, { useRef, useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { Audio } from "expo-av";
 
 import Icon from "react-native-vector-icons/FontAwesome";
-import {
-  resetVisualizer,
-  startTimer,
-  stopDBMetering,
-  stopTimer,
-  stopWaveformTimer,
-} from "../../Utils/Funcs";
+import { resetVisualizer, stopDBMetering } from "../../Utils/Funcs";
 import SoundTestWave from "../SoundTestWave";
 import { Context } from "../../../contexts/Context";
 
@@ -24,28 +18,15 @@ export default function OverallTestSong2() {
     setRecording,
   } = useContext(Context);
 
+  const [currTime, setCurrTime] = useState(0);
+  const totalTimeGL = 45;
   const [loadingSound, setLoadingSound] = useState(false);
 
-  // GoldLink States and Refs
-  const [secsGL, setSecsGL] = useState(0);
-  const [minsGL, setMinsGL] = useState(0);
-  const [waveTimeGL, setWaveTimeGL] = useState(0);
-  const totalTimeGL = 45;
-
-  const refCounterGoldLink = useRef();
-  const refWaveformCounterGoldLink = useRef();
-
-  // Incrementing minutes for audio timers
-  useEffect(() => {
-    if (
-      !sound.isEnabledGoldLinkSong ||
-      (minsGL === 0 && secsGL === totalTimeGL)
-    ) {
-      stopTimer(refCounterGoldLink, setSecsGL, setMinsGL);
-      stopWaveformTimer(refWaveformCounterGoldLink, setWaveTimeGL);
-      setSound((state) => ({ ...state, isEnabledGoldLinkSong: false }));
-    }
-  }, [secsGL, waveTimeGL, sound.isEnabledGoldLinkSong]);
+  async function unloadSound(sound) {
+    sound.unloadAsync() || undefined;
+    setSound((state) => ({ ...!state, isEnabledGoldLinkSong: false }));
+    setCurrTime(0);
+  }
 
   async function enableGoldLinkSong() {
     setLoadingSound(true);
@@ -54,7 +35,6 @@ export default function OverallTestSong2() {
       isEnabledGoldLinkSong: !sound.isEnabledGoldLinkSong,
     }));
     stopDBMetering(recording, setRecording);
-
     playSong();
   }
 
@@ -62,21 +42,21 @@ export default function OverallTestSong2() {
     if (!sound.isEnabledGoldLinkSong) {
       if (currSound) currSound.pauseAsync() || undefined;
       const { sound } = await Audio.Sound.createAsync(
-        require("../../../assets/soundtests/goldlink.mp3")
+        require("../../../assets/soundtests/goldlink.mp3"),
+        {
+          progressUpdateIntervalMillis: 1000,
+        },
+        (status) => {
+          if (!isNaN(status.durationMillis))
+            setCurrTime(Math.floor(status.positionMillis / 1000));
+          if (status.didJustFinish) unloadSound(sound);
+        }
       );
 
-      resetVisualizer(setVisualizerParams);
       setCurrSound(sound);
+      resetVisualizer(setVisualizerParams);
       sound.playAsync();
-
-      // Start the audio timer state
-      startTimer(refCounterGoldLink, setSecsGL);
-      startTimer(refWaveformCounterGoldLink, setWaveTimeGL);
-    } else {
-      currSound.pauseAsync() || undefined;
-      stopTimer(refCounterGoldLink, setSecsGL, setMinsGL);
-      stopWaveformTimer(refWaveformCounterGoldLink, setWaveTimeGL);
-    }
+    } else unloadSound(currSound);
     setLoadingSound(false);
   }
 
@@ -114,7 +94,7 @@ export default function OverallTestSong2() {
               )}
             </View>
             <SoundTestWave
-              currentTime={waveTimeGL}
+              currentTime={sound.isEnabledGoldLinkSong ? currTime : 0}
               totalTime={totalTimeGL}
               waveform={"https://w1.sndcdn.com/XwA2iPEIVF8z_m.png"}
             />
@@ -125,8 +105,11 @@ export default function OverallTestSong2() {
               Overall Test 2 - Zulu
             </Text>
             <Text className="pt-2 mr-3 font-bold text-white">
-              {minsGL}:{secsGL < 10 && "0"}
-              {secsGL} / 0:45
+              {sound.isEnabledGoldLinkSong ? Math.floor(currTime / 60) : "0"}:
+              {sound.isEnabledGoldLinkSong ? currTime % 60 < 10 && "0" : 0}
+              {sound.isEnabledGoldLinkSong ? currTime % 60 : 0} /{" "}
+              {Math.floor(totalTimeGL / 60)}:{totalTimeGL % 60 < 10 && "0"}
+              {totalTimeGL % 60}
             </Text>
           </View>
         </View>

@@ -45,10 +45,7 @@ export default function PrepProgram({ navigation }) {
 
   async function unloadSound(sound, status) {
     sound.unloadAsync() || undefined;
-    setSound((state) => ({
-      ...!state,
-      isEnabledPrep: false,
-    }));
+    setSound((state) => ({ ...!state, isEnabledPrep: false }));
     setVisualizerParams(defaultVisualizerParams);
     setCurrTimePrep(0);
     setCurrStatus({ status });
