@@ -1,8 +1,8 @@
 import { SafeAreaView, Text, ScrollView } from "react-native";
 import React, { useState } from "react";
 
-import OverallTest from "../components/SoundTestTab/OverallTests/OverallTest";
-import BassTest from "../components/SoundTestTab/BassTests/BassTest";
+import OverallTest from "../components/SoundTestTab/OverallTest";
+import BassTest from "../components/SoundTestTab/BassTest";
 import SpeakersTest from "../components/SoundTestTab/SpeakersTest";
 import PolarityTest from "../components/SoundTestTab/PolarityTest";
 import ImagingTest from "../components/SoundTestTab/ImagingTest";
@@ -68,13 +68,9 @@ function SoundTests({ navigation }) {
 
       <ScrollView>
         <OverallTest />
-
         <SpeakersTest navigation={navigation} />
-
         <BassTest navigation={navigation} />
-
         <PolarityTest navigation={navigation} />
-
         <ImagingTest navigation={navigation} />
       </ScrollView>
     </SafeAreaView>

@@ -1,0 +1,168 @@
+import React, { useContext, useState } from "react";
+
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
+import { Audio } from "expo-av";
+
+import Icon from "react-native-vector-icons/FontAwesome";
+import { resetVisualizer, stopDBMetering } from "../Utils/Funcs";
+import SoundTestWave from "./SoundTestWave";
+import { Context } from "../../contexts/Context";
+import useRevenueCat from "../../hooks/useRevenueCat";
+import { FontAwesome5 } from "@expo/vector-icons";
+
+export default function BassTest({ navigation }) {
+  const { isProMember } = useRevenueCat();
+  const {
+    sound,
+    setSound,
+    currSound,
+    setCurrSound,
+    setVisualizerParams,
+    recording,
+    setRecording,
+  } = useContext(Context);
+
+  const [songs, setSongs] = useState([
+    {
+      name: "Bass Instrumental - Used To",
+      objName: "isEnabledUsedTo",
+      file: require("../../assets/soundtests/used-to.mp3"),
+      totalTime: 39,
+      loading: false,
+      waveform: "http://w1.sndcdn.com/fxguEjG4ax6B_m.png",
+      height: 65,
+    },
+    {
+      name: "Bass Instrumental - 151 Rum",
+      objName: "isEnabled151Rum",
+      file: require("../../assets/soundtests/151-rum.mp3"),
+      totalTime: 46,
+      loading: false,
+      waveform: "https://w1.sndcdn.com/cWHNerOLlkUq_m.png",
+    },
+  ]);
+
+  const [currTime, setCurrTime] = useState(0);
+
+  async function enableSoundTest(curr, idx) {
+    setSongs((songs) =>
+      songs.map((song, songIdx) => {
+        if (songIdx === idx) return { ...song, loading: true };
+        return song;
+      })
+    );
+
+    setCurrTime(0);
+    setSound((state) => ({
+      ...!state,
+      [curr.objName]: !sound[curr.objName],
+    }));
+    stopDBMetering(recording, setRecording);
+    playSong();
+
+    async function playSong() {
+      if (!sound[curr.objName]) {
+        if (currSound) currSound.unloadAsync() || undefined;
+        const { sound } = await Audio.Sound.createAsync(
+          curr.file,
+          { progressUpdateIntervalMillis: 1000 },
+          (status) => {
+            if (!isNaN(status.durationMillis))
+              setCurrTime(Math.floor(status.positionMillis / 1000));
+            if (status.didJustFinish) unloadSound(sound, curr);
+          }
+        );
+
+        setCurrSound(sound);
+        resetVisualizer(setVisualizerParams);
+        sound.playAsync();
+      } else unloadSound(currSound, curr);
+
+      setSongs((songs) =>
+        songs.map((song, songIdx) => {
+          if (songIdx === idx) return { ...song, loading: false };
+          return song;
+        })
+      );
+    }
+  }
+
+  async function unloadSound(sound, curr) {
+    setSound((state) => ({ ...!state, [curr.objName]: false }));
+    setCurrTime(0);
+    sound.unloadAsync() || undefined;
+  }
+
+  return (
+    <View className="bg-[#101C43] justify-center rounded-xl mx-3 my-2 pb-3">
+      <View className="flex-row items-center m-5">
+        {!isProMember && (
+          <View className="mr-2">
+            <FontAwesome5 name="lock" size={16} color="white" />
+          </View>
+        )}
+
+        <Text className="text-white">Bass Accuracy</Text>
+      </View>
+
+      {songs.map((curr, idx) => (
+        <TouchableOpacity key={idx} className="bass-tests items-center my-1.5">
+          <TouchableOpacity
+            className={`w-[95%] rounded-xl ${
+              sound[curr.objName] && "bg-[#4AD0EE]"
+            }`}
+            onPress={
+              isProMember
+                ? () => enableSoundTest(curr, idx)
+                : () => navigation.navigate("Paywall")
+            }
+          >
+            <View
+              className={`justify-between py-2 rounded-xl border-white ${
+                sound[curr.objName] ? "bg-[#87E5FA]" : "bg-[#05103A]"
+              }`}
+            >
+              <View className="flex-row h-14">
+                <View
+                  className={`${
+                    sound[curr.objName] ? "bg-[#87e5fa]" : "bg-[#101C43]"
+                  } items-center justify-center w-12 h-12 ml-3 mt-1 rounded-xl`}
+                >
+                  {curr.loading ? (
+                    <ActivityIndicator />
+                  ) : (
+                    <Icon
+                      name={sound[curr.objName] ? "stop" : "play"}
+                      size={30}
+                      color="white"
+                    />
+                  )}
+                </View>
+                <SoundTestWave
+                  currentTime={sound[curr.objName] ? currTime : 0}
+                  totalTime={curr.totalTime}
+                  waveform={curr.waveform}
+                  height={curr.height || undefined}
+                />
+              </View>
+
+              <View className="flex-row justify-between">
+                <Text className="pt-2 ml-3 font-bold text-white">
+                  {curr.name}
+                </Text>
+                <Text className="pt-2 mr-3 font-bold text-white">
+                  {sound[curr.objName] ? Math.floor(currTime / 60) : "0"}:
+                  {sound[curr.objName] ? currTime % 60 < 10 && "0" : 0}
+                  {sound[curr.objName] ? currTime % 60 : 0} /{" "}
+                  {Math.floor(curr.totalTime / 60)}:
+                  {curr.totalTime % 60 < 10 && "0"}
+                  {curr.totalTime % 60}
+                </Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+}

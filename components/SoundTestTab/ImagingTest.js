@@ -66,7 +66,7 @@ export default function ImagingTest({ navigation }) {
   }
 
   return (
-    <View className="bg-[#101C43] justify-center rounded-xl mx-3 my-4">
+    <View className="bg-[#101C43] justify-center rounded-xl mx-3 mt-2 mb-4 pb-3">
       <View className="flex-row items-center justify-between">
         <View className="flex-row items-center m-5">
           {!isProMember && (
@@ -85,7 +85,7 @@ export default function ImagingTest({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <View className="flex-row bg-[#101C43] items-center justify-between mx-3 mb-4">
+      <View className="flex-row bg-[#101C43] items-center justify-between mx-3 pb-1">
         {soundtests.map((curr, idx) => (
           <Fragment key={idx}>
             <TouchableOpacity

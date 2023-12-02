@@ -65,7 +65,7 @@ export default function SpeakersTest({ navigation }) {
   ];
 
   return (
-    <View className="bg-[#101C43] justify-center rounded-xl mx-3 mt-4">
+    <View className="bg-[#101C43] justify-center rounded-xl mx-3 my-2 pb-2">
       <View className="flex-row items-center justify-between">
         <View className="flex-row items-center m-5">
           {isProMember ? null : (
@@ -86,7 +86,7 @@ export default function SpeakersTest({ navigation }) {
       </View>
 
       <View
-        className={`flex-row bg-[${buttonsColor}] items-center justify-between mb-3 mx-3`}
+        className={`flex-row bg-[${buttonsColor}] items-center justify-between mb-2 mx-3`}
       >
         {soundtest.map((curr, idx) => (
           <Fragment key={idx}>

@@ -83,7 +83,7 @@ export default function PolarityTest({ navigation }) {
     <View
       className={`${
         isProMember ? "bg-[#101C43]" : "bg-[#101C43]"
-      }  justify-center rounded-xl mx-3 mt-4`}
+      }  justify-center rounded-xl mx-3 my-2 pb-3`}
     >
       <View className="flex-row items-center justify-between">
         <View className="flex-row items-center m-5">
@@ -103,7 +103,7 @@ export default function PolarityTest({ navigation }) {
         </TouchableOpacity>
       </View>
 
-      <View className="flex-row flex-wrap bg-[#101C43] items-center justify-between mx-3 mb-3">
+      <View className="flex-row flex-wrap bg-[#101C43] items-center justify-between mx-3">
         {soundtests.map((curr, idx) => (
           <Fragment key={idx}>
             <TouchableOpacity
