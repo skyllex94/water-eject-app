@@ -21,6 +21,8 @@ import TermsOfUse from "../components/PaywallModal/TermsOfUse";
 import InfoEarpiece from "../components/ClearanceTab/InfoEarpiece";
 import InfoPods from "../components/ClearanceTab/InfoModals/InfoPods";
 
+import Lottie from "../components/SplashScreen/Lottie";
+
 export default function WaterClearance() {
   // React Native Navigator - Stack Navigator initializer
   const Stack = createNativeStackNavigator();
@@ -130,8 +132,13 @@ function WaterClearanceTab({ navigation }) {
 
         <SoundVisualizer />
       </View>
+      <View className="bg-white">
+        <Text>Here we are</Text>
+
+        <Lottie />
+      </View>
+
       <ScrollView>
-        <Frequencies navigation={navigation} />
         <Programs navigation={navigation} />
       </ScrollView>
     </SafeAreaView>
