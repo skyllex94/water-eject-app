@@ -1,4 +1,4 @@
-import { ActivityIndicator, StatusBar, View } from "react-native";
+import { ActivityIndicator, StatusBar, View, Text } from "react-native";
 import { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -13,7 +13,6 @@ import Settings from "./screens/Settings";
 import ToastManager from "toastify-react-native";
 
 // Decibel Metering Imports to be stopped when switching tabs
-import { AudioRecorder } from "react-native-audio";
 import WaterClearance from "./screens/Clearance";
 
 // Introductory slides of the app
@@ -25,6 +24,9 @@ import { DefaultTheme } from "@react-navigation/native";
 // Removing Warning Messages
 import { LogBox } from "react-native";
 import { Audio } from "expo-av";
+import { useCallback } from "react";
+import AnimatedSplashScreen from "./components/SplashScreen/SplashScreen";
+import * as SplashScreen from "expo-splash-screen";
 LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
 LogBox.ignoreAllLogs(); // Ignore all log notifications
 
@@ -37,30 +39,54 @@ const navTheme = {
 };
 
 export default function App() {
+  const [appIsReady, setAppIsReady] = useState(false);
+
   const [loading, setLoading] = useState(true);
   const [isAppFirstLaunched, setIsAppFirstLaunched] = useState();
   const Stack = createNativeStackNavigator();
 
   useEffect(() => {
-    checkIfAppWasLaunched();
+    async function loadApp() {
+      try {
+        // Check if App is started for the first time
+        const value = await AsyncStorage.getItem("@isAppFirstLaunched");
+        console.log("value:", value);
+        if (value === null) setIsAppFirstLaunched(true);
+        else setIsAppFirstLaunched(false);
+
+        // Pre-load fonts, make any API calls you need to do here
+        // Artificially delay for two seconds to simulate a slow loading
+        // experience. Please remove this if you copy and paste the code!
+        <Stack.Screen
+          name="MainApp"
+          component={Main}
+          options={{ headerShown: false }}
+        />;
+
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      } catch (err) {
+        console.log("Error @checkIfAppWasLaunched", err);
+      } finally {
+        // Tell the application to render
+        setAppIsReady(true);
+      }
+    }
+
+    loadApp();
   }, []);
 
-  const checkIfAppWasLaunched = async () => {
-    try {
-      const value = await AsyncStorage.getItem("@isAppFirstLaunched");
-      if (value === null) setIsAppFirstLaunched(true);
-      else setIsAppFirstLaunched(false);
-    } catch (error) {
-      console.log("Error @checkIfAppWasLaunched", error);
-    } finally {
-      setLoading(false);
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
     }
-  };
+  }, [appIsReady]);
 
-  return loading ? (
-    <Loading />
-  ) : (
-    <NavigationContainer theme={navTheme}>
+  if (!appIsReady) {
+    return <AnimatedSplashScreen />;
+  }
+
+  return (
+    <NavigationContainer onLayout={onLayoutRootView} theme={navTheme}>
       <StatusBar
         animated={true}
         backgroundColor="#61dafb"
@@ -163,16 +189,6 @@ const Main = () => {
               />
             ),
           }}
-          // listeners={{
-          //   tabPress: () => {
-          //     SystemSetting.getVolume().then((volume) => {
-          //       console.log("Current volume is in METER " + volume);
-          //     });
-
-          //     // setSound({});
-          //     // currSound.unloadAsync() || undefined;
-          //   },
-          // }}
         />
         <Tab.Screen
           name="Sound Tests"
