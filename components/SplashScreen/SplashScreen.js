@@ -1,9 +1,10 @@
-import { View, Text } from "react-native";
+import { View, Text, ZoomIn, ZoomOut } from "react-native";
 import LottieView from "lottie-react-native";
+import AnimatedLottieView from "lottie-react-native";
 
 export default function SplashScreen() {
   return (
-    <View className="flex-1 bg-[#05103A] items-center justify-center ">
+    <View className="flex-1 bg-[#05103A] items-center justify-center">
       <LottieView
         autoPlay
         style={{

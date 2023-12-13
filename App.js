@@ -1,8 +1,16 @@
-import { ActivityIndicator, StatusBar, View, Text } from "react-native";
+import {
+  ActivityIndicator,
+  StatusBar,
+  View,
+  Text,
+  Animated,
+  FadeIn,
+} from "react-native";
 import { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { Asset } from "expo-asset";
 
 import { Context } from "./contexts/Context";
 import MeterScreen from "./screens/Meter";
@@ -38,32 +46,53 @@ const navTheme = {
   },
 };
 
+const Stack = createNativeStackNavigator();
+
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
-
-  const [loading, setLoading] = useState(true);
   const [isAppFirstLaunched, setIsAppFirstLaunched] = useState();
-  const Stack = createNativeStackNavigator();
+
+  const cacheResources = async () => {
+    const images = [
+      require("./assets/icons/lowfreqIcon.png"),
+      require("./assets/icons/medfreqIcon.png"),
+      require("./assets/icons/highfreqIcon.png"),
+      require("./assets/icons/xthighfreqIcon.png"),
+      require("./assets/images/clearance/airpods.png"),
+      require("./assets/images/clearance/receiver.png"),
+      require("./assets/images/clearance/speaker.png"),
+    ];
+
+    const sounds = [
+      require("./assets/programs/main.mp3"),
+      // require("./assets/icons/medfreqIcon.png"),
+      // require("./assets/icons/highfreqIcon.png"),
+      // require("./assets/icons/xthighfreqIcon.png"),
+    ];
+
+    const cacheImages = images.map((image) =>
+      Asset.fromModule(image).downloadAsync()
+    );
+
+    const cacheSounds = sounds.map((sound) =>
+      Asset.fromModule(sound).downloadAsync()
+    );
+
+    return Promise.all([...cacheImages, ...cacheSounds]);
+  };
 
   useEffect(() => {
     async function loadApp() {
       try {
         // Check if App is started for the first time
         const value = await AsyncStorage.getItem("@isAppFirstLaunched");
-        console.log("value:", value);
         if (value === null) setIsAppFirstLaunched(true);
         else setIsAppFirstLaunched(false);
 
-        // Pre-load fonts, make any API calls you need to do here
-        // Artificially delay for two seconds to simulate a slow loading
-        // experience. Please remove this if you copy and paste the code!
-        <Stack.Screen
-          name="MainApp"
-          component={Main}
-          options={{ headerShown: false }}
-        />;
+        // Load Resources
+        await cacheResources();
 
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        // await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (err) {
         console.log("Error @checkIfAppWasLaunched", err);
       } finally {
@@ -75,18 +104,12 @@ export default function App() {
     loadApp();
   }, []);
 
-  const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
-      await SplashScreen.hideAsync();
-    }
-  }, [appIsReady]);
-
   if (!appIsReady) {
-    return <AnimatedSplashScreen />;
+    return <AnimatedSplashScreen className="flex-1" />;
   }
 
   return (
-    <NavigationContainer onLayout={onLayoutRootView} theme={navTheme}>
+    <NavigationContainer theme={navTheme}>
       <StatusBar
         animated={true}
         backgroundColor="#61dafb"
@@ -110,12 +133,6 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-const Loading = () => (
-  <View className="flex-1 items-center justify-center">
-    <ActivityIndicator size="large" />
-  </View>
-);
 
 const Main = () => {
   // UI for any sound playing
