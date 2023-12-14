@@ -29,6 +29,7 @@ export default function WaterClearance() {
 
   // Programs Player States
   const [currTimePrep, setCurrTimePrep] = useState(0);
+  const [progressPrep, setProgressPrep] = useState(0);
   const [currTimeMain, setCurrTimeMain] = useState(0);
   const [currTimeEar, setCurrTimeEar] = useState(0);
   const [currTimePods, setCurrTimePods] = useState(0);
@@ -40,6 +41,8 @@ export default function WaterClearance() {
     <PlayerContext.Provider
       value={{
         currTimePrep,
+        progressPrep,
+        setProgressPrep,
         setCurrTimePrep,
         currTimeMain,
         setCurrTimeMain,

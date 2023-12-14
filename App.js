@@ -1,15 +1,10 @@
-import {
-  ActivityIndicator,
-  StatusBar,
-  View,
-  Text,
-  Animated,
-  FadeIn,
-} from "react-native";
+import { StatusBar, View, Animated } from "react-native";
 import { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
+// import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
 import { Asset } from "expo-asset";
 
 import { Context } from "./contexts/Context";
@@ -32,9 +27,7 @@ import { DefaultTheme } from "@react-navigation/native";
 // Removing Warning Messages
 import { LogBox } from "react-native";
 import { Audio } from "expo-av";
-import { useCallback } from "react";
 import AnimatedSplashScreen from "./components/SplashScreen/SplashScreen";
-import * as SplashScreen from "expo-splash-screen";
 LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
 LogBox.ignoreAllLogs(); // Ignore all log notifications
 
@@ -63,22 +56,15 @@ export default function App() {
       require("./assets/images/clearance/speaker.png"),
     ];
 
-    const sounds = [
-      require("./assets/programs/main.mp3"),
-      // require("./assets/icons/medfreqIcon.png"),
-      // require("./assets/icons/highfreqIcon.png"),
-      // require("./assets/icons/xthighfreqIcon.png"),
-    ];
-
     const cacheImages = images.map((image) =>
       Asset.fromModule(image).downloadAsync()
     );
 
-    const cacheSounds = sounds.map((sound) =>
-      Asset.fromModule(sound).downloadAsync()
+    const splashTime = await new Promise((resolve) =>
+      setTimeout(resolve, 2000)
     );
 
-    return Promise.all([...cacheImages, ...cacheSounds]);
+    return Promise.all([...cacheImages, ...splashTime]);
   };
 
   useEffect(() => {
@@ -91,8 +77,6 @@ export default function App() {
 
         // Load Resources
         await cacheResources();
-
-        // await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (err) {
         console.log("Error @checkIfAppWasLaunched", err);
       } finally {
@@ -104,17 +88,29 @@ export default function App() {
     loadApp();
   }, []);
 
+  const [fadeAnim] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1000,
+    }).start();
+  }, []);
+
   if (!appIsReady) {
-    return <AnimatedSplashScreen className="flex-1" />;
+    return (
+      <View className="flex-1 bg-[#05103A]">
+        <StatusBar barStyle="light-content" />
+        <Animated.View className="flex-1" style={{ opacity: fadeAnim }}>
+          <AnimatedSplashScreen />
+        </Animated.View>
+      </View>
+    );
   }
 
   return (
     <NavigationContainer theme={navTheme}>
-      <StatusBar
-        animated={true}
-        backgroundColor="#61dafb"
-        barStyle="light-content"
-      />
+      <StatusBar barStyle="light-content" />
       <Stack.Navigator>
         {isAppFirstLaunched === true && (
           <Stack.Screen

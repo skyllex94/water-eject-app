@@ -17,6 +17,7 @@ import useRevenueCat from "../../hooks/useRevenueCat";
 import SoundCloudWave from "./SoundCloudWave";
 import { PlayerContext } from "../../contexts/PlayerContext";
 import { defaultVisualizerParams, programs } from "../../constants/Constants";
+import NewWaveform from "./NewWaveform";
 
 export default function PrepProgram({ navigation }) {
   const { isProMember } = useRevenueCat();
@@ -31,8 +32,13 @@ export default function PrepProgram({ navigation }) {
     setRecording,
   } = useContext(Context);
   const [loadingSound, setLoadingSound] = useState(false);
-  const { currTimePrep, setCurrTimePrep, setCurrStatus } =
-    useContext(PlayerContext);
+  const {
+    currTimePrep,
+    setCurrTimePrep,
+    progressPrep,
+    setProgressPrep,
+    setCurrStatus,
+  } = useContext(PlayerContext);
 
   const totalTime = 6 * 60 + 26;
 
@@ -61,6 +67,9 @@ export default function PrepProgram({ navigation }) {
         { isLooping: false, progressUpdateIntervalMillis: 1000 },
         (status) => {
           if (!isNaN(status.durationMillis)) {
+            setProgressPrep(
+              Math.floor((status.positionMillis / status.durationMillis) * 100)
+            );
             setCurrTimePrep(Math.floor(status.positionMillis / 1000));
           }
           if (status.didJustFinish) unloadSound(sound, "finished");
@@ -92,7 +101,7 @@ export default function PrepProgram({ navigation }) {
       <View
         className={`${
           sound.isEnabledPrep ? `bg-[${iconActiveColor}]` : `bg-[${bgColor}]`
-        } flex-row items-center justify-between p-3 rounded-xl`}
+        } flex-row  items-center p-3 rounded-xl`}
       >
         <View
           className={`${
@@ -111,12 +120,16 @@ export default function PrepProgram({ navigation }) {
             />
           )}
         </View>
-        <View className="w-[95%]">
-          <SoundCloudWave
-            currentTime={sound.isEnabledPrep ? currTimePrep : 0}
-            totalTime={totalTime}
-            waveform={"https://w1.sndcdn.com/cWHNerOLlkUq_m.png"}
-          />
+        <View className="w-[80%] ml-4">
+          {/*
+            <SoundCloudWave
+              currentTime={sound.isEnabledPrep ? currTimePrep : 0}
+              totalTime={totalTime}
+              waveform={"https://w1.sndcdn.com/cWHNerOLlkUq_m.png"}
+            />
+          */}
+
+          <NewWaveform progress={sound.isEnabledPrep ? progressPrep : 0} />
         </View>
       </View>
 
