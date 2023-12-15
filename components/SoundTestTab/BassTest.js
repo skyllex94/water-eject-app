@@ -9,6 +9,7 @@ import SoundTestWave from "./SoundTestWave";
 import { Context } from "../../contexts/Context";
 import useRevenueCat from "../../hooks/useRevenueCat";
 import { FontAwesome5 } from "@expo/vector-icons";
+import Waveform from "../ClearanceTab/Waveform";
 
 export default function BassTest({ navigation }) {
   const { isProMember } = useRevenueCat();
@@ -29,7 +30,11 @@ export default function BassTest({ navigation }) {
       file: require("../../assets/soundtests/used-to.mp3"),
       totalTime: 39,
       loading: false,
-      waveform: "http://w1.sndcdn.com/fxguEjG4ax6B_m.png",
+      progress: 0,
+      waveform: [
+        13, 21, 23, 27, 23, 27, 23, 30, 32, 27, 30, 22, 23, 20, 29, 27, 30, 31,
+        22, 26, 29, 17, 27, 26, 30, 30, 26, 24, 29, 28, 19, 28, 26,
+      ],
       height: 65,
     },
     {
@@ -38,7 +43,11 @@ export default function BassTest({ navigation }) {
       file: require("../../assets/soundtests/151-rum.mp3"),
       totalTime: 46,
       loading: false,
-      waveform: "https://w1.sndcdn.com/cWHNerOLlkUq_m.png",
+      progress: 0,
+      waveform: [
+        32, 27, 30, 22, 23, 20, 27, 27, 26, 24, 27, 26, 30, 31, 22, 31, 25, 22,
+        28, 26, 32, 27, 23, 27, 20, 30, 27, 22, 24, 27, 23, 27, 23,
+      ],
     },
   ]);
 
@@ -67,8 +76,22 @@ export default function BassTest({ navigation }) {
           curr.file,
           { progressUpdateIntervalMillis: 1000 },
           (status) => {
-            if (!isNaN(status.durationMillis))
+            if (!isNaN(status.durationMillis)) {
+              setSongs((songs) =>
+                songs.map((song, songIdx) => {
+                  if (songIdx === idx)
+                    return {
+                      ...song,
+                      progress: Math.floor(
+                        (status.positionMillis / status.durationMillis) * 100
+                      ),
+                    };
+                  return song;
+                })
+              );
               setCurrTime(Math.floor(status.positionMillis / 1000));
+            }
+
             if (status.didJustFinish) unloadSound(sound, curr);
           }
         );
@@ -118,15 +141,15 @@ export default function BassTest({ navigation }) {
             }
           >
             <View
-              className={`justify-between py-2 rounded-xl border-white ${
+              className={`justify-between py-2 rounded-xl mt-1 border-white ${
                 sound[curr.objName] ? "bg-[#87E5FA]" : "bg-[#05103A]"
               }`}
             >
-              <View className="flex-row h-14">
+              <View className="flex-row items-center h-14">
                 <View
                   className={`${
                     sound[curr.objName] ? "bg-[#87e5fa]" : "bg-[#101C43]"
-                  } items-center justify-center w-12 h-12 ml-3 mt-1 rounded-xl`}
+                  } items-center justify-center w-12 h-12 mx-3 rounded-xl`}
                 >
                   {curr.loading ? (
                     <ActivityIndicator />
@@ -138,12 +161,12 @@ export default function BassTest({ navigation }) {
                     />
                   )}
                 </View>
-                <SoundTestWave
-                  currentTime={sound[curr.objName] ? currTime : 0}
-                  totalTime={curr.totalTime}
-                  waveform={curr.waveform}
-                  height={curr.height || undefined}
-                />
+                <View className="w-[75%]">
+                  <Waveform
+                    waveform={curr.waveform}
+                    progress={sound[curr.objName] ? curr.progress : 0}
+                  />
+                </View>
               </View>
 
               <View className="flex-row justify-between">

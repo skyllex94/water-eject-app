@@ -5,8 +5,8 @@ import { Audio } from "expo-av";
 
 import Icon from "react-native-vector-icons/FontAwesome";
 import { resetVisualizer, stopDBMetering } from "../Utils/Funcs";
-import SoundTestWave from "./SoundTestWave";
 import { Context } from "../../contexts/Context";
+import Waveform from "../ClearanceTab/Waveform";
 
 export default function OverallTest() {
   const {
@@ -26,7 +26,11 @@ export default function OverallTest() {
       file: require("../../assets/soundtests/jk-whoisjk-baby-what-u-wanna-do.mp3"),
       totalTime: 69,
       loading: false,
-      waveform: "https://w1.sndcdn.com/cWHNerOLlkUq_m.png",
+      progress: 0,
+      waveform: [
+        25, 27, 23, 32, 23, 23, 27, 27, 10, 24, 24, 26, 22, 31, 22, 31, 25, 22,
+        28, 26, 32, 24, 22, 28, 20, 30, 27, 22, 24, 27, 29, 22, 11,
+      ],
     },
     {
       name: "Overall Test 2 - Zulu",
@@ -34,7 +38,11 @@ export default function OverallTest() {
       file: require("../../assets/soundtests/goldlink.mp3"),
       totalTime: 45,
       loading: false,
-      waveform: "https://w1.sndcdn.com/XwA2iPEIVF8z_m.png",
+      progress: 0,
+      waveform: [
+        30, 27, 11, 28, 24, 27, 21, 28, 29, 27, 22, 21, 29, 33, 31, 24, 21, 23,
+        21, 22, 30, 29, 28, 24, 28, 30, 21, 24, 27, 21, 12, 25, 28,
+      ],
     },
   ]);
 
@@ -63,8 +71,22 @@ export default function OverallTest() {
           curr.file,
           { progressUpdateIntervalMillis: 1000 },
           (status) => {
-            if (!isNaN(status.durationMillis))
+            if (!isNaN(status.durationMillis)) {
+              setSongs((songs) =>
+                songs.map((song, songIdx) => {
+                  if (songIdx === idx)
+                    return {
+                      ...song,
+                      progress: Math.floor(
+                        (status.positionMillis / status.durationMillis) * 100
+                      ),
+                    };
+                  return song;
+                })
+              );
               setCurrTime(Math.floor(status.positionMillis / 1000));
+            }
+
             if (status.didJustFinish) unloadSound(sound, curr);
           }
         );
@@ -109,11 +131,11 @@ export default function OverallTest() {
                 sound[curr.objName] ? "bg-[#87E5FA]" : "bg-[#05103A]"
               }`}
             >
-              <View className="flex-row h-14">
+              <View className="flex-row items-center justify-start h-14">
                 <View
                   className={`${
                     sound[curr.objName] ? "bg-[#87e5fa]" : "bg-[#101C43]"
-                  } items-center justify-center w-12 h-12 ml-3 mt-1 rounded-xl`}
+                  } items-center justify-center w-12 h-12 mx-3 rounded-xl`}
                 >
                   {curr.loading ? (
                     <ActivityIndicator />
@@ -125,11 +147,13 @@ export default function OverallTest() {
                     />
                   )}
                 </View>
-                <SoundTestWave
-                  currentTime={sound[curr.objName] ? currTime : 0}
-                  totalTime={curr.totalTime}
-                  waveform={curr.waveform}
-                />
+
+                <View className="w-[75%]">
+                  <Waveform
+                    waveform={curr.waveform}
+                    progress={sound[curr.objName] ? curr.progress : 0}
+                  />
+                </View>
               </View>
 
               <View className="flex-row justify-between">

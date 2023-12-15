@@ -50,7 +50,7 @@ export default function PlayingProgramMain({ navigation }) {
         </Text>
 
         <Image
-          className={`bg-[${bgColor}] rounded-xl w-[93%] h-[40%] my-4`}
+          className={`bg-[${bgColor}] rounded-xl w-[92%] h-[40%] my-4`}
           resizeMode="contain"
           source={require("../../assets/images/clearance/iphone_placement_final.gif")}
         />
@@ -96,7 +96,7 @@ export default function PlayingProgramMain({ navigation }) {
           </View>
         </View>
 
-        <View className="items-center justify-center w-[90%]">
+        <View className="w-[97%]">
           <MainProgram navigation={navigation} />
         </View>
       </View>

@@ -94,6 +94,7 @@ export default function App() {
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 1000,
+      useNativeDriver: true,
     }).start();
   }, []);
 

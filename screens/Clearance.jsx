@@ -30,9 +30,15 @@ export default function WaterClearance() {
   // Programs Player States
   const [currTimePrep, setCurrTimePrep] = useState(0);
   const [progressPrep, setProgressPrep] = useState(0);
+
   const [currTimeMain, setCurrTimeMain] = useState(0);
+  const [progressMain, setProgressMain] = useState(0);
+
   const [currTimeEar, setCurrTimeEar] = useState(0);
+  const [progressEar, setProgressEar] = useState(0);
+
   const [currTimePods, setCurrTimePods] = useState(0);
+  const [progressPods, setProgressPods] = useState(0);
 
   // Program Current Status when playing
   const [currStatus, setCurrStatus] = useState({ status: "-" });
@@ -42,14 +48,20 @@ export default function WaterClearance() {
       value={{
         currTimePrep,
         progressPrep,
-        setProgressPrep,
         setCurrTimePrep,
+        setProgressPrep,
         currTimeMain,
+        progressMain,
         setCurrTimeMain,
+        setProgressMain,
         currTimeEar,
+        progressEar,
         setCurrTimeEar,
+        setProgressEar,
         currTimePods,
+        progressPods,
         setCurrTimePods,
+        setProgressPods,
         currStatus,
         setCurrStatus,
       }}

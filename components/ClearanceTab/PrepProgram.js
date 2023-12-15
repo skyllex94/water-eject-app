@@ -14,10 +14,9 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { Context } from "../../contexts/Context";
 import { stopDBMetering } from "../Utils/Funcs";
 import useRevenueCat from "../../hooks/useRevenueCat";
-import SoundCloudWave from "./SoundCloudWave";
 import { PlayerContext } from "../../contexts/PlayerContext";
 import { defaultVisualizerParams, programs } from "../../constants/Constants";
-import NewWaveform from "./NewWaveform";
+import Waveform from "./Waveform";
 
 export default function PrepProgram({ navigation }) {
   const { isProMember } = useRevenueCat();
@@ -41,6 +40,10 @@ export default function PrepProgram({ navigation }) {
   } = useContext(PlayerContext);
 
   const totalTime = 6 * 60 + 26;
+  const waveform = [
+    28, 27, 20, 33, 20, 30, 8, 28, 25, 35, 25, 28, 27, 30, 33, 20, 30, 18, 28,
+    25, 35, 25, 30, 33, 20, 30, 12, 28, 25, 32, 25, 25, 20,
+  ];
 
   async function enablePrepFreq() {
     setLoadingSound(true);
@@ -101,7 +104,7 @@ export default function PrepProgram({ navigation }) {
       <View
         className={`${
           sound.isEnabledPrep ? `bg-[${iconActiveColor}]` : `bg-[${bgColor}]`
-        } flex-row  items-center p-3 rounded-xl`}
+        } flex-row items-center justify-between p-3 rounded-xl`}
       >
         <View
           className={`${
@@ -120,16 +123,11 @@ export default function PrepProgram({ navigation }) {
             />
           )}
         </View>
-        <View className="w-[80%] ml-4">
-          {/*
-            <SoundCloudWave
-              currentTime={sound.isEnabledPrep ? currTimePrep : 0}
-              totalTime={totalTime}
-              waveform={"https://w1.sndcdn.com/cWHNerOLlkUq_m.png"}
-            />
-          */}
-
-          <NewWaveform progress={sound.isEnabledPrep ? progressPrep : 0} />
+        <View className="w-[80%]">
+          <Waveform
+            waveform={waveform}
+            progress={sound.isEnabledPrep ? progressPrep : 0}
+          />
         </View>
       </View>
 

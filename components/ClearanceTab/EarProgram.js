@@ -17,6 +17,7 @@ import useRevenueCat from "../../hooks/useRevenueCat";
 import SoundCloudWave from "./SoundCloudWave";
 import { PlayerContext } from "../../contexts/PlayerContext";
 import { defaultVisualizerParams, programs } from "../../constants/Constants";
+import Waveform from "./Waveform";
 
 export default function EarProgram({ navigation }) {
   const { isProMember } = useRevenueCat();
@@ -32,10 +33,19 @@ export default function EarProgram({ navigation }) {
   } = useContext(Context);
   const [loadingSound, setLoadingSound] = useState(false);
 
-  const { currTimeEar, setCurrTimeEar, setCurrStatus } =
-    useContext(PlayerContext);
+  const {
+    currTimeEar,
+    setCurrTimeEar,
+    progressEar,
+    setProgressEar,
+    setCurrStatus,
+  } = useContext(PlayerContext);
 
   const totalTime = 4 * 60 + 41;
+  const waveform = [
+    31, 26, 21, 31, 26, 31, 26, 31, 26, 31, 26, 22, 31, 26, 30, 31, 26, 20, 31,
+    26, 31, 22, 32, 31, 26, 30, 22, 31, 26, 20, 31, 26, 31,
+  ];
 
   async function unloadSound(sound, status) {
     sound.unloadAsync() || undefined;
@@ -63,6 +73,9 @@ export default function EarProgram({ navigation }) {
         { isLooping: false, progressUpdateIntervalMillis: 1000 },
         (status) => {
           if (!isNaN(status.durationMillis)) {
+            setProgressEar(
+              Math.floor((status.positionMillis / status.durationMillis) * 100)
+            );
             setCurrTimeEar(Math.floor(status.positionMillis / 1000));
           }
           if (status.didJustFinish) unloadSound(sound, "finished");
@@ -113,12 +126,10 @@ export default function EarProgram({ navigation }) {
             />
           )}
         </View>
-        <View className="w-[95%]">
-          <SoundCloudWave
-            currentTime={sound.isEnabledEar ? currTimeEar : 0}
-            totalTime={totalTime}
-            height={65}
-            waveform={"http://w1.sndcdn.com/fxguEjG4ax6B_m.png"}
+        <View className="w-[80%]">
+          <Waveform
+            waveform={waveform}
+            progress={sound.isEnabledEar ? progressEar : 0}
           />
         </View>
       </View>

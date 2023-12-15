@@ -6,7 +6,6 @@ import { bgColor, buttonsColor } from "../../constants/ColorsUI";
 import PrepProgram from "./PrepProgram";
 import MainProgram from "./MainProgram";
 import PodsProgram from "./PodsProgram";
-import NewWaveform from "./NewWaveform";
 
 export default function Programs({ navigation }) {
   const programs = [

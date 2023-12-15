@@ -16,6 +16,7 @@ import useRevenueCat from "../../hooks/useRevenueCat";
 import SoundCloudWave from "./SoundCloudWave";
 import { PlayerContext } from "../../contexts/PlayerContext";
 import { defaultVisualizerParams, programs } from "../../constants/Constants";
+import Waveform from "./Waveform";
 
 export default function MainProgram({ navigation }) {
   const {
@@ -30,10 +31,19 @@ export default function MainProgram({ navigation }) {
   const [loadingSound, setLoadingSound] = useState(false);
   const { isProMember } = useRevenueCat();
 
-  const { currTimeMain, setCurrTimeMain, setCurrStatus } =
-    useContext(PlayerContext);
+  const {
+    currTimeMain,
+    setCurrTimeMain,
+    progressMain,
+    setProgressMain,
+    setCurrStatus,
+  } = useContext(PlayerContext);
 
   const totalTime = 8 * 60 + 6;
+  const waveform = [
+    28, 23, 30, 32, 23, 23, 32, 24, 24, 30, 28, 28, 23, 20, 32, 24, 27, 18, 24,
+    25, 31, 26, 30, 23, 21, 32, 30, 25, 21, 32, 32, 27, 26,
+  ];
 
   async function unloadSound(sound, status) {
     sound.unloadAsync() || undefined;
@@ -60,8 +70,12 @@ export default function MainProgram({ navigation }) {
         { isLooping: false, progressUpdateIntervalMillis: 1000 },
         (status) => {
           if (!isNaN(status.durationMillis)) {
+            setProgressMain(
+              Math.floor((status.positionMillis / status.durationMillis) * 100)
+            );
             setCurrTimeMain(Math.floor(status.positionMillis / 1000));
           }
+
           if (status.didJustFinish) unloadSound(sound, "finished");
         }
       );
@@ -78,7 +92,7 @@ export default function MainProgram({ navigation }) {
   }
 
   return (
-    <View className="items-center justify-center">
+    <View className="items-center justify-center ">
       <TouchableOpacity
         className={`${
           sound.isEnabledMain ? `bg-[${activeColor}]` : `bg-[${bgColor}]`
@@ -110,11 +124,10 @@ export default function MainProgram({ navigation }) {
             )}
           </View>
 
-          <View className="w-[95%]">
-            <SoundCloudWave
-              currentTime={sound.isEnabledMain ? currTimeMain : 0}
-              totalTime={totalTime}
-              waveform={"https://w1.sndcdn.com/XwA2iPEIVF8z_m.png"}
+          <View className="w-[80%]">
+            <Waveform
+              waveform={waveform}
+              progress={sound.isEnabledMain ? progressMain : 0}
             />
           </View>
         </View>

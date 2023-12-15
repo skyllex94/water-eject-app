@@ -17,6 +17,7 @@ import useRevenueCat from "../../hooks/useRevenueCat";
 import SoundCloudWave from "./SoundCloudWave";
 import { PlayerContext } from "../../contexts/PlayerContext";
 import { programs, defaultVisualizerParams } from "../../constants/Constants";
+import Waveform from "./Waveform";
 
 export default function PodsProgram({ navigation }) {
   const { isProMember } = useRevenueCat();
@@ -32,10 +33,19 @@ export default function PodsProgram({ navigation }) {
   } = useContext(Context);
   const [loadingSound, setLoadingSound] = useState(false);
 
-  const { currTimePods, setCurrTimePods, setCurrStatus } =
-    useContext(PlayerContext);
+  const {
+    currTimePods,
+    setCurrTimePods,
+    progressPods,
+    setProgressPods,
+    setCurrStatus,
+  } = useContext(PlayerContext);
 
   const totalTime = 5 * 60 + 12;
+  const waveform = [
+    25, 27, 21, 30, 25, 27, 27, 28, 18, 24, 28, 22, 17, 31, 30, 31, 28, 20, 28,
+    21, 31, 22, 32, 28, 20, 30, 22, 12, 23, 20, 29, 25, 13,
+  ];
 
   async function unloadSound(sound, status) {
     sound.unloadAsync() || undefined;
@@ -66,6 +76,9 @@ export default function PodsProgram({ navigation }) {
         { isLooping: false, progressUpdateIntervalMillis: 1000 },
         (status) => {
           if (!isNaN(status.durationMillis)) {
+            setProgressPods(
+              Math.floor((status.positionMillis / status.durationMillis) * 100)
+            );
             setCurrTimePods(Math.floor(status.positionMillis / 1000));
           }
           if (status.didJustFinish) unloadSound(sound, "finished");
@@ -116,11 +129,10 @@ export default function PodsProgram({ navigation }) {
             />
           )}
         </View>
-        <View className="w-[95%]">
-          <SoundCloudWave
-            currentTime={sound.isEnabledAirpods ? currTimePods : 0}
-            totalTime={totalTime}
-            waveform={"https://w1.sndcdn.com/cWHNerOLlkUq_m.png"}
+        <View className="w-[80%]">
+          <Waveform
+            waveform={waveform}
+            progress={sound.isEnabledAirpods ? progressPods : 0}
           />
         </View>
       </View>

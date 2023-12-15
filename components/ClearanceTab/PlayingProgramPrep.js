@@ -96,7 +96,7 @@ export default function PlayingProgramPrep({ navigation }) {
           </View>
         </View>
 
-        <View className="items-center justify-center w-[97%]">
+        <View className="w-[97%]">
           <PrepProgram navigation={navigation} />
         </View>
       </View>
