@@ -13,7 +13,6 @@ import {
 } from "../../constants/ColorsUI";
 import { stopDBMetering } from "../Utils/Funcs";
 import useRevenueCat from "../../hooks/useRevenueCat";
-import SoundCloudWave from "./SoundCloudWave";
 import { PlayerContext } from "../../contexts/PlayerContext";
 import { defaultVisualizerParams, programs } from "../../constants/Constants";
 import Waveform from "./Waveform";
@@ -42,7 +41,7 @@ export default function MainProgram({ navigation }) {
   const totalTime = 8 * 60 + 6;
   const waveform = [
     28, 23, 30, 32, 23, 23, 32, 24, 24, 30, 28, 28, 23, 20, 32, 24, 27, 18, 24,
-    25, 31, 26, 30, 23, 21, 32, 30, 25, 21, 32, 32, 27, 26,
+    25, 31, 26, 30, 16, 21, 32, 30, 25, 21, 32, 32, 27, 26,
   ];
 
   async function unloadSound(sound, status) {

@@ -14,7 +14,6 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { Context } from "../../contexts/Context";
 import { stopDBMetering } from "../Utils/Funcs";
 import useRevenueCat from "../../hooks/useRevenueCat";
-import SoundCloudWave from "./SoundCloudWave";
 import { PlayerContext } from "../../contexts/PlayerContext";
 import { defaultVisualizerParams, programs } from "../../constants/Constants";
 import Waveform from "./Waveform";

@@ -12,13 +12,16 @@ import {
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useContext } from "react";
 import { Context } from "../../contexts/Context";
+import { defaultVisualizerParams } from "../../constants/Constants";
 
 const DecibelControls = ({ navigation, setCurrDecibels }) => {
   const { isProMember } = useRevenueCat();
-  const { currSound, setSound, recording, setRecording } = useContext(Context);
+  const { currSound, setSound, recording, setRecording, setVisualizerParams } =
+    useContext(Context);
 
   async function startDBLevel() {
     setSound({});
+    setVisualizerParams(defaultVisualizerParams);
     if (currSound) currSound.unloadAsync() || undefined;
     startDBMetering(setRecording, setCurrDecibels);
   }

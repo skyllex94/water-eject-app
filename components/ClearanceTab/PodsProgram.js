@@ -14,7 +14,6 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { Context } from "../../contexts/Context";
 import { stopDBMetering } from "../Utils/Funcs";
 import useRevenueCat from "../../hooks/useRevenueCat";
-import SoundCloudWave from "./SoundCloudWave";
 import { PlayerContext } from "../../contexts/PlayerContext";
 import { programs, defaultVisualizerParams } from "../../constants/Constants";
 import Waveform from "./Waveform";
@@ -43,7 +42,7 @@ export default function PodsProgram({ navigation }) {
 
   const totalTime = 5 * 60 + 12;
   const waveform = [
-    25, 27, 21, 30, 25, 27, 27, 28, 18, 24, 28, 22, 17, 31, 30, 31, 28, 20, 28,
+    25, 27, 21, 30, 15, 27, 27, 28, 18, 24, 18, 22, 17, 31, 30, 31, 28, 20, 28,
     21, 31, 22, 32, 28, 20, 30, 22, 12, 23, 20, 29, 25, 13,
   ];
 
