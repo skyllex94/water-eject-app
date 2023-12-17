@@ -32,11 +32,13 @@ export default function PrepProgram({ navigation }) {
   } = useContext(Context);
   const [loadingSound, setLoadingSound] = useState(false);
   const {
-    currTimePrep,
-    setCurrTimePrep,
+    currTime,
+    setCurrTime,
     progressPrep,
     setProgressPrep,
     setCurrStatus,
+    progress,
+    setProgress,
   } = useContext(PlayerContext);
 
   const totalTime = 6 * 60 + 26;
@@ -49,6 +51,8 @@ export default function PrepProgram({ navigation }) {
     setLoadingSound(true);
     setSound((state) => ({ ...!state, isEnabledPrep: !sound.isEnabledPrep }));
     stopDBMetering(recording, setRecording);
+    setProgress(0);
+    setCurrTime(0);
     await playPrep();
   }
 
@@ -56,7 +60,7 @@ export default function PrepProgram({ navigation }) {
     sound.unloadAsync() || undefined;
     setSound((state) => ({ ...!state, isEnabledPrep: false }));
     setVisualizerParams(defaultVisualizerParams);
-    setCurrTimePrep(0);
+    setCurrTime(0);
     setCurrStatus({ status });
     deactivateKeepAwake();
   }
@@ -70,10 +74,10 @@ export default function PrepProgram({ navigation }) {
         { isLooping: false, progressUpdateIntervalMillis: 1000 },
         (status) => {
           if (!isNaN(status.durationMillis)) {
-            setProgressPrep(
+            setProgress(
               Math.floor((status.positionMillis / status.durationMillis) * 100)
             );
-            setCurrTimePrep(Math.floor(status.positionMillis / 1000));
+            setCurrTime(Math.floor(status.positionMillis / 1000));
           }
           if (status.didJustFinish) unloadSound(sound, "finished");
         }
@@ -126,7 +130,7 @@ export default function PrepProgram({ navigation }) {
         <View className="w-[80%]">
           <Waveform
             waveform={waveform}
-            progress={sound.isEnabledPrep ? progressPrep : 0}
+            progress={sound.isEnabledPrep && progress}
           />
         </View>
       </View>
@@ -136,9 +140,9 @@ export default function PrepProgram({ navigation }) {
           1. Preparation Program
         </Text>
         <Text className="text-white mr-2 font-bold">
-          {sound.isEnabledPrep ? Math.floor(currTimePrep / 60) : "0"}:
-          {sound.isEnabledPrep ? currTimePrep % 60 < 10 && "0" : 0}
-          {sound.isEnabledPrep ? currTimePrep % 60 : 0} /{" "}
+          {sound.isEnabledPrep ? Math.floor(currTime / 60) : "0"}:
+          {sound.isEnabledPrep ? currTime % 60 < 10 && "0" : 0}
+          {sound.isEnabledPrep ? currTime % 60 : 0} /{" "}
           {Math.floor(totalTime / 60)}:{totalTime % 60 < 10 && "0"}
           {totalTime % 60}
         </Text>

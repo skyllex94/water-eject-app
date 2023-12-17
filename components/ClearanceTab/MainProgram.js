@@ -30,13 +30,8 @@ export default function MainProgram({ navigation }) {
   const [loadingSound, setLoadingSound] = useState(false);
   const { isProMember } = useRevenueCat();
 
-  const {
-    currTimeMain,
-    setCurrTimeMain,
-    progressMain,
-    setProgressMain,
-    setCurrStatus,
-  } = useContext(PlayerContext);
+  const { currTime, setCurrTime, progress, setProgress, setCurrStatus } =
+    useContext(PlayerContext);
 
   const totalTime = 8 * 60 + 6;
   const waveform = [
@@ -48,7 +43,7 @@ export default function MainProgram({ navigation }) {
     sound.unloadAsync() || undefined;
     setSound((state) => ({ ...!state, isEnabledMain: false }));
     setVisualizerParams(defaultVisualizerParams);
-    setCurrTimeMain(0);
+    setCurrTime(0);
     setCurrStatus({ status });
     deactivateKeepAwake();
   }
@@ -57,6 +52,8 @@ export default function MainProgram({ navigation }) {
     setLoadingSound(true);
     setSound((state) => ({ ...!state, isEnabledMain: !sound.isEnabledMain }));
     stopDBMetering(recording, setRecording);
+    setCurrTime(0);
+    setProgress(0);
     await playMain();
   }
 
@@ -69,10 +66,10 @@ export default function MainProgram({ navigation }) {
         { isLooping: false, progressUpdateIntervalMillis: 1000 },
         (status) => {
           if (!isNaN(status.durationMillis)) {
-            setProgressMain(
+            setProgress(
               Math.floor((status.positionMillis / status.durationMillis) * 100)
             );
-            setCurrTimeMain(Math.floor(status.positionMillis / 1000));
+            setCurrTime(Math.floor(status.positionMillis / 1000));
           }
 
           if (status.didJustFinish) unloadSound(sound, "finished");
@@ -126,7 +123,7 @@ export default function MainProgram({ navigation }) {
           <View className="w-[80%]">
             <Waveform
               waveform={waveform}
-              progress={sound.isEnabledMain ? progressMain : 0}
+              progress={sound.isEnabledMain ? progress : 0}
             />
           </View>
         </View>
@@ -136,9 +133,9 @@ export default function MainProgram({ navigation }) {
             2. Water Clearance Program
           </Text>
           <Text className="text-white mr-2 font-bold">
-            {sound.isEnabledMain ? Math.floor(currTimeMain / 60) : "0"}:
-            {sound.isEnabledMain ? currTimeMain % 60 < 10 && "0" : 0}
-            {sound.isEnabledMain ? currTimeMain % 60 : 0} /{" "}
+            {sound.isEnabledMain ? Math.floor(currTime / 60) : "0"}:
+            {sound.isEnabledMain ? currTime % 60 < 10 && "0" : 0}
+            {sound.isEnabledMain ? currTime % 60 : 0} /{" "}
             {Math.floor(totalTime / 60)}:{totalTime % 60 < 10 && "0"}
             {totalTime % 60}
           </Text>

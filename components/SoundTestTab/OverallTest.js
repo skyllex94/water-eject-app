@@ -26,9 +26,8 @@ export default function OverallTest() {
       file: require("../../assets/soundtests/jk-whoisjk-baby-what-u-wanna-do.mp3"),
       totalTime: 69,
       loading: false,
-      progress: 0,
       waveform: [
-        25, 27, 23, 32, 23, 23, 27, 27, 10, 24, 24, 26, 22, 31, 22, 31, 25, 22,
+        15, 14, 17, 16, 23, 23, 27, 27, 10, 24, 24, 26, 22, 31, 22, 31, 25, 22,
         28, 26, 32, 24, 22, 28, 20, 30, 27, 22, 24, 27, 29, 22, 11,
       ],
     },
@@ -38,7 +37,6 @@ export default function OverallTest() {
       file: require("../../assets/soundtests/goldlink.mp3"),
       totalTime: 45,
       loading: false,
-      progress: 0,
       waveform: [
         30, 27, 11, 28, 24, 27, 21, 28, 29, 27, 22, 21, 29, 33, 31, 24, 21, 23,
         21, 22, 30, 29, 28, 24, 28, 30, 21, 24, 27, 21, 12, 25, 28,
@@ -46,7 +44,10 @@ export default function OverallTest() {
     },
   ]);
 
+  // Counter current time
   const [currTime, setCurrTime] = useState(0);
+  // Waveform current progress
+  const [progress, setProgress] = useState(0);
 
   async function enableSoundTest(curr, idx) {
     setSongs((songs) =>
@@ -57,6 +58,7 @@ export default function OverallTest() {
     );
 
     setCurrTime(0);
+    setProgress(0);
     setSound((state) => ({
       ...!state,
       [curr.objName]: !sound[curr.objName],
@@ -72,17 +74,10 @@ export default function OverallTest() {
           { progressUpdateIntervalMillis: 1000 },
           (status) => {
             if (!isNaN(status.durationMillis)) {
-              setSongs((songs) =>
-                songs.map((song, songIdx) => {
-                  if (songIdx === idx)
-                    return {
-                      ...song,
-                      progress: Math.floor(
-                        (status.positionMillis / status.durationMillis) * 100
-                      ),
-                    };
-                  return song;
-                })
+              setProgress(
+                Math.floor(
+                  (status.positionMillis / status.durationMillis) * 100
+                )
               );
               setCurrTime(Math.floor(status.positionMillis / 1000));
             }
@@ -108,6 +103,7 @@ export default function OverallTest() {
   async function unloadSound(sound, curr) {
     setSound((state) => ({ ...!state, [curr.objName]: false }));
     setCurrTime(0);
+    setProgress(0);
     sound.unloadAsync() || undefined;
   }
 
@@ -151,7 +147,7 @@ export default function OverallTest() {
                 <View className="w-[75%]">
                   <Waveform
                     waveform={curr.waveform}
-                    progress={sound[curr.objName] ? curr.progress : 0}
+                    progress={sound[curr.objName] && progress}
                   />
                 </View>
               </View>

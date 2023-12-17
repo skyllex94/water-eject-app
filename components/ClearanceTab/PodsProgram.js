@@ -32,13 +32,8 @@ export default function PodsProgram({ navigation }) {
   } = useContext(Context);
   const [loadingSound, setLoadingSound] = useState(false);
 
-  const {
-    currTimePods,
-    setCurrTimePods,
-    progressPods,
-    setProgressPods,
-    setCurrStatus,
-  } = useContext(PlayerContext);
+  const { currTime, setCurrTime, progress, setProgress, setCurrStatus } =
+    useContext(PlayerContext);
 
   const totalTime = 5 * 60 + 12;
   const waveform = [
@@ -50,7 +45,7 @@ export default function PodsProgram({ navigation }) {
     sound.unloadAsync() || undefined;
     setSound((state) => ({ ...!state, isEnabledAirpods: false }));
     setVisualizerParams(defaultVisualizerParams);
-    setCurrTimePods(0);
+    setCurrTime(0);
     setCurrStatus({ status });
     deactivateKeepAwake();
   }
@@ -62,6 +57,8 @@ export default function PodsProgram({ navigation }) {
       isEnabledAirpods: !sound.isEnabledAirpods,
     }));
     stopDBMetering(recording, setRecording);
+    setCurrTime(0);
+    setProgress(0);
 
     await playAirpodsProgram();
   }
@@ -75,10 +72,10 @@ export default function PodsProgram({ navigation }) {
         { isLooping: false, progressUpdateIntervalMillis: 1000 },
         (status) => {
           if (!isNaN(status.durationMillis)) {
-            setProgressPods(
+            setProgress(
               Math.floor((status.positionMillis / status.durationMillis) * 100)
             );
-            setCurrTimePods(Math.floor(status.positionMillis / 1000));
+            setCurrTime(Math.floor(status.positionMillis / 1000));
           }
           if (status.didJustFinish) unloadSound(sound, "finished");
         }
@@ -131,7 +128,7 @@ export default function PodsProgram({ navigation }) {
         <View className="w-[80%]">
           <Waveform
             waveform={waveform}
-            progress={sound.isEnabledAirpods ? progressPods : 0}
+            progress={sound.isEnabledAirpods ? progress : 0}
           />
         </View>
       </View>
@@ -141,9 +138,9 @@ export default function PodsProgram({ navigation }) {
           Dedicated Airpods Program
         </Text>
         <Text className="text-white mr-2 font-bold">
-          {sound.isEnabledAirpods ? Math.floor(currTimePods / 60) : "0"}:
-          {sound.isEnabledAirpods ? currTimePods % 60 < 10 && "0" : 0}
-          {sound.isEnabledAirpods ? currTimePods % 60 : 0} /{" "}
+          {sound.isEnabledAirpods ? Math.floor(currTime / 60) : "0"}:
+          {sound.isEnabledAirpods ? currTime % 60 < 10 && "0" : 0}
+          {sound.isEnabledAirpods ? currTime % 60 : 0} /{" "}
           {Math.floor(totalTime / 60)}:{totalTime % 60 < 10 && "0"}
           {totalTime % 60}
         </Text>

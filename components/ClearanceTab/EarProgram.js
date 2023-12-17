@@ -32,13 +32,8 @@ export default function EarProgram({ navigation }) {
   } = useContext(Context);
   const [loadingSound, setLoadingSound] = useState(false);
 
-  const {
-    currTimeEar,
-    setCurrTimeEar,
-    progressEar,
-    setProgressEar,
-    setCurrStatus,
-  } = useContext(PlayerContext);
+  const { currTime, setCurrTime, progress, setProgress, setCurrStatus } =
+    useContext(PlayerContext);
 
   const totalTime = 4 * 60 + 41;
   const waveform = [
@@ -50,7 +45,7 @@ export default function EarProgram({ navigation }) {
     sound.unloadAsync() || undefined;
     setSound((state) => ({ ...!state, isEnabledEar: false }));
     setVisualizerParams(defaultVisualizerParams);
-    setCurrTimeEar(0);
+    setCurrTime(0);
     setCurrStatus({ status });
     deactivateKeepAwake();
   }
@@ -59,6 +54,8 @@ export default function EarProgram({ navigation }) {
     setLoadingSound(true);
     setSound((state) => ({ ...!state, isEnabledEar: !sound.isEnabledEar }));
     stopDBMetering(recording, setRecording);
+    setCurrTime(0);
+    setProgress(0);
 
     await playEarpieceProgram();
   }
@@ -72,10 +69,10 @@ export default function EarProgram({ navigation }) {
         { isLooping: false, progressUpdateIntervalMillis: 1000 },
         (status) => {
           if (!isNaN(status.durationMillis)) {
-            setProgressEar(
+            setProgress(
               Math.floor((status.positionMillis / status.durationMillis) * 100)
             );
-            setCurrTimeEar(Math.floor(status.positionMillis / 1000));
+            setCurrTime(Math.floor(status.positionMillis / 1000));
           }
           if (status.didJustFinish) unloadSound(sound, "finished");
         }
@@ -128,7 +125,7 @@ export default function EarProgram({ navigation }) {
         <View className="w-[80%]">
           <Waveform
             waveform={waveform}
-            progress={sound.isEnabledEar ? progressEar : 0}
+            progress={sound.isEnabledEar ? progress : 0}
           />
         </View>
       </View>
@@ -138,9 +135,9 @@ export default function EarProgram({ navigation }) {
           Booming Earpiece Program
         </Text>
         <Text className="text-white mr-2 font-bold">
-          {sound.isEnabledEar ? Math.floor(currTimeEar / 60) : "0"}:
-          {sound.isEnabledEar ? currTimeEar % 60 < 10 && "0" : 0}
-          {sound.isEnabledEar ? currTimeEar % 60 : 0} /{" "}
+          {sound.isEnabledEar ? Math.floor(currTime / 60) : "0"}:
+          {sound.isEnabledEar ? currTime % 60 < 10 && "0" : 0}
+          {sound.isEnabledEar ? currTime % 60 : 0} /{" "}
           {Math.floor(totalTime / 60)}:{totalTime % 60 < 10 && "0"}
           {totalTime % 60}
         </Text>

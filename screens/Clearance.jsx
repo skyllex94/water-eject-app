@@ -27,43 +27,24 @@ export default function WaterClearance() {
   // React Native Navigator - Stack Navigator initializer
   const Stack = createNativeStackNavigator();
 
-  // Programs Player States
-  const [currTimePrep, setCurrTimePrep] = useState(0);
-  const [progressPrep, setProgressPrep] = useState(0);
+  // Program's current counter
+  const [currTime, setCurrTime] = useState(0);
 
-  const [currTimeMain, setCurrTimeMain] = useState(0);
-  const [progressMain, setProgressMain] = useState(0);
-
-  const [currTimeEar, setCurrTimeEar] = useState(0);
-  const [progressEar, setProgressEar] = useState(0);
-
-  const [currTimePods, setCurrTimePods] = useState(0);
-  const [progressPods, setProgressPods] = useState(0);
-
-  // Program Current Status when playing
+  // Program's surrent status when playing
   const [currStatus, setCurrStatus] = useState({ status: "-" });
+
+  // Program's waveform current progress
+  const [progress, setProgress] = useState(0);
 
   return (
     <PlayerContext.Provider
       value={{
-        currTimePrep,
-        progressPrep,
-        setCurrTimePrep,
-        setProgressPrep,
-        currTimeMain,
-        progressMain,
-        setCurrTimeMain,
-        setProgressMain,
-        currTimeEar,
-        progressEar,
-        setCurrTimeEar,
-        setProgressEar,
-        currTimePods,
-        progressPods,
-        setCurrTimePods,
-        setProgressPods,
+        currTime,
+        setCurrTime,
         currStatus,
         setCurrStatus,
+        progress,
+        setProgress,
       }}
     >
       <Stack.Navigator

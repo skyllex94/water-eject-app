@@ -29,7 +29,6 @@ export default function BassTest({ navigation }) {
       file: require("../../assets/soundtests/used-to.mp3"),
       totalTime: 39,
       loading: false,
-      progress: 0,
       waveform: [
         13, 21, 23, 27, 23, 27, 23, 30, 32, 27, 30, 22, 23, 20, 29, 27, 30, 31,
         22, 26, 29, 17, 27, 26, 30, 30, 26, 24, 29, 28, 19, 28, 26,
@@ -42,7 +41,6 @@ export default function BassTest({ navigation }) {
       file: require("../../assets/soundtests/151-rum.mp3"),
       totalTime: 46,
       loading: false,
-      progress: 0,
       waveform: [
         32, 27, 30, 22, 23, 20, 27, 27, 26, 24, 27, 26, 30, 31, 22, 31, 25, 22,
         28, 26, 32, 27, 23, 27, 20, 30, 27, 22, 24, 27, 23, 27, 23,
@@ -50,7 +48,10 @@ export default function BassTest({ navigation }) {
     },
   ]);
 
+  // Counter current time
   const [currTime, setCurrTime] = useState(0);
+  // Waveform current progress
+  const [progress, setProgress] = useState(0);
 
   async function enableSoundTest(curr, idx) {
     setSongs((songs) =>
@@ -61,6 +62,7 @@ export default function BassTest({ navigation }) {
     );
 
     setCurrTime(0);
+    setProgress(0);
     setSound((state) => ({
       ...!state,
       [curr.objName]: !sound[curr.objName],
@@ -76,17 +78,10 @@ export default function BassTest({ navigation }) {
           { progressUpdateIntervalMillis: 1000 },
           (status) => {
             if (!isNaN(status.durationMillis)) {
-              setSongs((songs) =>
-                songs.map((song, songIdx) => {
-                  if (songIdx === idx)
-                    return {
-                      ...song,
-                      progress: Math.floor(
-                        (status.positionMillis / status.durationMillis) * 100
-                      ),
-                    };
-                  return song;
-                })
+              setProgress(
+                Math.floor(
+                  (status.positionMillis / status.durationMillis) * 100
+                )
               );
               setCurrTime(Math.floor(status.positionMillis / 1000));
             }
@@ -112,6 +107,7 @@ export default function BassTest({ navigation }) {
   async function unloadSound(sound, curr) {
     setSound((state) => ({ ...!state, [curr.objName]: false }));
     setCurrTime(0);
+    setProgress(0);
     sound.unloadAsync() || undefined;
   }
 
@@ -163,7 +159,7 @@ export default function BassTest({ navigation }) {
                 <View className="w-[75%]">
                   <Waveform
                     waveform={curr.waveform}
-                    progress={sound[curr.objName] ? curr.progress : 0}
+                    progress={sound[curr.objName] && progress}
                   />
                 </View>
               </View>
