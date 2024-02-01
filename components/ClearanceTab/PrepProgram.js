@@ -31,20 +31,13 @@ export default function PrepProgram({ navigation }) {
     setRecording,
   } = useContext(Context);
   const [loadingSound, setLoadingSound] = useState(false);
-  const {
-    currTime,
-    setCurrTime,
-    progressPrep,
-    setProgressPrep,
-    setCurrStatus,
-    progress,
-    setProgress,
-  } = useContext(PlayerContext);
+  const { currTime, setCurrTime, setCurrStatus, progress, setProgress } =
+    useContext(PlayerContext);
 
-  const totalTime = 6 * 60 + 26;
+  const totalTime = 6 * 60 + 23;
   const waveform = [
-    28, 27, 20, 33, 20, 30, 8, 28, 25, 35, 25, 28, 27, 30, 33, 20, 30, 18, 28,
-    25, 35, 25, 30, 33, 20, 30, 12, 28, 25, 32, 25, 25, 20,
+    28, 27, 20, 33, 20, 30, 10, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28,
+    28, 28, 28, 28, 28, 28, 28, 28, 28, 25, 32, 25, 25, 20,
   ];
 
   async function enablePrepFreq() {

@@ -15,7 +15,7 @@ export const frequencies = [
 
 export const programs = {
   speakers: [
-    require("../assets/programs/prep.mp3"),
+    require("../assets/programs/new_prep.mp3"),
     require("../assets/programs/main.mp3"),
   ],
   ear_speakers: require("../assets/programs/ear.mp3"),

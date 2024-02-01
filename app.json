@@ -2,7 +2,7 @@
   "expo": {
     "name": "WaterDrop",
     "slug": "water-eject-app",
-    "version": "1.1.4",
+    "version": "1.1.6",
     "orientation": "portrait",
     "icon": "./assets/icon_large.png",
     "userInterfaceStyle": "light",
