@@ -16,7 +16,7 @@ export default function AboutSection() {
               </View>
               <Text className="text-white text-lg">Version</Text>
             </View>
-            <Text className="text-gray-400 text-md mr-2">1.1.6</Text>
+            <Text className="text-gray-400 text-md mr-2">1.1.7</Text>
           </View>
         </TouchableOpacity>
 
@@ -28,7 +28,7 @@ export default function AboutSection() {
               </View>
               <Text className="text-white text-lg">Build</Text>
             </View>
-            <Text className="text-gray-400 text-md mr-2">6</Text>
+            <Text className="text-gray-400 text-md mr-2">8</Text>
           </View>
         </TouchableOpacity>
       </View>
