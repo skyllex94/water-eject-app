@@ -20,17 +20,28 @@ import * as StoreReview from "expo-store-review";
 export default function OnBoardingItem({ item, navigation }) {
   const { width } = useWindowDimensions();
 
+  async function navigatingIntoApp() {
+    try {
+      await AsyncStorage.setItem("@isAppFirstLaunched", "false");
+    } catch (err) {
+      console.log(err);
+    } finally {
+      navigation.replace("MainApp");
+      if (await StoreReview.hasAction()) {
+        setTimeout(() => {
+          StoreReview.requestReview();
+        }, 20000);
+      }
+    }
+  }
+
   return (
     <SafeAreaView style={[styles.container, { width }]}>
       {item.id === 5 ? (
         <View className="flex-1 m-5 space-y-0">
           <TouchableOpacity
             className="flex-row justify-end"
-            onPress={async () => {
-              await AsyncStorage.setItem("@isAppFirstLaunched", "false");
-              navigation.replace("MainApp");
-              StoreReview.requestReview();
-            }}
+            onPress={navigatingIntoApp}
           >
             <AntDesign name="close" size={24} color="#05103A" />
           </TouchableOpacity>

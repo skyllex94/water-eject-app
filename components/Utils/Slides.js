@@ -3,7 +3,7 @@ export default [
     id: 1,
     title: `Welcome to WaterDrop`,
     description:
-      "Our tested frequencies will help remove stuck water inside your speakers, ear speaker or earbugs so you can have clear and crisp sound again.",
+      "Our tested frequencies will help remove stuck water inside your speakers, ear speaker or earbuds so you can have clear and crisp sound again.",
     image: require("../../assets/images/slides/slide_1.png"),
   },
   {

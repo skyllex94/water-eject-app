@@ -96,7 +96,7 @@ export default function NextButton({
       <TouchableOpacity
         onPress={slideForward}
         activeOpacity={0.6}
-        className="bg-[#2b479d] rounded-xl w-64 p-4"
+        className="bg-[#2b479d] rounded-full w-64 p-4"
       >
         <Text className="text-white text-center font-extralight text-[16px]">
           Continue

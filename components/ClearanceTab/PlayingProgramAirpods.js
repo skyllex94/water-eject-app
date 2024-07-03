@@ -94,7 +94,7 @@ export default function PlayingProgramEar({ navigation }) {
             </Text>
 
             <Text className="text-center text-white font-extralight">
-              {currVolume * 100}%
+              {(currVolume * 100).toFixed(2)}%
             </Text>
           </View>
         </View>
