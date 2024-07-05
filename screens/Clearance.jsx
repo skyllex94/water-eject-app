@@ -115,16 +115,18 @@ function WaterClearanceTab({ navigation }) {
   return (
     <SafeAreaView className="flex-1 bg-[#05103A]">
       <View>
-        <Text className="text-white text-center text-xl">
-          WaterDrop Clearance
-        </Text>
+        {/* 
+          <Text className="text-white text-center text-xl">Water Clearance</Text>
+        */}
 
+        {/*
         <TouchableOpacity
           onPress={clearAsyncStorage}
           className="text-white text-center text-xl"
         >
           <Text className="text-white">Clear</Text>
         </TouchableOpacity>
+        */}
 
         <SoundVisualizer />
       </View>
