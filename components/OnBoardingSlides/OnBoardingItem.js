@@ -30,7 +30,7 @@ export default function OnBoardingItem({ item, navigation }) {
       if (await StoreReview.hasAction()) {
         setTimeout(() => {
           StoreReview.requestReview();
-        }, 20000);
+        }, 10000);
       }
     }
   }
@@ -38,12 +38,12 @@ export default function OnBoardingItem({ item, navigation }) {
   return (
     <SafeAreaView style={[styles.container, { width }]}>
       {item.id === 5 ? (
-        <View className="flex-1 m-5 space-y-0">
+        <View className="flex-1 m-5">
           <TouchableOpacity
-            className="flex-row justify-end"
+            className="flex-row justify-end z-10"
             onPress={navigatingIntoApp}
           >
-            <AntDesign name="close" size={24} color="#05103A" />
+            <AntDesign name="close" size={24} color="#1D274D" />
           </TouchableOpacity>
 
           <View className="flex-1 justify-center">
